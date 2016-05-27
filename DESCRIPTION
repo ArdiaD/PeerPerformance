@@ -1,0 +1,10 @@
+Package: PeerPerformance
+Version: 2.0.8
+Date: 2015-10-22
+Title: Peer performance analysis in R
+Author: David Ardia and Kris Boudt
+Maintainer: David Ardia <david.ardia@fsa.ulaval.ca>
+Depends: compiler, snow, sandwich, lmtest
+Suggests: xts
+Description: This package provides functions to perform the peer performance analysis of funds' returns.
+License: GPL (>=2)

@@ -1,0 +1,101 @@
+Changes in version 2.0.8 (DA)
+  o Small improvements with compiler
+  o Citations updated
+
+Changes in version 2.0.6 and 2.0.7 (DA)
+  o Various improvements
+  o Small fix in documentation
+
+Changes in Version 2.0.5 (DA)
+  o Fix in documentation for modified Sharpe testing
+  o Small fix in pvalue computation by bootstrap (symmetric)
+
+Changes in Version 2.0.4 (DA)
+  o Bug fix for alpha screening when NA are in the dataset
+  o Risk-free rate removed
+  o Tstat used for attribution
+
+Changes in Version 2.0.3 (DA)
+  o Major functions contain risk-free rates (zero by default)
+  o Documentation updated
+  o Adjustement factor robustified
+
+Changes in Version 2.0.2 (DA)
+  o alphaScreening fixed
+  o alphaScreening now encompasses hac estimation with sandwich and lmtest
+  o citation file updated
+
+Changes in Version 2.0.1 (DA)
+  o new package's name
+  o new package's number
+  o new package's structure
+
+Changes in Version 1-00.15 (DA)
+  o pi+ fixed
+  o default settings for lambda = NULL
+
+Changes in Version 1-00.14 (DA)
+  o fix of errors in examples
+
+Changes in Version 1-00.13 (DA)
+  o control parameters for lambda data driven (NULL)
+  o documentation updated
+  o function for optimal lambda corrected and enhanced
+  o funcion pizero and pi corrected
+
+Changes in Version 1-00.12 (DA)
+  o attribution proportions corrected
+  o computation of pi0 now accounts for NA in pvalues (in msharpe with na.rm = FALSE)
+  o new data set (randomized data) added
+
+Changes in Version 1-00.11 (DA)
+  o functions for computing the standard deviation based on the delta rule are now
+    coded outside and therefore accessible
+  o optimal block length added for sharpe and modified sharpe with documentation
+
+Changes in Version 1-00.10 (DA)
+  o bootstrap p-value consistent with Barras et al.
+  o control ttype = 1, or = 2, indicating if based on ratio or product
+  o control ptype = 1, or = 2, indicating of pvalue based on symmetric or asymmetric version
+    of bootstrap
+  o several speedup
+
+Changes in Version 1-00.09 (DA)
+  o simplification of boostrap functions for Sharpe and modified Sharpe
+
+Changes in Version 1-00.08 (DA)
+  o various fixes/improvements based on codetools package's outputs
+
+Changes in Version 1-00.07 (DA)
+  o modified Sharpe ratio set to NA whenever the modified VaR is negative
+  o function sharpe added
+  o function msharpe added
+  o other functions modified to rely on sharpe and msharpe functions
+  o documentation modified with X instead of rdata
+  o removed default values for subfunctions to avoid wrong defaults
+
+Changes in Version 1-00.06 (DA)
+  o change of data; now using the reconstructed database of HFR
+
+Changes in Version 1-00.05 (DA)
+  o hac estimator modified in mSharpe testing; now bounded to T
+
+Changes in Version 1-00.04 (DA)
+  o modified Sharpe ratio testing and screening added
+  o documentation modified
+
+Changes in Version 1-00.03 (DA)
+  o circular bootstrap with user-defined block length added
+  o boostrap relies on random integers instead of uniform numbers
+  o documentation modified
+  o enhancement of functions descriptions
+
+Changes in Version 1-00.02 (DA)
+  o hac estimator added to sharpeTesting and sharpeScreening
+  o hac studentized bootstrap estimator added to sharpeTesting and sharpeScreening
+  o documentation modified
+  o package and paper presented to the R/Finance conference 2012; see http://www.rinfinance.com/
+
+Changes in Version 1-00.01 (DA)
+  o first release
+  o package includes (parallel) alpha and sharpe screening algorithms
