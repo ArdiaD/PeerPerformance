@@ -6,13 +6,13 @@ citHeader("To cite 'PeerPerformance' in publications use:")
 
 citEntry(entry = "manual",
 	 title = "{PeerPerformance}: Peer performance analysis in {R}",
-	 author = personList(person("Kris","Boudt"),
-                             person("Ardia","David")),
+	 author = personList(person("Ardia","David"),
+                             person("Kris","Boudt")),
          year = year,
 	 note = vers,
-	 url = "https://r-forge.r-project.org/R/?group_id=1813",
+	 url = "https://github.com/ArdiaD/PeerPerformance",
 	 textVersion =
-         paste("Kris Boudt, Ardia David (", year,"). ",
+         paste("Ardia David, Kris Boudt (", year,"). ",
                "'PeerPerformance': Peer performance analysis in 'R'. ", vers, ".", sep = "")
 )
 
@@ -20,11 +20,11 @@ citEntry(entry = "misc",
 	 title = "The Peer Performance of Hedge Funds",
 	 author = personList(person("David","Ardia"),
                              person("Kris","Boudt")),
-         year = "2014",
+         year = "2016",
          url = "http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2000901",
 	 textVersion =
-         paste("David Ardia, Kris Boudt (2015).",
-               "The Peer Performance of Hedge Funds.")
+         paste("David Ardia, Kris Boudt (2016).",
+               "The Peer Performance Ratios of Hedge Funds.")
 )
 
 citEntry(entry = "article",
