@@ -65,7 +65,7 @@
 }
 \note{%
   Further details on the methdology with an application to the hedge fund industry is given in 
-  in Ardia and Boudt (2014). The file \file{ThePeerPerformanceOfHedgeFunds.txt} in the \file{/doc} package's folder
+  in Ardia and Boudt (2016). The file \file{ThePeerPerformanceOfHedgeFunds.txt} in the \file{/doc} package's folder
   allows the reprodution of the steps followed in the article. See also the presentation by Kris Boudt
   at the R/Finance conference 2012 at \url{http://www.rinfinance.com}.
 
@@ -80,8 +80,8 @@
   David Ardia and Kris Boudt.
 }
 \references{%
-  Ardia, D., Boudt, K. (2014).
-  \emph{The Peer Performance of Hedge Funds}.
+  Ardia, D., Boudt, K. (2016).
+  \emph{The Peer Performance Ratios of Hedge Funds}.
   \url{http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2000901}
 
   Barras, L., Scaillet, O., Wermers, R. (2010). 

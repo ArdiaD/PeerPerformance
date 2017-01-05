@@ -30,8 +30,8 @@
   Testing equality of modified Sharpe ratios
   \emph{Finance Research Letters} \bold{13}, pp.97--104.
 
-  Ardia, D., Boudt, K. (2015).
-  \emph{The Peer Performance of Hedge Funds}.
+  Ardia, D., Boudt, K. (2016).
+  \emph{The Peer Performance Ratios of Hedge Funds}.
   \url{http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2000901}
 
   Sharpe, W. F. (1994). 

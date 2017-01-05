@@ -17,7 +17,7 @@ citEntry(entry = "manual",
 )
 
 citEntry(entry = "misc",
-	 title = "The Peer Performance of Hedge Funds",
+	 title = "The Peer Performance Ratios of Hedge Funds",
 	 author = personList(person("David","Ardia"),
                              person("Kris","Boudt")),
          year = "2016",
