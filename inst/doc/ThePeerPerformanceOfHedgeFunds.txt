@@ -1,6 +1,0 @@
-library("PerformanceAnalytics")
-library("PeerPerformance")
-data(managers)
-x = managers[,1]
-y = managers[,2]
-sharpeTesting(x, y)

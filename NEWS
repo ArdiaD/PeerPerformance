@@ -1,3 +1,8 @@
+Changes in version 2.0.10 (DA)
+  o Roxygen documentation
+  o testthat added
+  o format of code
+
 Changes in version 2.0.9 (DA)
   o Update CITATION and DESCRIPTION
   
