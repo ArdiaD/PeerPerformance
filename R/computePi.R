@@ -60,13 +60,6 @@
       piposi <- min(max(1 - pizeroi - pinegi, 0), 1)  # numerical stability
     }
     
-    # if (sum(dalphai[idxOK] >= 0) >= hn){ piposi = (1 / n) * min((n -
-    # ni0), max(sum(dalphai[idxOK] >= qpos) - ni0 * (1 - bpos), 0)) pinegi
-    # = min(max(1 - pizeroi - piposi, 0), 1) # numerical stability } else{
-    # pinegi = (1 / n) * min((n - ni0), max(sum(dalphai[idxOK] <= qneg) -
-    # ni0 * bneg, 0)) piposi = min(max(1 - pizeroi - pinegi, 0), 1) #
-    # numerical stability }
-    
     pizero[i] <- pizeroi
     pipos[i] <- piposi
     pineg[i] <- pinegi

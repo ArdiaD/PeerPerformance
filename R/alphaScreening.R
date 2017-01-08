@@ -168,7 +168,17 @@
 #' portfolio selection.  \emph{Journal of Business 46} \bold{1}, pp.66--86.
 #' @keywords htest
 #' @examples
-#' # !!! DA ADD EXAMPLES HERE !!!
+#' ## Load the data (randomized data of monthly hedge fund returns)
+#' data("hfdata")
+#' rets = hfdata[,1:10]
+#' 
+#' ## Run alpha screening 
+#' ctr = list(nCore = 1)
+#' alphaScreening(rets, control = ctr)
+#' 
+#' ## Run alpha screening with HAC standard deviation
+#' ctr = list(nCore = 1, hac = TRUE)
+#' alphaScreening(rets, control = ctr)
 #' @export
 #' @importFrom snow makeCluster clusterEvalQ clusterApply stopCluster
 alphaScreening <- compiler::cmpfun(.alphaScreening)

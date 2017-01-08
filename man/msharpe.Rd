@@ -38,8 +38,10 @@ Please cite the package in publications. Use
 \examples{
 ## Load the data (randomized data of monthly hedge fund returns)
 data('hfdata')
+
 out = msharpe(hfdata)
 print(out)
+
 out = msharpe(hfdata, na.rm = FALSE)
 print(out)
 }

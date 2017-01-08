@@ -2,11 +2,9 @@
 
 export(alphaScreening)
 export(msharpe)
-export(msharpeBlockSize)
 export(msharpeScreening)
 export(msharpeTesting)
 export(sharpe)
-export(sharpeBlockSize)
 export(sharpeScreening)
 export(sharpeTesting)
 importFrom(lmtest,coeftest)

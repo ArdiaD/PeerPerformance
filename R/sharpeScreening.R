@@ -174,7 +174,15 @@
 #' \emph{Journal of the Royal Statistical Society B} \bold{64}, pp.479--498.
 #' @keywords htest
 #' @examples
-#' # !!! DA ADD EXAMPLES HERE !!!
+#' #' ## Load the data (randomized data of monthly hedge fund returns)
+#' data("hfdata")
+#' rets = hfdata[,1:10]
+#' 
+#' ## Sharpe screening 
+#' sharpeScreening(rets, control = list(nCore = 1))
+#' 
+#' ## Sharpe screening with bootstrap and HAC standard deviation
+#' sharpeScreening(rets, control = list(nCore = 1, type = 2, hac = TRUE))
 #' @export
 sharpeScreening <- compiler::cmpfun(.sharpeScreening)
 

@@ -78,6 +78,7 @@ alphaFactor <- function(X, factors = NULL) {
 #' @examples
 #' ## Load the data
 #' data('hfdata')
+#' 
 #' ## Compute the Sharpe ratio
 #' out = sharpe(hfdata)
 #' print(out)
@@ -143,8 +144,10 @@ sharpe <- function(X, na.rm = TRUE) {
 #' @examples
 #' ## Load the data (randomized data of monthly hedge fund returns)
 #' data('hfdata')
+#' 
 #' out = msharpe(hfdata)
 #' print(out)
+#' 
 #' out = msharpe(hfdata, na.rm = FALSE)
 #' print(out)
 #' @export

@@ -83,7 +83,7 @@ Please cite the package in publications. Use
 }
 \examples{
 ## Load the data (randomized data of monthly hedge fund returns)
-data('hfdata')
+data("hfdata")
 x = hfdata[,1]
 y = hfdata[,2]
 

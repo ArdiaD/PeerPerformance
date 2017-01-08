@@ -98,7 +98,17 @@ Please cite the package in publications. Use
 \code{citation('PeerPerformance')}.
 }
 \examples{
-# !!! DA ADD EXAMPLES HERE !!!
+## Load the data (randomized data of monthly hedge fund returns)
+data("hfdata")
+rets = hfdata[,1:10]
+
+## Run alpha screening 
+ctr = list(nCore = 1)
+alphaScreening(rets, control = ctr)
+
+## Run alpha screening with HAC standard deviation
+ctr = list(nCore = 1, hac = TRUE)
+alphaScreening(rets, control = ctr)
 }
 \author{
 David Ardia and Kris Boudt.

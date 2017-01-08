@@ -30,6 +30,7 @@ Please cite the package in publications. Use
 \examples{
 ## Load the data
 data('hfdata')
+
 ## Compute the Sharpe ratio
 out = sharpe(hfdata)
 print(out)
