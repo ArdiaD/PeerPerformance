@@ -15,23 +15,16 @@
       "email": null,
       "name": "Kris Boudt",
       "affiliation": "Vrije Universiteit Brussel\nVU University Amsterdam"
-    },
-    {
-      "@id": null,
-      "@type": "Person",
-      "email": null,
-      "name": "Jean-Philippe Gagnon-Fleury",
-      "affiliation": "PSP Investments"
     }
   ],
   "identifier": null,
-  "codeRepository": "https://github.com/ArdiaD/RiskPortfolios",
+  "codeRepository": "https://github.com/ArdiaD/PeerPerformance",
   "datePublished": "2017-01-08",
   "dateModified": "2017-01-08",
   "dateCreated": "2017-01-08",
   "description": "Risk-based portfolios in R",
-  "keywords": "R software, portolios, optimization, risk-based",
+  "keywords": "R software, peer performance, false discovery rate, alpha, modified Sharpe ratio, Sharpe ratio",
   "license": "GPL",
-  "title": "RiskPortfolios",
-  "version": "v2.00.07"
+  "title": "PeerPerformance",
+  "version": "v2.00.11"
 }
