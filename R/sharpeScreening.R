@@ -184,6 +184,7 @@
 #' ## Sharpe screening with bootstrap and HAC standard deviation
 #' sharpeScreening(rets, control = list(nCore = 1, type = 2, hac = TRUE))
 #' @export
+#' @importFrom compiler cmpfun
 sharpeScreening <- compiler::cmpfun(.sharpeScreening)
 
 #@name .sharpeScreeningi

@@ -151,6 +151,7 @@ sharpe <- function(X, na.rm = TRUE) {
 #' out = msharpe(hfdata, na.rm = FALSE)
 #' print(out)
 #' @export
+#' @importFrom stats qnorm
 msharpe <- function(X, level = 0.9, na.rm = TRUE, na.neg = TRUE) {
   X <- as.matrix(X)
   N <- ncol(X)
@@ -159,9 +160,6 @@ msharpe <- function(X, level = 0.9, na.rm = TRUE, na.neg = TRUE) {
   return(out)
 }
 
-#' @name .msharpe
-#' @title Compute the modified Sharpe ratio
-#' @importFrom stats qnorm
 .msharpe <- function(X, level, na.rm, na.neg) {
   m1 <- colMeans(X, na.rm = na.rm)
   X_ <- sweep(x = X, MARGIN = 2, STATS = m1, FUN = "-")

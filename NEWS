@@ -1,3 +1,7 @@
+Changes in Version 2.0.12 (DA)
+  o New PeerPerformance documentation
+  o compiler imported directly within function
+
 Changes in version 2.0.11 (DA)
   o Examples added
   o Block length not exported anymore

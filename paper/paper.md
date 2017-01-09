@@ -7,6 +7,10 @@ tags:
 - peer
 - alpha
 - Sharpe
+- modified Sharpe
+- alpha
+- screening
+- false discovery rate
 authors:
 - affiliation: Institute of Financial Analysis - University of Neuchâtel
   name: David Ardia

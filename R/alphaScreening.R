@@ -181,6 +181,7 @@
 #' alphaScreening(rets, control = ctr)
 #' @export
 #' @importFrom snow makeCluster clusterEvalQ clusterApply stopCluster
+#' @importFrom compiler cmpfun
 alphaScreening <- compiler::cmpfun(.alphaScreening)
 
 #' @name .alphaScreeningi

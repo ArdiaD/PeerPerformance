@@ -39,7 +39,6 @@
   out <- list(n = T, sharpe = info$sharpe, dsharpe = as.vector(tmp$dsharpe), 
               tstat = as.vector(tmp$tstat), pval = as.vector(tmp$pval))
   return(out)
-  
 }
 
 #' @name sharpeTesting
@@ -138,6 +137,7 @@
 #' out = sharpeTesting(x, y, control = ctr)
 #' print(out)
 #' @export
+#' @importFrom compiler cmpfun
 sharpeTesting <- compiler::cmpfun(.sharpeTesting)
 
 #@name .sharpe.ratio.diff
@@ -165,7 +165,6 @@ sharpeTesting <- compiler::cmpfun(.sharpeTesting)
   }
   diff <- SR1.hat - SR2.hat
   return(diff)
-  
 }
 sharpe.ratio.diff <- compiler::cmpfun(.sharpe.ratio.diff)
 
@@ -180,7 +179,6 @@ sharpe.ratio.diff <- compiler::cmpfun(.sharpe.ratio.diff)
   pval <- 2 * stats::pnorm(-abs(tstat))  # asymptotic normal p-value
   out <- list(dsharpe = dsharpe, tstat = tstat, se = se, pval = pval)
   return(out)
-  
 }
 sharpeTestAsymptotic <- compiler::cmpfun(.sharpeTestAsymptotic)
 

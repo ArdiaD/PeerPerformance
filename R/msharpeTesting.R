@@ -157,6 +157,7 @@
 #' out = msharpeTesting(x, y, level = 0.95, control = ctr)
 #' print(out)
 #' @export
+#' @importFrom compiler cmpfun
 msharpeTesting <- compiler::cmpfun(.msharpeTesting)
 
 #' @name .msharpe.ratio.diff
@@ -201,7 +202,6 @@ msharpeTesting <- compiler::cmpfun(.msharpeTesting)
   }
   diff <- mSR1 - mSR2
   return(diff)
-  
 }
 msharpe.ratio.diff <- compiler::cmpfun(.msharpe.ratio.diff)
 
@@ -220,7 +220,6 @@ msharpe.ratio.diff <- compiler::cmpfun(.msharpe.ratio.diff)
   pval <- 2 * stats::pnorm(-abs(tstat))  # asymptotic normal p-value
   out <- list(dmsharpe = dmsharpe, tstat = tstat, se = se, pval = pval)
   return(out)
-  
 }
 msharpeTestAsymptotic <- compiler::cmpfun(.msharpeTestAsymptotic)
 
@@ -368,7 +367,6 @@ msharpeTestAsymptotic <- compiler::cmpfun(.msharpeTestAsymptotic)
   Psi.hat <- compute.Psi.hat(V.hat, hac)
   se <- as.numeric(sqrt(crossprod(gradient, Psi.hat %*% gradient)/T))
   return(se)
-  
 }
 se.msharpe.asymptotic <- compiler::cmpfun(.se.msharpe.asymptotic)
 

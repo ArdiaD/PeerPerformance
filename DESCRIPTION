@@ -2,10 +2,15 @@ Package: PeerPerformance
 Version: 2.0.11
 Date: 2017-01-08
 Title: Peer performance analysis in R
-Author: David Ardia and Kris Boudt
+Authors@R: c(person("David", "Ardia", role = c("aut", "cre"),
+                     email = "david.ardia.ch@gmail.com"),
+              person("Kris", "Boudt", role = "aut"),
+              person("Jean-Philippe", "Gagnon-Fleury", role = "aut"))
+Author: David Ardia [aut, cre],
+  Kris Boudt [aut],
+  Jean-Philippe Gagnon-Fleury [aur]
 Maintainer: David Ardia <david.ardia.ch@gmail.com>
 Depends:
-    compiler,
     snow,
     sandwich,
     lmtest
