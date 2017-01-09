@@ -4,11 +4,9 @@ Date: 2017-01-08
 Title: Peer performance analysis in R
 Authors@R: c(person("David", "Ardia", role = c("aut", "cre"),
                      email = "david.ardia.ch@gmail.com"),
-              person("Kris", "Boudt", role = "aut"),
-              person("Jean-Philippe", "Gagnon-Fleury", role = "aut"))
+              person("Kris", "Boudt", role = "aut"))
 Author: David Ardia [aut, cre],
   Kris Boudt [aut],
-  Jean-Philippe Gagnon-Fleury [aur]
 Maintainer: David Ardia <david.ardia.ch@gmail.com>
 Depends:
     snow,
