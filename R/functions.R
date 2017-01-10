@@ -45,7 +45,7 @@ processControl <- function(control) {
 #@name alphaFactor
 #@title Compute alpha factor
 alphaFactor <- function(X, factors = NULL) {
-  fit <- lm(X ~ 1 + factors)
+  fit <- stats::lm(X ~ 1 + factors)
   alpha <- as.vector(fit$coef[1, ])
   return(alpha)
 }
@@ -178,8 +178,8 @@ msharpe <- function(X, level = 0.9, na.rm = TRUE, na.neg = TRUE) {
   return(out)
 }
 
-#@name .infoFund
-#@title Fund information
+# #' @name .infoFund
+# #' @import compiler
 .infoFund <- function(X, factors = NULL, level = NULL, na.rm = TRUE, na.neg = TRUE) {
   X <- as.matrix(X)
   N <- ncol(X)
@@ -207,8 +207,8 @@ msharpe <- function(X, level = 0.9, na.rm = TRUE, na.neg = TRUE) {
 }
 infoFund <- cmpfun(.infoFund)
 
-#@name .bootIndices
-#@title Generate bootstrap indices (circular block bootstrap)
+# #' @name .bootIndices
+# #' @import compiler
 .bootIndices <- function(T, nBoot, bBoot) {
   idsBoot <- matrix(data = NA, nrow = T, ncol = nBoot)
   if (bBoot == 1) {

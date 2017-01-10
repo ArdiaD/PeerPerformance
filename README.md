@@ -19,6 +19,13 @@ authors:
   orcid: null
 ---
 
+# Introduction
+PeerPerformance is an R package for the peer-performance evaluation with
+luck-correction. In particular, it implements the peer performance ratios of Ardia and Boudt
+(2016) which measure the percentage of peers a focal fund outperforms and underperforms, after
+correction for luck. In addition, it implements the testing framework for the Sharpe and modified Sharpe ratios, described in 
+Ledoit and Wolf (2008) and Ardia and Boudt (2015).
+
 # Installation
 To install the package, run the following commands in R:
 

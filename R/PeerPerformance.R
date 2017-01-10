@@ -33,4 +33,7 @@
 #' 
 #' Storey, J. (2002).  A direct approach to false discovery rates.
 #' \emph{Journal of the Royal Statistical Society B} \bold{64}, pp.479--498.
+#' @import lmtest
+#' @import sandwich
+#' @import compiler
 NULL

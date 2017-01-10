@@ -1,7 +1,7 @@
 ## Set of R functions for Sharpe ratio testing
 
-#@name .sharpeTesting
-#@title See sharpeTesting
+# #' @name .sharpeTesting
+# #' @import compiler
 .sharpeTesting <- function(x, y, control = list()) {
   
   x <- as.matrix(x)
@@ -137,7 +137,7 @@
 #' out = sharpeTesting(x, y, control = ctr)
 #' print(out)
 #' @export
-#' @importFrom compiler cmpfun
+#' @import compiler
 sharpeTesting <- compiler::cmpfun(.sharpeTesting)
 
 #@name .sharpe.ratio.diff
@@ -168,9 +168,10 @@ sharpeTesting <- compiler::cmpfun(.sharpeTesting)
 }
 sharpe.ratio.diff <- compiler::cmpfun(.sharpe.ratio.diff)
 
-#' @name .sharpeTestAsymptotic
-#' @title Asymptotic Sharpe test
-#' @importFrom stats pnorm
+# #' @name .sharpeTestAsymptotic
+# #' @title Asymptotic Sharpe test
+# #' @importFrom stats pnorm
+# #' @import compiler
 .sharpeTestAsymptotic <- function(rets, hac, ttype) {
   
   dsharpe <- sharpe.ratio.diff(rets, Y = NULL, ttype)
@@ -182,9 +183,10 @@ sharpe.ratio.diff <- compiler::cmpfun(.sharpe.ratio.diff)
 }
 sharpeTestAsymptotic <- compiler::cmpfun(.sharpeTestAsymptotic)
 
-#' @name .se.sharpe.asymptotic
-#' @title Asymptotic standard error
-#' @importFrom stats cov ar
+# #' @name .se.sharpe.asymptotic
+# #' @title Asymptotic standard error
+# #' @importFrom stats cov ar
+# #' @import compiler
 .se.sharpe.asymptotic <- function(X, hac, ttype) {
   
   # estimation of (robust) Psi function; see Ledoit Wolf paper
@@ -288,8 +290,8 @@ sharpeTestAsymptotic <- compiler::cmpfun(.sharpeTestAsymptotic)
 }
 se.sharpe.asymptotic <- compiler::cmpfun(.se.sharpe.asymptotic)
 
-#@name .sharpeTestBootstrap
-#@title Test Sharpe difference using circular studentized boostrap of Ledoit and Wolf
+# #' @name .sharpeTestBootstrap
+# #' @import compiler
 .sharpeTestBootstrap <- function(rets, bsids, b, ttype, pBoot, d = 0) {
   
   T <- nrow(rets)
@@ -328,9 +330,10 @@ se.sharpe.asymptotic <- compiler::cmpfun(.se.sharpe.asymptotic)
 }
 sharpeTestBootstrap <- compiler::cmpfun(.sharpeTestBootstrap)
 
-#' @name .se.sharpe.bootstrap
-#' @title Bootstrap standard error
-#' @importFrom stats cov
+# #' @name .se.sharpe.bootstrap
+# #' @title Bootstrap standard error
+# #' @importFrom stats cov
+# #' @import compiler
 .se.sharpe.bootstrap <- function(X, Y, b, ttype) {
   
   ## Compute Psi with two approaches: 1) iid bootstrap, 2) circular block

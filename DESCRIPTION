@@ -11,9 +11,9 @@ Maintainer: David Ardia <david.ardia.ch@gmail.com>
 Depends:
     snow,
     sandwich,
-    lmtest
+    lmtest,
+    compiler
 Suggests:
-    xts,
     testthat
 Description: This package provides functions to perform the peer performance
     analysis of funds' returns.

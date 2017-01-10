@@ -184,11 +184,11 @@
 #' @importFrom compiler cmpfun
 alphaScreening <- compiler::cmpfun(.alphaScreening)
 
-#' @name .alphaScreeningi
-#' @title Screening for fund i again its peers
-#' @importFrom stats lm na.omit
-#' @importFrom lmtest coeftest
-#' @importFrom sandwich vcovHAC
+# #' @name .alphaScreeningi
+# #' @title Screening for fund i again its peers
+# #' @importFrom stats lm na.omit
+# #' @importFrom lmtest coeftest
+# #' @importFrom sandwich vcovHAC
 .alphaScreeningi <- function(i, rdata, factors, T, N, hac) {
   pvali <- dalphai <- tstati <- rep(NA, N)
   

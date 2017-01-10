@@ -1,7 +1,7 @@
 ## Set of R functions for Sharpe screening
 
-#@name .sharpeScreening
-#@title See sharpeScreening
+# #' @name .sharpeScreening
+# #' @import compiler
 .sharpeScreening <- function(X, control = list()) {
   
   # process control
@@ -184,7 +184,7 @@
 #' ## Sharpe screening with bootstrap and HAC standard deviation
 #' sharpeScreening(rets, control = list(nCore = 1, type = 2, hac = TRUE))
 #' @export
-#' @importFrom compiler cmpfun
+#' @import compiler
 sharpeScreening <- compiler::cmpfun(.sharpeScreening)
 
 #@name .sharpeScreeningi

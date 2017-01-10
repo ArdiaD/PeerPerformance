@@ -1,7 +1,7 @@
 ## Set of R functions for the modified Sharpe ratio testing
 
-#@name .msharpeTesting
-#@title See msharpeTesting
+# #' @name .msharpeTesting
+# #' @import compiler
 .msharpeTesting <- function(x, y, level = 0.9, na.neg = TRUE, control = list()) {
   
   x <- as.matrix(x)
@@ -157,12 +157,13 @@
 #' out = msharpeTesting(x, y, level = 0.95, control = ctr)
 #' print(out)
 #' @export
-#' @importFrom compiler cmpfun
+#' @import compiler
 msharpeTesting <- compiler::cmpfun(.msharpeTesting)
 
-#' @name .msharpe.ratio.diff
-#' @title Difference of sharpe ratios
-#' @importFrom stats qnorm
+# #' @name .msharpe.ratio.diff
+# #' @title Difference of sharpe ratios
+# #' @importFrom stats qnorm
+# #' @import compiler
 .msharpe.ratio.diff <- function(X, Y = NULL, level, na.neg, ttype) {
   if (is.null(Y)) {
     Y <- X[, 2, drop = FALSE]
@@ -205,9 +206,10 @@ msharpeTesting <- compiler::cmpfun(.msharpeTesting)
 }
 msharpe.ratio.diff <- compiler::cmpfun(.msharpe.ratio.diff)
 
-#' @name .msharpeTestAsymptotic
-#' @title Asymptotic Sharpe testing
-#' @importFrom stats pnorm
+# #' @name .msharpeTestAsymptotic
+# #' @title Asymptotic Sharpe testing
+# #' @importFrom stats pnorm
+# #' @import compiler
 .msharpeTestAsymptotic <- function(rets, level, na.neg, hac, ttype) {
   
   dmsharpe <- msharpe.ratio.diff(rets, Y = NULL, level, na.neg, ttype)
@@ -223,9 +225,10 @@ msharpe.ratio.diff <- compiler::cmpfun(.msharpe.ratio.diff)
 }
 msharpeTestAsymptotic <- compiler::cmpfun(.msharpeTestAsymptotic)
 
-#' @name .se.msharpe.asymptotic
-#' @title Asymptotic standard error
-#' @importFrom stats cov ar qnorm
+# #' @name .se.msharpe.asymptotic
+# #' @title Asymptotic standard error
+# #' @importFrom stats cov ar qnorm
+# #' @import compiler
 .se.msharpe.asymptotic <- function(X, level, hac, ttype) {
   
   # estimation of (robust) Psi function; see Ledoit Wolf paper
@@ -370,8 +373,8 @@ msharpeTestAsymptotic <- compiler::cmpfun(.msharpeTestAsymptotic)
 }
 se.msharpe.asymptotic <- compiler::cmpfun(.se.msharpe.asymptotic)
 
-#@name .msharpeTestBootstrap
-#@title Test modified Sharpe ratio difference using circular studentized boostrap of Ledoit and Wolf
+# #' @name .msharpeTestBootstrap
+# #' @import compiler
 .msharpeTestBootstrap <- function(rets, level, na.neg, bsids, b, ttype, 
                                   pBoot, d = 0) {
   
@@ -418,9 +421,9 @@ se.msharpe.asymptotic <- compiler::cmpfun(.se.msharpe.asymptotic)
 }
 msharpeTestBootstrap <- compiler::cmpfun(.msharpeTestBootstrap)
 
-#' @name .se.msharpe.bootstrap
-#' @title Bootstrap standard error
-#' @importFrom stats cov qnorm
+# #' @name .se.msharpe.bootstrap
+# #' @importFrom stats cov qnorm
+# #' @import compiler
 .se.msharpe.bootstrap <- function(X, Y, level, b, ttype) {
   
   ## Compute Psi with two approaches: 1) iid bootstrap, 2) circular block

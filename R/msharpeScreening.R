@@ -1,8 +1,9 @@
 ## Set of R functions for modified Sharpe screening
 
-#' @name .msharpeScreening
-#' @title See msharpeScreening
-#' @importFrom snow makeCluster clusterApply stopCluster
+# #' @name .msharpeScreening
+# #' @title See msharpeScreening
+# #' @importFrom snow makeCluster clusterApply stopCluster
+# #' @import compiler
 .msharpeScreening <- function(X, level = 0.9, na.neg = TRUE, control = list()) {
   
   # process control

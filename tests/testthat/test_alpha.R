@@ -1,4 +1,4 @@
-context("Fake test") 
+context("Test alpha screening") 
 
 test_that("Fake test", { 
   T = 100

@@ -1,9 +1,10 @@
 ## Set of R functions for the optimal block length computation for the
 ## modified Sharpe ratio
 
-#' @name .msharpeBlockSize
-#' @title See msharpeBlockSize
-#' @importFrom stats rgeom
+# #' @name .msharpeBlockSize
+# #' @title See msharpeBlockSize
+# #' @importFrom stats rgeom
+# #' @import compiler
 .msharpeBlockSize <- function(x, y, level = 0.9, na.neg = TRUE, control = list(), 
                               b.vec = c(1, 3, 6, 10), alpha = 0.05, M = 199, K = 500, b.av = 5, T.start = 50) {
   
@@ -37,8 +38,8 @@
   T <- length(x)
   Var.data <- matrix(data = 0, nrow = T.start + T, ncol = 2)
   Var.data[1, ] <- rets[1, ]
-  fit1 <- lm(x[2:T] ~ x[1:(T - 1)] + y[1:(T - 1)])
-  fit2 <- lm(y[2:T] ~ x[1:(T - 1)] + y[1:(T - 1)])
+  fit1 <- stats::lm(x[2:T] ~ x[1:(T - 1)] + y[1:(T - 1)])
+  fit2 <- stats::lm(y[2:T] ~ x[1:(T - 1)] + y[1:(T - 1)])
   coef1 <- as.numeric(fit1$coef)
   coef2 <- as.numeric(fit2$coef)
   resid.mat <- cbind(as.numeric(fit1$resid), as.numeric(fit2$resid))
