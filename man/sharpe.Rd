@@ -7,10 +7,10 @@
 sharpe(X, na.rm = TRUE)
 }
 \arguments{
-\item{X}{vector (of lenght \eqn{T}) or matrix (of size \eqn{T \times
+\item{X}{Vector (of lenght \eqn{T}) or matrix (of size \eqn{T \times
 N}{TxN}) of returns for \eqn{N} funds. \code{NA} values are allowed.}
 
-\item{na.rm}{a logical value indicating whether \code{NA} values should be
+\item{na.rm}{A logical value indicating whether \code{NA} values should be
 stripped before the computation. Default \code{na.rm = TRUE}}
 }
 \value{
@@ -22,10 +22,6 @@ Function which computes the Sharpe ratio.
 \details{
 The Sharpe ratio (Sharpe 1992) is one industry standard for measuring the
 absolute risk adjusted performance of hedge funds.
-}
-\note{
-Please cite the package in publications. Use
-\code{citation('PeerPerformance')}.
 }
 \examples{
 ## Load the data
@@ -42,14 +38,20 @@ print(out)
 David Ardia and Kris Boudt.
 }
 \references{
-Ardia, D., Boudt, K. (2015).  Testing equality of modified
-Sharpe ratios \emph{Finance Research Letters} \bold{13}, pp.97--104.
+Ardia, D., Boudt, K. (2015).  
+Testing equality of modified Sharpe ratios.
+\emph{Finance Research Letters} \bold{13}, pp.97--104. 
+\doi{10.1016/j.frl.2015.02.008}
 
-Ardia, D., Boudt, K. (2016).  \emph{The Peer Performance Ratios of Hedge
-Funds}.  \url{http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2000901}
+Ardia, D., Boudt, K. (2016).  
+The Peer Ratios Performance of Hedge Funds. 
+\emph{Working paper}.
+\url{http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2000901}
 
-Sharpe, W. F. (1994).  The Sharpe ratio.  \emph{Journal of Portfolio
-Management} Fall, pp.49--58.
+Sharpe, W.F. (1994).  
+The Sharpe ratio.  
+\emph{Journal of Portfolio Management} \bold{21}(1), pp.49--58.
+\doi{10.3905/jpm.1994.409501}
 }
 \seealso{
 \code{\link{sharpeTesting}}, \code{\link{sharpeScreening}} and

@@ -1,12 +1,12 @@
 Package: PeerPerformance
-Version: 2.0.11
-Date: 2017-01-08
-Title: Peer performance analysis in R
+Version: 2.1.00
+Date: 2017-01-12
+Title: Peer Performance Analysis in R
 Authors@R: c(person("David", "Ardia", role = c("aut", "cre"),
                      email = "david.ardia.ch@gmail.com"),
               person("Kris", "Boudt", role = "aut"))
 Author: David Ardia [aut, cre],
-  Kris Boudt [aut],
+  Kris Boudt [aut]
 Maintainer: David Ardia <david.ardia.ch@gmail.com>
 Depends:
     snow,

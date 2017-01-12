@@ -55,25 +55,29 @@ alphaFactor <- function(X, factors = NULL) {
 #' @description Function which computes the Sharpe ratio.
 #' @details The Sharpe ratio (Sharpe 1992) is one industry standard for measuring the
 #' absolute risk adjusted performance of hedge funds.
-#' @param X vector (of lenght \eqn{T}) or matrix (of size \eqn{T \times
+#' @param X Vector (of lenght \eqn{T}) or matrix (of size \eqn{T \times
 #' N}{TxN}) of returns for \eqn{N} funds. \code{NA} values are allowed.
-#' @param na.rm a logical value indicating whether \code{NA} values should be
+#' @param na.rm A logical value indicating whether \code{NA} values should be
 #' stripped before the computation. Default \code{na.rm = TRUE}
 #' @return A scalar or a vector (of size \eqn{N}) with the Sharpe ratios.
-#' @note Please cite the package in publications. Use
-#' \code{citation('PeerPerformance')}.
 #' @author David Ardia and Kris Boudt.
 #' @seealso \code{\link{sharpeTesting}}, \code{\link{sharpeScreening}} and
 #' \code{\link{msharpe}}.
 #' @references 
-#' Ardia, D., Boudt, K. (2015).  Testing equality of modified
-#' Sharpe ratios \emph{Finance Research Letters} \bold{13}, pp.97--104.
+#' Ardia, D., Boudt, K. (2015).  
+#' Testing equality of modified Sharpe ratios.
+#' \emph{Finance Research Letters} \bold{13}, pp.97--104. 
+#' \doi{10.1016/j.frl.2015.02.008}
 #' 
-#' Ardia, D., Boudt, K. (2016).  \emph{The Peer Performance Ratios of Hedge
-#' Funds}.  \url{http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2000901}
+#' Ardia, D., Boudt, K. (2016).  
+#' The Peer Ratios Performance of Hedge Funds. 
+#' \emph{Working paper}.
+#' \url{http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2000901}
 #' 
-#' Sharpe, W. F. (1994).  The Sharpe ratio.  \emph{Journal of Portfolio
-#' Management} Fall, pp.49--58.
+#' Sharpe, W.F. (1994).  
+#' The Sharpe ratio.  
+#' \emph{Journal of Portfolio Management} \bold{21}(1), pp.49--58.
+#' \doi{10.3905/jpm.1994.409501}
 #' @keywords htest
 #' @examples
 #' ## Load the data
@@ -111,35 +115,39 @@ sharpe <- function(X, na.rm = TRUE) {
 #' @details The modified Sharpe ratio (Favre and Galeano 2002) is one industry
 #' standard for measuring the absolute risk adjusted performance of hedge
 #' funds.
-#' 
-#' @param X vector (of lenght \eqn{T}) or matrix (of size \eqn{T \times
+#' @param X Vector (of lenght \eqn{T}) or matrix (of size \eqn{T \times
 #' N}{TxN}) of returns.  \code{NA} values are allowed.
-#' @param level modified Value-at-Risk level. Default: \code{level = 0.90}.
-#' @param na.rm a logical value indicating whether \code{NA} values should be
+#' @param level Modified Value-at-Risk level. Default: \code{level = 0.90}.
+#' @param na.rm A logical value indicating whether \code{NA} values should be
 #' stripped before the computation. Default \code{na.rm = TRUE}.
-#' @param na.neg a logical value indicating whether \code{NA} values should be
+#' @param na.neg A logical value indicating whether \code{NA} values should be
 #' returned if a negative modified Value-at-Risk is obtained.  Default
 #' \code{na.neg = TRUE}.
-#' @return scalar or a vector (of size \eqn{N}) with the modified Sharpe
+#' @return Scalar or a vector (of size \eqn{N}) with the modified Sharpe
 #' ratios.
-#' @note Please cite the package in publications. Use
-#' \code{citation('PeerPerformance')}.
 #' @author David Ardia and Kris Boudt.
 #' @seealso \code{\link{msharpeTesting}}, \code{\link{msharpeScreening}} and
 #' \code{\link{sharpe}}.
 #' @references 
-#' Ardia, D., Boudt, K. (2015).  Testing equality of modified
-#' Sharpe ratios \emph{Finance Research Letters} \bold{13}, pp.97--104.
+#' Ardia, D., Boudt, K. (2015).  
+#' Testing equality of modified Sharpe ratios.
+#' \emph{Finance Research Letters} \bold{13}, pp.97--104. 
+#' \doi{10.1016/j.frl.2015.02.008}
 #' 
-#' Ardia, D., Boudt, K. (2016).  \emph{The Peer Performance Ratios of Hedge
-#' Funds}.  \url{http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2000901}
+#' Ardia, D., Boudt, K. (2016).  
+#' The Peer Ratios Performance of Hedge Funds. 
+#' \emph{Working paper}.
+#' \url{http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2000901}
 #' 
-#' Favre, L., Galeano, J.A. (2002).  Mean-modified Value-at-Risk with Hedge
-#' Funds.  \emph{The Journal of Alternative Investments} \bold{5}, pp.21--25.
+#' Favre, L., Galeano, J.A. (2002).  
+#' Mean-modified Value-at-Risk Optimization with Hedge Funds.  
+#' \emph{Journal of Alternative Investments} \bold{5}(2), pp.21--25.
+#' \doi{10.3905/jai.2002.319052}
 #' 
-#' Gregoriou, G. N., Gueyie, J.-P. (2003).  Risk-adjusted performance of funds
-#' of hedge funds using a modified Sharpe ratio.  \emph{The Journal of Wealth
-#' Management} \bold{Winter}, pp.77--83.
+#' Gregoriou, G. N., Gueyie, J.-P. (2003).  
+#' Risk-adjusted performance of funds of hedge funds using a modified Sharpe ratio.  
+#' \emph{Journal of Wealth Management} \bold{6}(3), pp.77--83.
+#' \doi{10.3905/jwm.2003.442378}
 #' @keywords htest
 #' @examples
 #' ## Load the data (randomized data of monthly hedge fund returns)

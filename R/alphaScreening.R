@@ -58,7 +58,7 @@
 }
 
 #' @name alphaScreening
-#' @title Screening using the Alpha outperformance ratio
+#' @title Screening using the alpha outperformance ratio
 #' @description Function which performs the screening of a universe of returns, and
 #' compute the alpha outperformance ratio.
 #' @details The alpha measure (Treynor and Black 1973, Carhart 1997, Fung and Hsieh
@@ -83,49 +83,47 @@
 #' 
 #' The argument \code{control} is a list that can supply any of the following
 #' components:
-#' 
 #' \itemize{
-#' \item \code{'hac'} heteroscedastic-autocorrelation consistent
+#' \item \code{'hac'} Heteroscedastic-autocorrelation consistent
 #' standard errors. Default: \code{hac = FALSE}.
-#' \item \code{'minObs'} minimum number of concordant observations to compute the ratios. Default:
+#' \item \code{'minObs'} Minimum number of concordant observations to compute the ratios. Default:
 #' \code{minObs = 10}.
-#' \item \code{'minObsPi'} minimum number of observations
+#' \item \code{'minObsPi'} Minimum number of observations
 #' for computing the p-values). Default: \code{minObsPi = 1}.
-#' \item \code{'nCore'} number of cores used to perform the screeing. Default:
+#' \item \code{'nCore'} Number of cores used to perform the screeing. Default:
 #' \code{nCore = 1}.
-#' \item \code{'lambda'} threshold value to compute pi0.
+#' \item \code{'lambda'} Threshold value to compute pi0.
 #' Default: \code{lambda = NULL}, i.e. data driven choice.
 #' }
-#' 
-#' @param X matrix \eqn{(T \times N)}{(TxN)} of \eqn{T} returns for the \eqn{N}
+#' @param X Matrix \eqn{(T \times N)}{(TxN)} of \eqn{T} returns for the \eqn{N}
 #' funds. \code{NA} values are allowed.
-#' @param factors matrix \eqn{(T \times K)}{(TxK)} of \eqn{T} returns for the
+#' @param factors Matrix \eqn{(T \times K)}{(TxK)} of \eqn{T} returns for the
 #' \eqn{K} factors. \code{NA} values are allowed.
-#' @param control control parameters (see *Details*).
+#' @param control Control parameters (see *Details*).
 #' @return A list with the following components:\cr
 #' 
-#' \code{n}: vector (of length \eqn{N}) of number of non-\code{NA}
+#' \code{n}: Vector (of length \eqn{N}) of number of non-\code{NA}
 #' observations.\cr
 #' 
-#' \code{npeer}: vector (of length \eqn{N}) of number of available peers.\cr
+#' \code{npeer}: Vector (of length \eqn{N}) of number of available peers.\cr
 #' 
-#' \code{alpha}: vector (of length \eqn{N}) of unconditional alpha.\cr
+#' \code{alpha}: Vector (of length \eqn{N}) of unconditional alpha.\cr
 #' 
-#' \code{dalpha}: matrix (of size \eqn{N \times N}{NxN}) of alpha
+#' \code{dalpha}: Matrix (of size \eqn{N \times N}{NxN}) of alpha
 #' differences.\cr
 #' 
-#' \code{pval}: matrix (of size \eqn{N \times N}) of p-values of test for alpha
+#' \code{pval}: Matrix (of size \eqn{N \times N}) of p-values of test for alpha
 #' differences.\cr
 #' 
-#' \code{lambda}: vector (of length \eqn{N}) of lambda values.\cr
+#' \code{lambda}: Vector (of length \eqn{N}) of lambda values.\cr
 #' 
-#' \code{pizero}: vector (of length \eqn{N}) of probability of equal
+#' \code{pizero}: Vector (of length \eqn{N}) of probability of equal
 #' performance.\cr
 #' 
-#' \code{pipos}: vector (of length \eqn{N}) of probability of outperformance
+#' \code{pipos}: Vector (of length \eqn{N}) of probability of outperformance
 #' performance.\cr
 #' 
-#' \code{pineg}: vector (of length \eqn{N}) of probability of underperformance
+#' \code{pineg}: Vector (of length \eqn{N}) of probability of underperformance
 #' performance.
 #' @note Further details on the methdology with an application to the hedge
 #' fund industry is given in Ardia and Boudt (2016). 
@@ -133,39 +131,51 @@
 #' Application of the false discovery rate approach applied to the mutual fund
 #' industry has been presented in Barras, Scaillet and Wermers (2010).
 #' 
-#' Currently, the hac asymptotic and studentized circular block bootstrap
+#' Currently, the HAC asymptotic and studentized circular block bootstrap
 #' presented in Ledoit and Wolf (2008) are not supported by the
 #' \code{alphaScreening} function.
-#' 
-#' Please cite the package in publications. Use
-#' \code{citation('PeerPerformance')}.
 #' @author David Ardia and Kris Boudt.
 #' @seealso \code{\link{sharpeScreening}} and \code{\link{msharpeScreening}}.
 #' @references 
-#' Ardia, D., Boudt, K. (2015).  Testing equality of modified
-#' Sharpe ratios \emph{Finance Research Letters} \bold{13}, pp.97--104.
+#' Ardia, D., Boudt, K. (2015).  
+#' Testing equality of modified Sharpe ratios.
+#' \emph{Finance Research Letters} \bold{13}, pp.97--104. 
+#' \doi{10.1016/j.frl.2015.02.008}
 #' 
-#' Ardia, D., Boudt, K. (2016).  \emph{The Peer Ratios Performance of Hedge
-#' Funds}. \url{http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2000901}
+#' Ardia, D., Boudt, K. (2016).  
+#' The Peer Ratios Performance of Hedge Funds. 
+#' \emph{Working paper}.
+#' \url{http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2000901}
 #' 
-#' Barras, L., Scaillet, O., Wermers, R. (2010).  False discoveries in mutual
-#' fund performance: Measuring luck in estimated alphas.  \emph{Journal of
-#' Finance} \bold{5}, pp.179--216.
+#' Barras, L., Scaillet, O., Wermers, R. (2010).  
+#' False discoveries in mutual fund performance: Measuring luck in estimated alphas.  
+#' \emph{Journal of Finance} \bold{65}(1), pp.179--216.
+#' \doi{10.1111/j.1540-6261.2009.01527.x}
 #' 
-#' Carhart, M. (1997).  On persistence in mutual fund performance.
-#' \emph{Journal of Finance} \bold{52}, pp.57--82.
+#' Carhart, M. (1997).  
+#' On persistence in mutual fund performance.
+#' \emph{Journal of Finance} \bold{52}(1), pp.57--82.
+#' \doi{10.1111/j.1540-6261.1997.tb03808.x}
 #' 
-#' Fama, E., French, K. (2010).  Luck versus skill in the cross-section of
-#' mutual fund returns.  \emph{Journal of Finance} \bold{65}, pp.1915--1947.
+#' Fama, E., French, K. (2010).  
+#' Luck versus skill in the cross-section of mutual fund returns.  
+#' \emph{Journal of Finance} \bold{65}(5), pp.1915--1947.
+#' \doi{10.1111/j.1540-6261.2010.01598.x}
 #' 
-#' Fung, W., Hsieh, D. (2004).  Hedge fund benchmarks: A risk based approach.
-#' \emph{Financial Analysts Journal} \bold{60}, pp.65--80.
+#' Fung, W., Hsieh, D. (2004).  
+#' Hedge fund benchmarks: A risk based approach.
+#' \emph{Financial Analysts Journal} \bold{60}(5), pp.65--80.
+#' \doi{10.2469/faj.v60.n5.2657}
 #' 
-#' Storey, J. (2002).  A direct approach to false discovery rates.
-#' \emph{Journal of the Royal Statistical Society B} \bold{64}, pp.479--498.
+#' Storey, J. (2002).  
+#' A direct approach to false discovery rates.
+#' \emph{Journal of the Royal Statistical Society B} \bold{64}(3), pp.479--498.
+#' \doi{10.1111/1467-9868.00346}
 #' 
-#' Treynor, J. L., Black, F. (1973).  How to use security analysis to improve
-#' portfolio selection.  \emph{Journal of Business 46} \bold{1}, pp.66--86.
+#' Treynor, J. L., Black, F. (1973).  
+#' How to use security analysis to improve portfolio selection.  
+#' \emph{Journal of Business} \bold{46}(1), pp.66--86.
+#' \doi{10.1002/9781119196679.ch60}
 #' @keywords htest
 #' @examples
 #' ## Load the data (randomized data of monthly hedge fund returns)

@@ -1,7 +1,7 @@
 #' @name hfdata
 #' @title Hedge fund data
 #' @description The matrix \code{hfdata} contains randomized monthly returns of hedge funds.
-#' @source \url{http://www.hedgefundresearch.com}.
+#' @source \url{https://www.hedgefundresearch.com/}
 #' @docType data
 #' @keywords datasets
 #' @usage data(hfdata)
