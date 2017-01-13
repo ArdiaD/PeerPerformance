@@ -1,9 +1,11 @@
 ---
 title: 'PeerPerformance: Luck--Corrected Peer Performance Analysis in R'
 bibliography: paper.bib
-date: "22 December 2016"
+date: "13 Januarz 2017"
 tags:
 - performance
+- outperformance
+- underperformance
 - peer
 - alpha
 - Sharpe
@@ -22,9 +24,11 @@ authors:
 
 # Summary
 
-`PeerPerformance` is an R package (@R) for the peer--performance evaluation with luck--correction. In 
+`PeerPerformance` is an R package (@R) for the peer--performance evaluation of financial investments with luck--correction. In 
 particular, it implements the peer performance ratios of @ArdiaBoudt2016 which measure the percentage of peers 
-a focal fund outperforms and underperforms, after correction for luck. The latest version of the package
+a focal (hedge) fund outperforms and underperforms, after correction for luck. It is useful for fund or portfolio managers to 
+benchmark their investments or screen a universe of new funds. In addition, it implements the testing framework for the Sharpe 
+and modified Sharpe ratios, described in @LedoitWolf2008 and @ArdiaBoudt2015. The latest version of the package
 is available at 'https://github.com/ArdiaD/PeerPerformance'.
 
 # References

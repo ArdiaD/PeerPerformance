@@ -1,7 +1,7 @@
 Package: PeerPerformance
 Version: 2.1.00
-Date: 2017-01-12
-Title: Peer Performance Analysis in R
+Date: 2017-01-13
+Title: Luck-Corrected Peer Performance Analysis in R
 Authors@R: c(person("David", "Ardia", role = c("aut", "cre"),
                      email = "david.ardia.ch@gmail.com"),
               person("Kris", "Boudt", role = "aut"))
@@ -16,6 +16,6 @@ Depends:
 Suggests:
     testthat
 Description: This package provides functions to perform the peer performance
-    analysis of funds' returns.
+    analysis of funds' returns as described in Ardia et Boudt (2016) <doi:10.2139/ssrn.2000901>.
 License: GPL (>=2)
 RoxygenNote: 5.0.1

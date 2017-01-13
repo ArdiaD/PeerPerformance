@@ -19,12 +19,12 @@
   ],
   "identifier": null,
   "codeRepository": "https://github.com/ArdiaD/PeerPerformance",
-  "datePublished": "2017-01-09",
-  "dateModified": "2017-01-09",
+  "datePublished": "2017-01-13",
+  "dateModified": "2017-01-13",
   "dateCreated": "2017-01-09",
-  "description": "Peer performance analysis in R",
+  "description": "Luck-corrected peer performance analysis in R",
   "keywords": "R software, peer, performance, false discovery rate, hedge funds",
   "license": "GPL",
-  "title": "PeerPerformance",
-  "version": "v2.00.11"
+  "title": "PeerPerformance: Luck-Corrected Peer Performance Analysis in R",
+  "version": "v2.1.00"
 }
