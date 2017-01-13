@@ -118,7 +118,7 @@ Testing equality of modified Sharpe ratios.
 Ardia, D., Boudt, K. (2016).  
 The Peer Ratios Performance of Hedge Funds. 
 \emph{Working paper}.
-\url{http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2000901}
+\doi{10.2139/ssrn.2000901}
 
 Barras, L., Scaillet, O., Wermers, R. (2010).  
 False discoveries in mutual fund performance: Measuring luck in estimated alphas.  

@@ -4,13 +4,18 @@
 \name{PeerPerformance}
 \alias{PeerPerformance}
 \alias{PeerPerformance-package}
-\title{PeerPerformance}
+\title{: PeerPerformance: Luck-Corrected Peer Performance Analysis in R}
 \description{
-\code{PeerPerformance} is an \R package for the peer-performance evaluation with 
+\code{PeerPerformance} is an \R package for the peer-performance evaluation of financial investments with 
 luck-correction, useful in the financial industry. In particular, it implements the peer performance ratios of Ardia and Boudt 
-(2016) which measure the percentage of peers a focal hedge fund outperforms and underperforms, after 
-correction for luck. In addition, it implements the testing framework for the Sharpe and modified Sharpe ratios, described in 
+(2016) which measure the percentage of peers a focal (hedge) fund outperforms and underperforms, after 
+correction for luck. It is useful for fund or portfolio managers to benchmark their investments or screen a universe of new funds. 
+In addition, the package implements the testing framework for the Sharpe and modified Sharpe ratios, described in 
 Ledoit and Wolf (2008) and Ardia and Boudt (2015).
+}
+\note{
+Full description of the methodologies implemented in the various functions is available 
+in Ledoit and Wolf (2008) and Ardia and Boudt (2015, 2016).
 }
 \section{Functions}{
 

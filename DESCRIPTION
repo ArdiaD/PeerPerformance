@@ -15,7 +15,7 @@ Depends:
     compiler
 Suggests:
     testthat
-Description: This package provides functions to perform the peer performance
+Description: Provides functions to perform the peer performance
     analysis of funds' returns as described in Ardia et Boudt (2016) <doi:10.2139/ssrn.2000901>.
 License: GPL (>=2)
 RoxygenNote: 5.0.1
