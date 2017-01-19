@@ -64,7 +64,7 @@
 #' @name msharpeScreening
 #' @title Screening using the modified Sharpe outperformance ratio
 #' @description Function which performs the screening of a universe of returns, and
-#' compute the modified Sharpe outperformance ratio.
+#' computes the modified Sharpe outperformance ratio.
 #' @details The modified Sharpe ratio (Favre and Galeano 2002, Gregoriou and Gueyie
 #' 2003) is one industry standard for measuring the absolute risk adjusted
 #' performance of hedge funds. We propose to complement the modified Sharpe
@@ -122,7 +122,9 @@
 #' \code{dmsharpe}: Matrix (of size \eqn{N \times N}{NxN}) of modified Sharpe
 #' ratios differences.\cr
 #' 
-#' \code{pval}: Matrix (of size \eqn{N \times N}) of p-values of test for
+#' \code{tstat}: Matrix (of size \eqn{N \times N}{NxN}) of t-statistics.\cr
+#' 
+#' \code{pval}: Matrix (of size \eqn{N \times N}{NxN}) of p-values of test for
 #' modified Sharpe ratios differences.\cr
 #' 
 #' \code{lambda}: Vector (of length \eqn{N}) of lambda values.\cr

@@ -60,7 +60,7 @@
 #' @name alphaScreening
 #' @title Screening using the alpha outperformance ratio
 #' @description Function which performs the screening of a universe of returns, and
-#' compute the alpha outperformance ratio.
+#' computes the alpha outperformance ratio.
 #' @details The alpha measure (Treynor and Black 1973, Carhart 1997, Fung and Hsieh
 #' 2004) is one industry standard for measuring the absolute risk adjusted
 #' performance of hedge funds. We propose to complement the alpha measure with
@@ -74,7 +74,7 @@
 #' \itemize{
 #' \item (1) compute all pairwise tests of alpha differences. This means that for a universe of
 #' \eqn{N} funds, we perform \eqn{N(N-1)/2}{N*(N-1)/2} tests. The algorithm has
-#' been parallelized and the computational burden can be slip across several
+#' been parallelized and the computational burden can be splitted across several
 #' cores. The number of cores can be defined in \code{control}, see below.
 #' 
 #' \item (2) for each fund, the false discovery rate approach by Storey (2002)
@@ -112,6 +112,8 @@
 #' \code{dalpha}: Matrix (of size \eqn{N \times N}{NxN}) of alpha
 #' differences.\cr
 #' 
+#' \code{tstat}: Matrix (of size \eqn{N \times N}{NxN}) of t-statistics.\cr
+#'
 #' \code{pval}: Matrix (of size \eqn{N \times N}) of p-values of test for alpha
 #' differences.\cr
 #' 

@@ -62,7 +62,7 @@
 #' @name sharpeScreening
 #' @title Screening using the Sharpe outperformance ratio
 #' @description Function which performs the screening of a universe of returns, and
-#' compute the Sharpe outperformance ratio.
+#' computes the Sharpe outperformance ratio.
 #' @details The Sharpe ratio (Sharpe 1992) is one industry standard for measuring the
 #' absolute risk adjusted performance of hedge funds. We propose to complement
 #' the Sharpe ratio with the fund's outperformance ratio, defined as the
@@ -80,7 +80,7 @@
 #' pairwise tests of Sharpe differences using the bootstrap approach of Ledoit
 #' and Wolf (2002). This means that for a universe of \eqn{N} funds, we perform
 #' \eqn{N(N-1)/2}{N*(N-1)/2} tests. The algorithm has been parallelized and the
-#' computational burden can be slip across several cores. The number of cores
+#' computational burden can be splitted across several cores. The number of cores
 #' can be defined in \code{control}, see below.
 #' \item (2) for each fund, the
 #' false discovery rate approach by Storey (2002) is used to determine the
@@ -127,7 +127,9 @@
 #' \code{dsharpe}: Matrix (of size \eqn{N \times N}{NxN}) of Sharpe ratios
 #' differences.\cr
 #' 
-#' \code{pval}: Matrix (of size \eqn{N \times N}) of pvalues of test for Sharpe
+#' \code{tstat}: Matrix (of size \eqn{N \times N}{NxN}) of t-statistics.\cr
+#' 
+#' \code{pval}: Matrix (of size \eqn{N \times N}{NxN}) of pvalues of test for Sharpe
 #' ratios differences.\cr
 #' 
 #' \code{lambda}: vector (of length \eqn{N}) of lambda values.\cr
