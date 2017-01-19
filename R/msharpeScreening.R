@@ -72,7 +72,7 @@
 #' of funds that have a significantly lower modified Sharpe ratio. In a
 #' pairwise testing framework, a fund can have a significantly higher modified
 #' Sharpe ratio because of luck. We correct for this by applying the false
-#' discovery rate approach by (Storey 2002).
+#' discovery rate approach by Storey (2002).
 #' 
 #' For the testing, only the intersection of non-\code{NA} observations for the
 #' two funds are used.

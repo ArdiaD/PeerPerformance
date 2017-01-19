@@ -67,8 +67,7 @@
 #' the fund's alpha outperformance ratio, defined as the percentage number of
 #' funds that have a significantly lower alpha. In a pairwise testing
 #' framework, a fund can have a significantly higher alpha because of luck. We
-#' correct for this by applying the false discovery rate approach by (Storey
-#' 2002).
+#' correct for this by applying the false discovery rate approach by Storey (2002).
 #' 
 #' The methodology proceeds as follows: 
 #' \itemize{
