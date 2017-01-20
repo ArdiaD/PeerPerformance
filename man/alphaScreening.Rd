@@ -28,6 +28,8 @@ observations.\cr
 \code{dalpha}: Matrix (of size \eqn{N \times N}{NxN}) of alpha
 differences.\cr
 
+\code{tstat}: Matrix (of size \eqn{N \times N}{NxN}) of t-statistics.\cr
+
 \code{pval}: Matrix (of size \eqn{N \times N}) of p-values of test for alpha
 differences.\cr
 
@@ -44,7 +46,7 @@ performance.
 }
 \description{
 Function which performs the screening of a universe of returns, and
-compute the alpha outperformance ratio.
+computes the alpha outperformance ratio.
 }
 \details{
 The alpha measure (Treynor and Black 1973, Carhart 1997, Fung and Hsieh
@@ -53,14 +55,13 @@ performance of hedge funds. We propose to complement the alpha measure with
 the fund's alpha outperformance ratio, defined as the percentage number of
 funds that have a significantly lower alpha. In a pairwise testing
 framework, a fund can have a significantly higher alpha because of luck. We
-correct for this by applying the false discovery rate approach by (Storey
-2002).
+correct for this by applying the false discovery rate approach by Storey (2002).
 
 The methodology proceeds as follows: 
 \itemize{
 \item (1) compute all pairwise tests of alpha differences. This means that for a universe of
 \eqn{N} funds, we perform \eqn{N(N-1)/2}{N*(N-1)/2} tests. The algorithm has
-been parallelized and the computational burden can be slip across several
+been parallelized and the computational burden can be splitted across several
 cores. The number of cores can be defined in \code{control}, see below.
 
 \item (2) for each fund, the false discovery rate approach by Storey (2002)
@@ -94,6 +95,7 @@ presented in Ledoit and Wolf (2008) are not supported by the
 \code{alphaScreening} function.
 }
 \examples{
+**## Not run:**
 ## Load the data (randomized data of monthly hedge fund returns)
 data("hfdata")
 rets = hfdata[,1:10]
@@ -105,6 +107,7 @@ alphaScreening(rets, control = ctr)
 ## Run alpha screening with HAC standard deviation
 ctr = list(nCore = 1, hac = TRUE)
 alphaScreening(rets, control = ctr)
+## End(**Not run**)
 }
 \author{
 David Ardia and Kris Boudt.

@@ -32,7 +32,9 @@ ratios.\cr
 \code{dmsharpe}: Matrix (of size \eqn{N \times N}{NxN}) of modified Sharpe
 ratios differences.\cr
 
-\code{pval}: Matrix (of size \eqn{N \times N}) of p-values of test for
+\code{tstat}: Matrix (of size \eqn{N \times N}{NxN}) of t-statistics.\cr
+
+\code{pval}: Matrix (of size \eqn{N \times N}{NxN}) of p-values of test for
 modified Sharpe ratios differences.\cr
 
 \code{lambda}: Vector (of length \eqn{N}) of lambda values.\cr
@@ -48,7 +50,7 @@ performance.
 }
 \description{
 Function which performs the screening of a universe of returns, and
-compute the modified Sharpe outperformance ratio.
+computes the modified Sharpe outperformance ratio.
 }
 \details{
 The modified Sharpe ratio (Favre and Galeano 2002, Gregoriou and Gueyie
@@ -58,7 +60,7 @@ ratio with the fund's outperformance ratio, defined as the percentage number
 of funds that have a significantly lower modified Sharpe ratio. In a
 pairwise testing framework, a fund can have a significantly higher modified
 Sharpe ratio because of luck. We correct for this by applying the false
-discovery rate approach by (Storey 2002).
+discovery rate approach by Storey (2002).
 
 For the testing, only the intersection of non-\code{NA} observations for the
 two funds are used.

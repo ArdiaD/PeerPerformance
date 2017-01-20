@@ -4,7 +4,7 @@
 \name{PeerPerformance}
 \alias{PeerPerformance}
 \alias{PeerPerformance-package}
-\title{: PeerPerformance: Luck-Corrected Peer Performance Analysis in R}
+\title{PeerPerformance: Luck-Corrected Peer Performance Analysis in R}
 \description{
 \code{PeerPerformance} is an \R package for the peer-performance evaluation of financial investments with 
 luck-correction, useful in the financial industry. In particular, it implements the peer performance ratios of Ardia and Boudt 

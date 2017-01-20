@@ -25,7 +25,9 @@ observations.\cr
 \code{dsharpe}: Matrix (of size \eqn{N \times N}{NxN}) of Sharpe ratios
 differences.\cr
 
-\code{pval}: Matrix (of size \eqn{N \times N}) of pvalues of test for Sharpe
+\code{tstat}: Matrix (of size \eqn{N \times N}{NxN}) of t-statistics.\cr
+
+\code{pval}: Matrix (of size \eqn{N \times N}{NxN}) of pvalues of test for Sharpe
 ratios differences.\cr
 
 \code{lambda}: vector (of length \eqn{N}) of lambda values.\cr
@@ -41,7 +43,7 @@ performance.
 }
 \description{
 Function which performs the screening of a universe of returns, and
-compute the Sharpe outperformance ratio.
+computes the Sharpe outperformance ratio.
 }
 \details{
 The Sharpe ratio (Sharpe 1992) is one industry standard for measuring the
@@ -50,7 +52,7 @@ the Sharpe ratio with the fund's outperformance ratio, defined as the
 percentage number of funds that have a significantly lower Sharpe ratio. In
 a pairwise testing framework, a fund can have a significantly higher Sharpe
 ratio because of luck. We correct for this by applying the false discovery
-rate approach by (Storey 2002).
+rate approach by Storey (2002).
 
 For the testing, only the intersection of non-\code{NA} observations for the
 two funds are used.
@@ -61,7 +63,7 @@ The methodology proceeds as follows:
 pairwise tests of Sharpe differences using the bootstrap approach of Ledoit
 and Wolf (2002). This means that for a universe of \eqn{N} funds, we perform
 \eqn{N(N-1)/2}{N*(N-1)/2} tests. The algorithm has been parallelized and the
-computational burden can be slip across several cores. The number of cores
+computational burden can be splitted across several cores. The number of cores
 can be defined in \code{control}, see below.
 \item (2) for each fund, the
 false discovery rate approach by Storey (2002) is used to determine the

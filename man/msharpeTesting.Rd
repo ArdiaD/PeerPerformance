@@ -10,7 +10,7 @@ msharpeTesting(x, y, level = 0.9, na.neg = TRUE, control = list())
 \item{x}{Vector (of lenght \eqn{T}) of returns for the first fund. \code{NA}
 values are allowed.}
 
-\item{y}{Vector (of lenght \eqn{T}) returns for the second fund. \code{NA}
+\item{y}{Vector (of lenght \eqn{T}) of returns for the second fund. \code{NA}
 values are allowed.}
 
 \item{level}{Modified Value-at-Risk level. Default: \code{level = 0.90}.}
@@ -73,7 +73,7 @@ Default: \code{pBoot = 1}.
 }
 \note{
 Further details on the methdology with an application to the hedge
-fund industry is given in in Ardia and Boudt (2016). 
+fund industry is given in Ardia and Boudt (2016). 
 
 Some internal functions where adapted from Michael Wolf MATLAB code.
 }
