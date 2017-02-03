@@ -5,40 +5,40 @@ vers <- paste("version", meta$Version)
 citHeader("To cite 'PeerPerformance' in publications use:")
 
 citEntry(entry = "manual",
-	 title = "{PeerPerformance}: Luck-Corrected Peer Performance Analysis in {R}",
-	 author = personList(person("Ardia","David"),
-                             person("Kris","Boudt")),
-         year = year,
+  title  = "{PeerPerformance}: {L}uck-corrected peer performance analysis in {R}",
+  author = personList(person("Ardia","David"),
+                      person("Kris","Boudt")),
+   year = year,
 	 note = vers,
-	 url = "https://github.com/ArdiaD/PeerPerformance",
-	 textVersion =
-         paste("Ardia David, Kris Boudt (", year,"). ",
-               "'PeerPerformance': Luck-Corrected Peer performance analysis in 'R'. ", vers, ".", sep = "")
+	 url  = "https://github.com/ArdiaD/PeerPerformance",
+	 textVersion = paste("Ardia, D., Boudt, K. (", year,"). ",
+     "'PeerPerformance': Luck-Corrected Peer performance analysis in 'R'. ", vers, ".", sep = "")
 )
 
 citEntry(entry = "misc",
-	 title = "The Peer Performance Ratios of Hedge Funds",
-	 author = personList(person("David","Ardia"),
-                             person("Kris","Boudt")),
-         year = "2016",
-         url = "http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2000901",
-	 textVersion =
-         paste("David Ardia, Kris Boudt (2016).",
-               "The Peer Performance Ratios of Hedge Funds.")
+  title  = "The peer performance ratios of hedge funds",
+	author = personList(person("David","Ardia"),
+                      person("Kris","Boudt")),
+  year = "2016",
+  doi  = "10.2139/ssrn.2000901",
+  note = "Working paper",
+	textVersion = paste("Ardia, D., Boudt, K. (2016).",
+	  "The peer performance ratios of hedge funds.",
+	  "doi:10.2139/ssrn.2000901",
+    "Working paper")
 )
 
 citEntry(entry = "article",
-	 title = "Testing equality of modified Sharpe ratios",
-	 author = personList(person("David","Ardia"),
-                             person("Kris","Boudt")),
-         year = "2015",
-         journal = "Finance Research Letters",
-         volume = "13",
-         pages  = "97-104",
-         doi = "10.1016/j.frl.2015.02.008",
-	 textVersion =
-         paste("David Ardia, Kris Boudt (2015).",
-               "Testing equality of modified Sharpe ratios.",
-               "Finance Research Letters 13, pp 97-104.",
-               "doi: 10.1016/j.frl.2015.02.008")
+  title  = "Testing equality of modified {S}harpe ratios",
+	author = personList(person("David","Ardia"),
+                      person("Kris","Boudt")),
+  year    = "2015",
+  journal = "Finance Research Letters",
+  volume  = "13",
+  pages   = "97-104",
+  doi     = "10.1016/j.frl.2015.02.008",
+	textVersion = paste("Ardia, D., Boudt, K. (2015).",
+    "Testing equality of modified Sharpe ratios.",
+    "Finance Research Letters 13, pp 97-104.",
+    "doi:10.1016/j.frl.2015.02.008")
 )

@@ -4,7 +4,7 @@
 \name{PeerPerformance}
 \alias{PeerPerformance}
 \alias{PeerPerformance-package}
-\title{PeerPerformance: Luck-Corrected Peer Performance Analysis in R}
+\title{PeerPerformance: Luck-corrected peer performance analysis in R}
 \description{
 \code{PeerPerformance} is an \R package for the peer-performance evaluation of financial investments with 
 luck-correction, useful in the financial industry. In particular, it implements the peer performance ratios of Ardia and Boudt 
@@ -16,6 +16,8 @@ Ledoit and Wolf (2008) and Ardia and Boudt (2015).
 \note{
 Full description of the methodologies implemented in the various functions is available 
 in Ledoit and Wolf (2008) and Ardia and Boudt (2015, 2016).
+
+Please cite the package in publications. Use \code{citation("PeerPerformance")}.
 }
 \section{Functions}{
 
@@ -40,9 +42,9 @@ Testing equality of modified Sharpe ratios.
 \doi{10.1016/j.frl.2015.02.008}
 
 Ardia, D., Boudt, K. (2016).  
-The Peer Ratios Performance of Hedge Funds. 
-\emph{Working paper}.
-\url{http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2000901}
+\emph{The peer performance ratios of hedge funds}. 
+Working paper.
+\doi{10.2139/ssrn.2000901}
 
 Barras, L., Scaillet, O., Wermers, R. (2010).  
 False discoveries in mutual fund performance: Measuring luck in estimated alphas.  
