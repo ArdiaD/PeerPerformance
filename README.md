@@ -69,7 +69,7 @@ Working paper.
 [http://dx.doi.org/10.2139/ssrn.2000901](http://dx.doi.org/10.2139/ssrn.2000901)
 
 Ardia, D., Boudt, K. (20xx).    
-_PeerPerformance: Peer performance analysis in R_.    
+_PeerPerformance: Luck-corrected peer performance analysis in R_.
 R package.   
 [https://github.com/ArdiaD/PeerPerformance](https://github.com/ArdiaD/PeerPerformance)
 
