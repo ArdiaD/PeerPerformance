@@ -40,17 +40,17 @@ David Ardia and Kris Boudt.
 \references{
 Ardia, D., Boudt, K. (2015).  
 Testing equality of modified Sharpe ratios.
-\emph{Finance Research Letters} \bold{13}, pp.97--104. 
+\emph{Finance Research Letters} \bold{13}, pp.97-104. 
 \doi{10.1016/j.frl.2015.02.008}
 
 Ardia, D., Boudt, K. (2016).  
-The Peer Ratios Performance of Hedge Funds. 
-\emph{Working paper}.
+\emph{The peer performance ratios of hedge funds}. 
+Working paper.
 \doi{10.2139/ssrn.2000901}
 
 Sharpe, W.F. (1994).  
 The Sharpe ratio.  
-\emph{Journal of Portfolio Management} \bold{21}(1), pp.49--58.
+\emph{Journal of Portfolio Management} \bold{21}(1), pp.49-58.
 \doi{10.3905/jpm.1994.409501}
 }
 \seealso{

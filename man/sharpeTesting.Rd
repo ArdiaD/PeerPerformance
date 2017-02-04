@@ -99,32 +99,32 @@ David Ardia and Kris Boudt.
 \references{
 Ardia, D., Boudt, K. (2015).  
 Testing equality of modified Sharpe ratios.
-\emph{Finance Research Letters} \bold{13}, pp.97--104. 
+\emph{Finance Research Letters} \bold{13}, pp.97-104. 
 \doi{10.1016/j.frl.2015.02.008}
 
 Ardia, D., Boudt, K. (2016).  
-The Peer Ratios Performance of Hedge Funds. 
-\emph{Working paper}.
+\emph{The peer performance ratios of hedge funds}. 
+Working paper.
 \doi{10.2139/ssrn.2000901}
 
 Barras, L., Scaillet, O., Wermers, R. (2010).  
 False discoveries in mutual fund performance: Measuring luck in estimated alphas.  
-\emph{Journal of Finance} \bold{65}(1), pp.179--216.
+\emph{Journal of Finance} \bold{65}(1), pp.179-216.
 \doi{10.1111/j.1540-6261.2009.01527.x}
 
 Sharpe, W.F. (1994).  
 The Sharpe ratio.  
-\emph{Journal of Portfolio Management} \bold{21}(1), pp.49--58.
+\emph{Journal of Portfolio Management} \bold{21}(1), pp.49-58.
 \doi{10.3905/jpm.1994.409501}
 
 Ledoit, O., Wolf, M. (2008). 
 Robust performance hypothesis testing with the Sharpe ratio.  
-\emph{Journal of Empirical Finance} \bold{15}(5), pp.850--859.
+\emph{Journal of Empirical Finance} \bold{15}(5), pp.850-859.
 \doi{10.1016/j.jempfin.2008.03.002}
 
 Storey, J. (2002).  
 A direct approach to false discovery rates.
-\emph{Journal of the Royal Statistical Society B} \bold{64}(3), pp.479--498.
+\emph{Journal of the Royal Statistical Society B} \bold{64}(3), pp.479-498.
 }
 \seealso{
 \code{\link{sharpe}}, \code{\link{sharpeScreening}} and

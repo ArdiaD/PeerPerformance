@@ -12,7 +12,7 @@ citEntry(entry = "manual",
 	 note = vers,
 	 url  = "https://github.com/ArdiaD/PeerPerformance",
 	 textVersion = paste("Ardia, D., Boudt, K. (", year,"). ",
-     "'PeerPerformance': Luck-Corrected Peer performance analysis in 'R'. ", vers, ".", sep = "")
+     "'PeerPerformance': Luck-corrected peer performance analysis in 'R'. ", vers, ".", sep = "")
 )
 
 citEntry(entry = "misc",

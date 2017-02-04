@@ -47,22 +47,22 @@ David Ardia and Kris Boudt.
 \references{
 Ardia, D., Boudt, K. (2015).  
 Testing equality of modified Sharpe ratios.
-\emph{Finance Research Letters} \bold{13}, pp.97--104. 
+\emph{Finance Research Letters} \bold{13}, pp.97-104. 
 \doi{10.1016/j.frl.2015.02.008}
 
 Ardia, D., Boudt, K. (2016).  
-The Peer Ratios Performance of Hedge Funds. 
-\emph{Working paper}.
+\emph{The peer performance ratios of hedge funds}. 
+Working paper.
 \doi{10.2139/ssrn.2000901}
 
 Favre, L., Galeano, J.A. (2002).  
 Mean-modified Value-at-Risk Optimization with Hedge Funds.  
-\emph{Journal of Alternative Investments} \bold{5}(2), pp.21--25.
+\emph{Journal of Alternative Investments} \bold{5}(2), pp.21-25.
 \doi{10.3905/jai.2002.319052}
 
 Gregoriou, G. N., Gueyie, J.-P. (2003).  
 Risk-adjusted performance of funds of hedge funds using a modified Sharpe ratio.  
-\emph{Journal of Wealth Management} \bold{6}(3), pp.77--83.
+\emph{Journal of Wealth Management} \bold{6}(3), pp.77-83.
 \doi{10.3905/jwm.2003.442378}
 }
 \seealso{
