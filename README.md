@@ -68,10 +68,10 @@ _The peer performance ratios of hedge funds_.
 Working paper.  
 [http://dx.doi.org/10.2139/ssrn.2000901](http://dx.doi.org/10.2139/ssrn.2000901)
 
-Ardia, D., Boudt, K. (20xx).    
-_PeerPerformance: Luck-corrected peer performance analysis in R_.
-R package.   
-[https://github.com/ArdiaD/PeerPerformance](https://github.com/ArdiaD/PeerPerformance)
+Ardia, D., Boudt, K. (20xx).      
+_PeerPerformance: Luck-corrected peer performance analysis in R_.  
+R package.     
+[https://github.com/ArdiaD/PeerPerformance](https://github.com/ArdiaD/PeerPerformance)  
 
 Ledoit, O., Wolf, M. (2008).   
 Robust performance hypothesis testing with the Sharpe ratio.    
