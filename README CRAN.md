@@ -1,6 +1,6 @@
 # PeerPerformance
 
-`PeerPerformance` (Ardia and Boudt, 2017) is an R package for the peer-performance evaluation of financial investments with
+`PeerPerformance` (Ardia and Boudt, 20xx) is an R package for the peer-performance evaluation of financial investments with
 luck-correction. In particular, it implements the peer performance ratios 
 of [Ardia and Boudt (2016)](http://dx.doi.org/10.2139/ssrn.2000901) which measure the percentage of peers a focal fund outperforms and underperforms, after
 correction for luck. It is useful for fund or portfolio managers to 
@@ -25,7 +25,7 @@ _The peer performance ratios of hedge funds_.
 Working paper.  
 [http://dx.doi.org/10.2139/ssrn.2000901](http://dx.doi.org/10.2139/ssrn.2000901)
 
-Ardia, D., Boudt, K. (2017).    
+Ardia, D., Boudt, K. (20xx).    
 _PeerPerformance: Peer performance analysis in R_.    
 R package.   
 [https://github.com/ArdiaD/PeerPerformance](https://github.com/ArdiaD/PeerPerformance)
