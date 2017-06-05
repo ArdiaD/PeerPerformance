@@ -191,7 +191,7 @@ msharpe <- function(X, level = 0.9, na.rm = TRUE, na.neg = TRUE) {
 .infoFund <- function(X, factors = NULL, level = NULL, na.rm = TRUE, na.neg = TRUE) {
   X <- as.matrix(X)
   N <- ncol(X)
-  nObs <- colSums(!is.nan(X))
+  nObs <- colSums(is.finite(X))
   muX <- colMeans(X, na.rm = na.rm)
   rX <- sweep(x = X, MARGIN = 2, STATS = muX, FUN = "-")
   sigX <- sqrt(colSums(rX^2, na.rm = na.rm)/(nObs - 1))
