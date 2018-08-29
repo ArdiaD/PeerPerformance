@@ -15,17 +15,19 @@ citEntry(entry = "manual",
      "'PeerPerformance': Luck-corrected peer performance analysis in 'R'. ", vers, ".", sep = "")
 )
 
-citEntry(entry = "misc",
+citEntry(entry = "article",
   title  = "The peer performance ratios of hedge funds",
 	author = personList(person("David","Ardia"),
                       person("Kris","Boudt")),
-  year = "2016",
-  doi  = "10.2139/ssrn.2000901",
-  note = "Working paper",
-	textVersion = paste("Ardia, D., Boudt, K. (2016).",
+  year = "2018",
+  journal = "Journal of Banking and Finance",
+  volume  = "87",
+  pages   = "351-368",
+  doi  = "10.1016/j.jbankfin.2017.10.014",
+	textVersion = paste("Ardia, D., Boudt, K. (2018).",
 	  "The peer performance ratios of hedge funds.",
-	  "doi:10.2139/ssrn.2000901",
-    "Working paper")
+	  "Journal of Banking and Finance 87, pp 351-368",
+    "10.1016/j.jbankfin.2017.10.014")
 )
 
 citEntry(entry = "article",

@@ -3,7 +3,7 @@
 #' @title PeerPerformance: Luck-corrected peer performance analysis in R
 #' @description \code{PeerPerformance} (Ardia and Boudt, 20xx) is an \R package for the peer-performance evaluation of financial investments with 
 #' luck-correction, useful in the financial industry. In particular, it implements the peer performance ratios of Ardia and Boudt 
-#' (2016) which measure the percentage of peers a focal (hedge) fund outperforms and underperforms, after 
+#' (2018) which measure the percentage of peers a focal (hedge) fund outperforms and underperforms, after 
 #' correction for luck. It is useful for fund or portfolio managers to benchmark their investments or screen a universe of new funds. 
 #' In addition, the package implements the testing framework for the Sharpe and modified Sharpe ratios, described in 
 #' Ledoit and Wolf (2008) and Ardia and Boudt (2015).
@@ -17,7 +17,7 @@
 #' The latest version of the package is available at \url{https://github.com/ArdiaD/PeerPerformance}
 #' @author David Ardia and Kris Boudt.
 #' @note Full description of the methodologies implemented in the various functions is available 
-#' in Ledoit and Wolf (2008) and Ardia and Boudt (2015, 2016).
+#' in Ledoit and Wolf (2008) and Ardia and Boudt (2015, 2018).
 #' @note Please cite the package in publications. Use \code{citation("PeerPerformance")}. 
 #' @references 
 #' Ardia, D., Boudt, K. (2015).  
@@ -25,10 +25,10 @@
 #' \emph{Finance Research Letters} \bold{13}, pp.97--104. 
 #' \doi{10.1016/j.frl.2015.02.008}
 #' 
-#' Ardia, D., Boudt, K. (2016).  
-#' \emph{The peer performance ratios of hedge funds}. 
-#' Working paper.
-#' \doi{10.2139/ssrn.2000901}
+#' Ardia, D., Boudt, K. (2018).  
+#' The Peer Ratios Performance of Hedge Funds. 
+#' \emph{Journal of Banking and Finance} \bold{87}, pp.351-.368.
+#' \doi{10.1016/j.jbankfin.2017.10.014}
 #' 
 #' Ardia, D., Boudt, K. (20xx).    
 #' \emph{PeerPerformance: Luck-corrected peer performance analysis in R}.    
