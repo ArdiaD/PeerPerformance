@@ -63,12 +63,14 @@ Please cite `PeerPerformance` in publications:
 Ardia, D., Boudt, K. (2015).
 Testing equality of modified Sharpe ratios.  
 _Finance Research Letters_ **13**, pp.97-104.   
-[http://dx.doi.org/10.1016/j.frl.2015.02.008](http://dx.doi.org/10.1016/j.frl.2015.02.008)
+[http://dx.doi.org/10.1016/j.frl.2015.02.008](http://dx.doi.org/10.1016/j.frl.2015.02.008)   
+[http://dx.doi.org/10.2139/ssrn.2516591](http://dx.doi.org/10.2139/ssrn.2516591)
 
 Ardia, D., Boudt, K. (2018).      
 The peer performance ratios of hedge funds_.      
 _Journal of Banking and Finance_ **87**, pp.351-368.    
-[http://dx.doi.org/10.1016/j.jbankfin.2017.10.014](http://dx.doi.org/10.1016/j.jbankfin.2017.10.014) 
+[http://dx.doi.org/10.1016/j.jbankfin.2017.10.014](http://dx.doi.org/10.1016/j.jbankfin.2017.10.014)  
+[http://dx.doi.org/10.2139/ssrn.2000901](http://dx.doi.org/10.2139/ssrn.2000901)
 
 Ardia, D., Boudt, K. (20xx).      
 _PeerPerformance: Luck-corrected peer performance analysis in R_.  
