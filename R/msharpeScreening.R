@@ -2,7 +2,7 @@
 
 # #' @name .msharpeScreening
 # #' @title See msharpeScreening
-# #' @importFrom snow makeCluster clusterApply stopCluster
+# #' @importFrom parallel makeCluster clusterApplyLB stopCluster
 # #' @import compiler
 .msharpeScreening <- function(X, level = 0.9, na.neg = TRUE, control = list()) {
   
@@ -25,15 +25,22 @@
   bsids <- bootIndices(T, ctr$nBoot, ctr$bBoot)
   
   if (length(liststocks) > 1) {
-    cl <- snow::makeCluster(c(rep("localhost", ctr$nCore)), type = "SOCK")
+    #cl <- snow::makeCluster(c(rep("localhost", ctr$nCore)), type = "SOCK")
+    cl <- parallel::makeCluster(ctr$nCore)
     
     liststocks <- liststocks[1:(length(liststocks) - 1)]
     
-    z <- snow::clusterApply(cl = cl, x = as.list(liststocks), fun = msharpeScreeningi, 
-                            rdata = X, level = level, T = T, N = N, na.neg = na.neg, nBoot = ctr$nBoot, 
-                            bsids = bsids, minObs = ctr$minObs, type = ctr$type, hac = ctr$hac, 
-                            b = ctr$bBoot, ttype = ctr$ttype, pBoot = ctr$pBoot)
-    snow::stopCluster(cl)
+    #z <- snow::clusterApply(cl = cl, x = as.list(liststocks), fun = msharpeScreeningi, 
+    #                        rdata = X, level = level, T = T, N = N, na.neg = na.neg, nBoot = ctr$nBoot, 
+    #                        bsids = bsids, minObs = ctr$minObs, type = ctr$type, hac = ctr$hac, 
+    #                        b = ctr$bBoot, ttype = ctr$ttype, pBoot = ctr$pBoot)
+    
+    z <- parallel::clusterApplyLB(cl = cl, x = as.list(liststocks), fun = msharpeScreeningi, 
+                                  rdata = X, level = level, T = T, N = N, na.neg = na.neg, nBoot = ctr$nBoot, 
+                                  bsids = bsids, minObs = ctr$minObs, type = ctr$type, hac = ctr$hac, 
+                                  b = ctr$bBoot, ttype = ctr$ttype, pBoot = ctr$pBoot)
+    #snow::stopCluster(cl)
+    parallel::stopCluster(cl)
     
     for (i in 1:length(liststocks)) {
       out <- z[[i]]

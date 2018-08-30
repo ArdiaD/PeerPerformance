@@ -61,7 +61,7 @@ asymmetric p-value (\code{pBoot = 2}). Default: \code{pBoot = 1}.
 }
 \note{
 Further details on the methdology with an application to the hedge
-fund industry is given in in Ardia and Boudt (2016). 
+fund industry is given in in Ardia and Boudt (2018). 
 
 Some internal functions where adapted from Michael Wolf MATLAB code.
 }
@@ -93,42 +93,41 @@ ctr = list(type = 2, nBoot = 250, bBoot = 5)
 out = sharpeTesting(x, y, control = ctr)
 print(out)
 }
-\author{
-David Ardia and Kris Boudt.
-}
 \references{
 Ardia, D., Boudt, K. (2015).  
 Testing equality of modified Sharpe ratios.
-\emph{Finance Research Letters} \bold{13}, pp.97-104. 
+\emph{Finance Research Letters} \bold{13}, pp.97--104. 
 \doi{10.1016/j.frl.2015.02.008}
 
-Ardia, D., Boudt, K. (2016).  
-\emph{The peer performance ratios of hedge funds}. 
-Working paper.
-\doi{10.2139/ssrn.2000901}
+Ardia, D., Boudt, K. (2018).  
+The Peer Ratios Performance of Hedge Funds. 
+\emph{Journal of Banking and Finance} \bold{87}, pp.351-.368.
+\doi{10.1016/j.jbankfin.2017.10.014}
 
 Barras, L., Scaillet, O., Wermers, R. (2010).  
 False discoveries in mutual fund performance: Measuring luck in estimated alphas.  
-\emph{Journal of Finance} \bold{65}(1), pp.179-216.
+\emph{Journal of Finance} \bold{65}(1), pp.179--216.
 \doi{10.1111/j.1540-6261.2009.01527.x}
 
 Sharpe, W.F. (1994).  
 The Sharpe ratio.  
-\emph{Journal of Portfolio Management} \bold{21}(1), pp.49-58.
+\emph{Journal of Portfolio Management} \bold{21}(1), pp.49--58.
 \doi{10.3905/jpm.1994.409501}
 
 Ledoit, O., Wolf, M. (2008). 
 Robust performance hypothesis testing with the Sharpe ratio.  
-\emph{Journal of Empirical Finance} \bold{15}(5), pp.850-859.
+\emph{Journal of Empirical Finance} \bold{15}(5), pp.850--859.
 \doi{10.1016/j.jempfin.2008.03.002}
 
 Storey, J. (2002).  
 A direct approach to false discovery rates.
-\emph{Journal of the Royal Statistical Society B} \bold{64}(3), pp.479-498.
+\emph{Journal of the Royal Statistical Society B} \bold{64}(3), pp.479--498.
 }
 \seealso{
 \code{\link{sharpe}}, \code{\link{sharpeScreening}} and
 \code{\link{msharpeTesting}}.
 }
+\author{
+David Ardia and Kris Boudt.
+}
 \keyword{htest}
-

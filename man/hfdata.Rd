@@ -15,4 +15,3 @@ data(hfdata)
 The matrix \code{hfdata} contains randomized and modified monthly returns of hedge funds.
 }
 \keyword{datasets}
-

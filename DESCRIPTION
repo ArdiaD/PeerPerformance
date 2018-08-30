@@ -1,5 +1,5 @@
 Package: PeerPerformance
-Version: 2.1.5
+Version: 2.2.1
 Date: 2018-08-29
 Title: Luck-Corrected Peer Performance Analysis in R
 Authors@R: c(person("David", "Ardia", role = c("aut", "cre"),
@@ -9,7 +9,7 @@ Author: David Ardia [aut, cre],
   Kris Boudt [aut]
 Maintainer: David Ardia <david.ardia.ch@gmail.com>
 Depends:
-    snow,
+    parallel,
     sandwich,
     lmtest,
     compiler
@@ -20,4 +20,4 @@ Description: Provides functions to perform the peer performance
 BugReports: https://github.com/ArdiaD/PeerPerformance/issues
 URL: https://github.com/ArdiaD/PeerPerformance
 License: GPL (>=2)
-RoxygenNote: 5.0.1
+RoxygenNote: 6.1.0

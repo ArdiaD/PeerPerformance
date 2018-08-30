@@ -19,17 +19,22 @@
   liststocks <- c(1:nrow(YY))[rowSums(YY) > ctr$minObsPi]
   
   if (length(liststocks) > 1) {
-    cl <- snow::makeCluster(c(rep("localhost", ctr$nCore)), type = "SOCK")
+    #cl <- snow::makeCluster(c(rep("localhost", ctr$nCore)), type = "SOCK")
+    cl <- parallel::makeCluster(ctr$nCore)
     
     # if (ctr$hac){ snow::clusterEvalQ(cl, require('sandwich'))
     # snow::clusterEvalQ(cl, require('lmtest')) }
     
     liststocks <- liststocks[1:(length(liststocks) - 1)]
     
-    z <- snow::clusterApply(cl = cl, x = as.list(liststocks), fun = alphaScreeningi, 
-                            rdata = X, factors = factors, T = T, N = N, hac = ctr$hac)
+    #z <- snow::clusterApply(cl = cl, x = as.list(liststocks), fun = alphaScreeningi, 
+    #                        rdata = X, factors = factors, T = T, N = N, hac = ctr$hac)
     
-    snow::stopCluster(cl)
+    z <- parallel::clusterApplyLB(cl = cl, x = as.list(liststocks), fun = alphaScreeningi,
+                                  rdata = X, factors = factors, T = T, N = N, hac = ctr$hac)
+    
+    #snow::stopCluster(cl)
+    parallel::stopCluster(cl)
     
     for (i in 1:length(liststocks)) {
       out <- z[[i]]
@@ -191,7 +196,7 @@
 #' ctr = list(nCore = 1, hac = TRUE)
 #' alphaScreening(rets, control = ctr)
 #' @export
-#' @importFrom snow makeCluster clusterEvalQ clusterApply stopCluster
+#' @importFrom parallel makeCluster clusterApplyLB stopCluster
 #' @importFrom compiler cmpfun
 alphaScreening <- compiler::cmpfun(.alphaScreening)
 

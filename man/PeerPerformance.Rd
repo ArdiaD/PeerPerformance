@@ -6,16 +6,16 @@
 \alias{PeerPerformance-package}
 \title{PeerPerformance: Luck-corrected peer performance analysis in R}
 \description{
-\code{PeerPerformance} is an \R package for the peer-performance evaluation of financial investments with 
+\code{PeerPerformance} (Ardia and Boudt, 20xx) is an \R package for the peer-performance evaluation of financial investments with 
 luck-correction, useful in the financial industry. In particular, it implements the peer performance ratios of Ardia and Boudt 
-(2016) which measure the percentage of peers a focal (hedge) fund outperforms and underperforms, after 
+(2018) which measure the percentage of peers a focal (hedge) fund outperforms and underperforms, after 
 correction for luck. It is useful for fund or portfolio managers to benchmark their investments or screen a universe of new funds. 
 In addition, the package implements the testing framework for the Sharpe and modified Sharpe ratios, described in 
 Ledoit and Wolf (2008) and Ardia and Boudt (2015).
 }
 \note{
 Full description of the methodologies implemented in the various functions is available 
-in Ledoit and Wolf (2008) and Ardia and Boudt (2015, 2016).
+in Ledoit and Wolf (2008) and Ardia and Boudt (2015, 2018).
 
 Please cite the package in publications. Use \code{citation("PeerPerformance")}.
 }
@@ -32,47 +32,52 @@ Please cite the package in publications. Use \code{citation("PeerPerformance")}.
 
 The latest version of the package is available at \url{https://github.com/ArdiaD/PeerPerformance}
 }
-\author{
-David Ardia and Kris Boudt.
-}
+
 \references{
 Ardia, D., Boudt, K. (2015).  
 Testing equality of modified Sharpe ratios.
-\emph{Finance Research Letters} \bold{13}, pp.97-104. 
+\emph{Finance Research Letters} \bold{13}, pp.97--104. 
 \doi{10.1016/j.frl.2015.02.008}
 
-Ardia, D., Boudt, K. (2016).  
-\emph{The peer performance ratios of hedge funds}. 
-Working paper.
-\doi{10.2139/ssrn.2000901}
+Ardia, D., Boudt, K. (2018).  
+The Peer Ratios Performance of Hedge Funds. 
+\emph{Journal of Banking and Finance} \bold{87}, pp.351-.368.
+\doi{10.1016/j.jbankfin.2017.10.014}
+
+Ardia, D., Boudt, K. (20xx).    
+\emph{PeerPerformance: Luck-corrected peer performance analysis in R}.    
+R package.   
+\url{https://github.com/ArdiaD/PeerPerformance}
 
 Barras, L., Scaillet, O., Wermers, R. (2010).  
 False discoveries in mutual fund performance: Measuring luck in estimated alphas.  
-\emph{Journal of Finance} \bold{65}(1), pp.179-216.
+\emph{Journal of Finance} \bold{65}(1), pp.179--216.
 \doi{10.1111/j.1540-6261.2009.01527.x}
 
 Favre, L., Galeano, J.A. (2002).  
 Mean-modified Value-at-Risk Optimization with Hedge Funds.  
-\emph{Journal of Alternative Investments} \bold{5}(2), pp.21-25.
+\emph{Journal of Alternative Investments} \bold{5}(2), pp.21--25.
 \doi{10.3905/jai.2002.319052}
 
 Gregoriou, G. N., Gueyie, J.-P. (2003).  
 Risk-adjusted performance of funds of hedge funds using a modified Sharpe ratio.  
-\emph{Journal of Wealth Management} \bold{6}(3), pp.77-83.
+\emph{Journal of Wealth Management} \bold{6}(3), pp.77--83.
 
 Ledoit, O., Wolf, M. (2008). 
 Robust performance hypothesis testing with the Sharpe ratio.  
-\emph{Journal of Empirical Finance} \bold{15}(5), pp.850-859.
+\emph{Journal of Empirical Finance} \bold{15}(5), pp.850--859.
 \doi{10.1016/j.jempfin.2008.03.002}
 
 Sharpe, W.F. (1994).  
 The Sharpe ratio.  
-\emph{Journal of Portfolio Management} \bold{21}(1), pp.49-58.
+\emph{Journal of Portfolio Management} \bold{21}(1), pp.49--58.
 \doi{10.3905/jpm.1994.409501}
 
 Storey, J. (2002).  
 A direct approach to false discovery rates.
-\emph{Journal of the Royal Statistical Society B} \bold{64}(3), pp.479-498.
+\emph{Journal of the Royal Statistical Society B} \bold{64}(3), pp.479--498.
 \doi{10.1111/1467-9868.00346}
 }
-
+\author{
+David Ardia and Kris Boudt.
+}

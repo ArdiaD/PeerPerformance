@@ -23,15 +23,23 @@
   bsids <- bootIndices(T, ctr$nBoot, ctr$bBoot)
   
   if (length(liststocks) > 1) {
-    cl <- makeCluster(c(rep("localhost", ctr$nCore)), type = "SOCK")
+    #cl <- makeCluster(c(rep("localhost", ctr$nCore)), type = "SOCK")
+    cl <- parallel::makeCluster(ctr$nCore)
     
     liststocks <- liststocks[1:(length(liststocks) - 1)]
     
-    z <- clusterApply(cl = cl, x = as.list(liststocks), fun = sharpeScreeningi, 
-                      rdata = X, T = T, N = N, nBoot = ctr$nBoot, bsids = bsids, 
-                      minObs = ctr$minObs, type = ctr$type, hac = ctr$hac, b = ctr$bBoot, 
-                      ttype = ctr$ttype, pBoot = ctr$pBoot)
-    stopCluster(cl)
+    #z <- clusterApply(cl = cl, x = as.list(liststocks), fun = sharpeScreeningi, 
+    #                  rdata = X, T = T, N = N, nBoot = ctr$nBoot, bsids = bsids, 
+    #                  minObs = ctr$minObs, type = ctr$type, hac = ctr$hac, b = ctr$bBoot, 
+    #                  ttype = ctr$ttype, pBoot = ctr$pBoot)
+    
+    z <- parallel::clusterApplyLB(cl = cl, x = as.list(liststocks), fun = sharpeScreeningi, 
+                                  rdata = X, T = T, N = N, nBoot = ctr$nBoot, bsids = bsids, 
+                                  minObs = ctr$minObs, type = ctr$type, hac = ctr$hac, b = ctr$bBoot, 
+                                  ttype = ctr$ttype, pBoot = ctr$pBoot)
+    
+    #stopCluster(cl)
+    parallel::stopCluster(cl)
     
     for (i in 1:length(liststocks)) {
       out <- z[[i]]

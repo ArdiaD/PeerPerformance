@@ -37,7 +37,7 @@
   info <- infoFund(rets, level = level, na.neg = na.neg)
   
   ## form output
-  out <- list(n = T, msharpe = info$msharpe, dmsharpe = as.vector(tmp$dmsharpe), 
+  out <- list(n = T, msharpe = info$msharpe, dmsharpe = -diff(info$msharpe), 
               tstat = as.vector(tmp$tstat), pval = as.vector(tmp$pval))
   return(out)
   

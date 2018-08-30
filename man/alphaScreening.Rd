@@ -85,7 +85,7 @@ Default: \code{lambda = NULL}, i.e. data driven choice.
 }
 \note{
 Further details on the methdology with an application to the hedge
-fund industry is given in Ardia and Boudt (2016). 
+fund industry is given in Ardia and Boudt (2018). 
 
 Application of the false discovery rate approach applied to the mutual fund
 industry has been presented in Barras, Scaillet and Wermers (2010).
@@ -107,52 +107,51 @@ alphaScreening(rets, control = ctr)
 ctr = list(nCore = 1, hac = TRUE)
 alphaScreening(rets, control = ctr)
 }
-\author{
-David Ardia and Kris Boudt.
-}
 \references{
 Ardia, D., Boudt, K. (2015).  
 Testing equality of modified Sharpe ratios.
-\emph{Finance Research Letters} \bold{13}, pp.97-104. 
+\emph{Finance Research Letters} \bold{13}, pp.97--104. 
 \doi{10.1016/j.frl.2015.02.008}
 
-Ardia, D., Boudt, K. (2016).  
-\emph{The peer performance ratios of hedge funds}. 
-Working paper.
-\doi{10.2139/ssrn.2000901}
+Ardia, D., Boudt, K. (2018).  
+The Peer Ratios Performance of Hedge Funds. 
+\emph{Journal of Banking and Finance} \bold{87}, pp.351-.368.
+\doi{10.1016/j.jbankfin.2017.10.014}
 
 Barras, L., Scaillet, O., Wermers, R. (2010).  
 False discoveries in mutual fund performance: Measuring luck in estimated alphas.  
-\emph{Journal of Finance} \bold{65}(1), pp.179-216.
+\emph{Journal of Finance} \bold{65}(1), pp.179--216.
 \doi{10.1111/j.1540-6261.2009.01527.x}
 
 Carhart, M. (1997).  
 On persistence in mutual fund performance.
-\emph{Journal of Finance} \bold{52}(1), pp.57-82.
+\emph{Journal of Finance} \bold{52}(1), pp.57--82.
 \doi{10.1111/j.1540-6261.1997.tb03808.x}
 
 Fama, E., French, K. (2010).  
 Luck versus skill in the cross-section of mutual fund returns.  
-\emph{Journal of Finance} \bold{65}(5), pp.1915-1947.
+\emph{Journal of Finance} \bold{65}(5), pp.1915--1947.
 \doi{10.1111/j.1540-6261.2010.01598.x}
 
 Fung, W., Hsieh, D. (2004).  
 Hedge fund benchmarks: A risk based approach.
-\emph{Financial Analysts Journal} \bold{60}(5), pp.65-80.
+\emph{Financial Analysts Journal} \bold{60}(5), pp.65--80.
 \doi{10.2469/faj.v60.n5.2657}
 
 Storey, J. (2002).  
 A direct approach to false discovery rates.
-\emph{Journal of the Royal Statistical Society B} \bold{64}(3), pp.479-498.
+\emph{Journal of the Royal Statistical Society B} \bold{64}(3), pp.479--498.
 \doi{10.1111/1467-9868.00346}
 
 Treynor, J. L., Black, F. (1973).  
 How to use security analysis to improve portfolio selection.  
-\emph{Journal of Business} \bold{46}(1), pp.66-86.
+\emph{Journal of Business} \bold{46}(1), pp.66--86.
 \doi{10.1002/9781119196679.ch60}
 }
 \seealso{
 \code{\link{sharpeScreening}} and \code{\link{msharpeScreening}}.
 }
+\author{
+David Ardia and Kris Boudt.
+}
 \keyword{htest}
-
