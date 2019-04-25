@@ -213,88 +213,141 @@ alphaScreening <- compiler::cmpfun(.alphaScreening)
   Y <- matrix(rdata[, (i + 1):N], nrow = T, ncol = nPeer)
   dXY <- X - Y
   
-  if (!hac) {
+  # #####################################
+  # # Correct structure of if/else.  
+  # if (!hac) {
+  #   
+  #   #####################################
+  #   # Correct this function. Will be slower (#20190002)
+  #   
+  #   # if (is.null(factors)) {
+  #   #   fit <- stats::lm(dXY ~ 1, na.action = stats::na.omit) 
+  #   # } else {
+  #   #   fit <- stats::lm(dXY ~ 1 + factors, na.action = stats::na.omit)
+  #   # }
+  #   # sumfit <- summary(fit)
+  #   # if (nPeer == 1) {
+  #   #   pvali[N] <- sumfit$coef[1, 4]
+  #   #   dalphai[N] <- sumfit$coef[1, 1]
+  #   #   tstati[N] <- sumfit$coef[1, 3]
+  #   # } else {
+  #   #   k <- 1
+  #   #   for (j in (i + 1):N) {
+  #   #     pvali[j] <- sumfit[[k]]$coef[1, 4]
+  #   #     dalphai[j] <- sumfit[[k]]$coef[1, 1]
+  #   #     tstati[j] <- sumfit[[k]]$coef[1, 3]
+  #   #     k <- k + 1
+  #   #   }
+  #   # }
+  #   
+  #   #####################################
+  #   # New proposal that's in line with hac = TRUE
+  #   # Doesn't use lists. 
+  #   
+  #   if (nPeer == 1) {
+  #     if (is.null(factors)) {
+  #       fit <- stats::lm(dXY ~ 1, na.action = stats::na.omit)
+  #     } else {
+  #       fit <- stats::lm(dXY ~ 1 + factors, na.action = stats::na.omit)
+  #     }
+  #     sumfit <- summary(fit)
+  #     pvali[N] <- sumfit$coef[1, 4]
+  #     dalphai[N] <- sumfit$coef[1, 1]
+  #     tstati[N] <- sumfit$coef[1, 3]
+  #   } else { # end of nPeer == 1
+  #     k <- 1
+  #     for (j in (i + 1):N) {
+  #       if (is.null(factors)) {
+  #         fit <- stats::lm(dXY[, k] ~ 1, na.action = stats::na.omit)
+  #       } else {
+  #         fit <- stats::lm(dXY[, k] ~ 1 + factors, na.action = stats::na.omit)
+  #       }
+  #       sumfit <- summary(fit)
+  #       pvali[j] <- sumfit$coef[1, 4]
+  #       dalphai[j] <- sumfit$coef[1, 1]
+  #       tstati[j] <- sumfit$coef[1, 3]
+  #       k <- k + 1
+  #     }
+  #   }
+  #   
+  #   #####################################
+  #   #
+  # } else { # end of HAC = FALSE
+  #   if (nPeer == 1) {
+  #     if (is.null(factors)) {
+  #       fit <- stats::lm(dXY ~ 1, na.action = stats::na.omit)
+  #     } else {
+  #       fit <- stats::lm(dXY ~ 1 + factors, na.action = stats::na.omit)
+  #     }
+  #     sumfit <- lmtest::coeftest(fit, vcov. = sandwich::vcovHAC(fit))
+  #     pvali[N] <- sumfit[1, 4]
+  #     dalphai[N] <- sumfit[1, 1]
+  #     tstati[N] <- sumfit[1, 3]
+  #   } else {
+  #     k <- 1
+  #     for (j in (i + 1):N) {
+  #       if (is.null(factors)) {
+  #         fit <- stats::lm(dXY[, k] ~ 1, na.action = stats::na.omit)
+  #       } else {
+  #         fit <- stats::lm(dXY[, k] ~ 1 + factors, na.action = stats::na.omit)
+  #       }
+  #       sumfit <- lmtest::coeftest(fit, vcov. = sandwich::vcovHAC(fit))
+  #       pvali[j] <- sumfit[1, 4]
+  #       dalphai[j] <- sumfit[1, 1]
+  #       tstati[j] <- sumfit[1, 3]
+  #       k <- k + 1
+  #     }
+  #   }
+  # }
+  
+  #####################################
+  # Updated function.
+  
+  if (nPeer == 1) {
+    if (is.null(factors)) {
+      fit <- stats::lm(dXY ~ 1, na.action = stats::na.omit)
+    } else {
+      fit <- stats::lm(dXY ~ 1 + factors, na.action = stats::na.omit)
+    } # end of factors/no factors
     
-    #####################################
-    # Correct this function. Will be slower. 
-    
-    # if (is.null(factors)) {
-    #   fit <- stats::lm(dXY ~ 1, na.action = stats::na.omit) 
-    # } else {
-    #   fit <- stats::lm(dXY ~ 1 + factors, na.action = stats::na.omit)
-    # }
-    # sumfit <- summary(fit)
-    # if (nPeer == 1) {
-    #   pvali[N] <- sumfit$coef[1, 4]
-    #   dalphai[N] <- sumfit$coef[1, 1]
-    #   tstati[N] <- sumfit$coef[1, 3]
-    # } else {
-    #   k <- 1
-    #   for (j in (i + 1):N) {
-    #     pvali[j] <- sumfit[[k]]$coef[1, 4]
-    #     dalphai[j] <- sumfit[[k]]$coef[1, 1]
-    #     tstati[j] <- sumfit[[k]]$coef[1, 3]
-    #     k <- k + 1
-    #   }
-    # }
-    
-    #####################################
-    # New proposal that's in line with hac = TRUE
-    # Doesn't use lists. 
-    
-    if (nPeer == 1) {
-      if (is.null(factors)) {
-        fit <- stats::lm(dXY ~ 1, na.action = stats::na.omit)
-      } else {
-        fit <- stats::lm(dXY ~ 1 + factors, na.action = stats::na.omit)
-      }
+    # HAC within loop.
+    if (!hac) {
       sumfit <- summary(fit)
       pvali[N] <- sumfit$coef[1, 4]
       dalphai[N] <- sumfit$coef[1, 1]
       tstati[N] <- sumfit$coef[1, 3]
-    } else { # end of nPeer == 1
-      k <- 1
-      for (j in (i + 1):N) {
-        if (is.null(factors)) {
-          fit <- stats::lm(dXY[, k] ~ 1, na.action = stats::na.omit)
-        } else {
-          fit <- stats::lm(dXY[, k] ~ 1 + factors, na.action = stats::na.omit)
-        }
-        sumfit <- summary(fit)
-        pvali[j] <- sumfit$coef[1, 4]
-        dalphai[j] <- sumfit$coef[1, 1]
-        tstati[j] <- sumfit$coef[1, 3]
-        k <- k + 1
-      }
-    }
-    
-    #####################################
-    #
-  } else { # end of HAC = FALSE
-    if (nPeer == 1) {
-      if (is.null(factors)) {
-        fit <- stats::lm(dXY ~ 1, na.action = stats::na.omit)
-      } else {
-        fit <- stats::lm(dXY ~ 1 + factors, na.action = stats::na.omit)
-      }
+    } else {
       sumfit <- lmtest::coeftest(fit, vcov. = sandwich::vcovHAC(fit))
       pvali[N] <- sumfit[1, 4]
       dalphai[N] <- sumfit[1, 1]
       tstati[N] <- sumfit[1, 3]
-    } else {
-      k <- 1
-      for (j in (i + 1):N) {
-        if (is.null(factors)) {
-          fit <- stats::lm(dXY[, k] ~ 1, na.action = stats::na.omit)
-        } else {
-          fit <- stats::lm(dXY[, k] ~ 1 + factors, na.action = stats::na.omit)
-        }
+    }
+  } else {
+    # end of nPeer == 1
+    
+    k <- 1
+    
+    for (j in (i + 1):N) {
+      if (is.null(factors)) {
+        fit <- stats::lm(dXY[, k] ~ 1, na.action = stats::na.omit)
+      } else {
+        fit <- stats::lm(dXY[, k] ~ 1 + factors, na.action = stats::na.omit)
+      } # end of factors/no factors
+      
+      # HAC within loop.
+      if (!hac) {
+        sumfit <- summary(fit)
+        pvali[j] <- sumfit$coef[1, 4]
+        dalphai[j] <- sumfit$coef[1, 1]
+        tstati[j] <- sumfit$coef[1, 3]
+      } else{
         sumfit <- lmtest::coeftest(fit, vcov. = sandwich::vcovHAC(fit))
         pvali[j] <- sumfit[1, 4]
         dalphai[j] <- sumfit[1, 1]
         tstati[j] <- sumfit[1, 3]
-        k <- k + 1
       }
+      
+      k <- k + 1
     }
   }
   
