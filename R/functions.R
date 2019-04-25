@@ -213,7 +213,7 @@ msharpe <- function(X, level = 0.9, na.rm = TRUE, na.neg = TRUE) {
               msharpe = msharpe_)
   return(out)
 }
-infoFund <- cmpfun(.infoFund)
+infoFund <- compiler::cmpfun(.infoFund)
 
 # #' @name .bootIndices
 # #' @import compiler
