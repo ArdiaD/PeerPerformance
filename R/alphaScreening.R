@@ -214,26 +214,63 @@ alphaScreening <- compiler::cmpfun(.alphaScreening)
   dXY <- X - Y
   
   if (!hac) {
-    if (is.null(factors)) {
-      fit <- stats::lm(dXY ~ 1, na.action = stats::na.omit)
-    } else {
-      fit <- stats::lm(dXY ~ 1 + factors, na.action = stats::na.omit)
-    }
-    sumfit <- summary(fit)
+    
+    #####################################
+    # Correct this function. Will be slower. 
+    
+    # if (is.null(factors)) {
+    #   fit <- stats::lm(dXY ~ 1, na.action = stats::na.omit) 
+    # } else {
+    #   fit <- stats::lm(dXY ~ 1 + factors, na.action = stats::na.omit)
+    # }
+    # sumfit <- summary(fit)
+    # if (nPeer == 1) {
+    #   pvali[N] <- sumfit$coef[1, 4]
+    #   dalphai[N] <- sumfit$coef[1, 1]
+    #   tstati[N] <- sumfit$coef[1, 3]
+    # } else {
+    #   k <- 1
+    #   for (j in (i + 1):N) {
+    #     pvali[j] <- sumfit[[k]]$coef[1, 4]
+    #     dalphai[j] <- sumfit[[k]]$coef[1, 1]
+    #     tstati[j] <- sumfit[[k]]$coef[1, 3]
+    #     k <- k + 1
+    #   }
+    # }
+    
+    #####################################
+    # New proposal that's in line with hac = TRUE
+    # Doesn't use lists. 
+    
     if (nPeer == 1) {
+      if (is.null(factors)) {
+        fit <- stats::lm(dXY ~ 1, na.action = stats::na.omit)
+      } else {
+        fit <- stats::lm(dXY ~ 1 + factors, na.action = stats::na.omit)
+      }
+      sumfit <- summary(fit)
       pvali[N] <- sumfit$coef[1, 4]
       dalphai[N] <- sumfit$coef[1, 1]
       tstati[N] <- sumfit$coef[1, 3]
-    } else {
+    } else { # end of nPeer == 1
       k <- 1
       for (j in (i + 1):N) {
-        pvali[j] <- sumfit[[k]]$coef[1, 4]
-        dalphai[j] <- sumfit[[k]]$coef[1, 1]
-        tstati[j] <- sumfit[[k]]$coef[1, 3]
+        if (is.null(factors)) {
+          fit <- stats::lm(dXY[, k] ~ 1, na.action = stats::na.omit)
+        } else {
+          fit <- stats::lm(dXY[, k] ~ 1 + factors, na.action = stats::na.omit)
+        }
+        sumfit <- summary(fit)
+        pvali[j] <- sumfit$coef[1, 4]
+        dalphai[j] <- sumfit$coef[1, 1]
+        tstati[j] <- sumfit$coef[1, 3]
         k <- k + 1
       }
     }
-  } else {
+    
+    #####################################
+    #
+  } else { # end of HAC = FALSE
     if (nPeer == 1) {
       if (is.null(factors)) {
         fit <- stats::lm(dXY ~ 1, na.action = stats::na.omit)
