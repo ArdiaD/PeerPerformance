@@ -197,12 +197,26 @@ msharpe <- function(X, level = 0.9, na.rm = TRUE, na.neg = TRUE) {
   sigX <- sqrt(colSums(rX^2, na.rm = na.rm)/(nObs - 1))
   sharpe_ <- muX/sigX
   
+  # if (is.null(factors)) {
+  #   fit <- stats::lm(X ~ 1)
+  # } else {
+  #   fit <- stats::lm(X ~ 1 + factors)
+  # }
+  # alpha_ <- as.vector(fit$coef[1, ]) #output is a vector. 
+  
+  # FIX
+  alpha_ <- rep(NA, ncol(X)) # preallocate space. 
   if (is.null(factors)) {
-    fit <- stats::lm(X ~ 1)
+    for (col in 1:ncol(X)) {
+      fit <- stats::lm(X[,col] ~ 1)
+      alpha_[col] <- fit$coef[1]
+    }
   } else {
-    fit <- stats::lm(X ~ 1 + factors)
+    for (col in 1:ncol(X)) {
+      fit <- stats::lm(X[,col] ~ 1 + factors)
+      alpha_[col] <- fit$coef[1]
+    }
   }
-  alpha_ <- as.vector(fit$coef[1, ])
   
   msharpe_ <- NULL
   if (!is.null(level)) {
@@ -213,7 +227,7 @@ msharpe <- function(X, level = 0.9, na.rm = TRUE, na.neg = TRUE) {
               msharpe = msharpe_)
   return(out)
 }
-infoFund <- cmpfun(.infoFund)
+infoFund <- compiler::cmpfun(.infoFund)
 
 # #' @name .bootIndices
 # #' @import compiler

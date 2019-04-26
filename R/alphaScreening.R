@@ -213,51 +213,163 @@ alphaScreening <- compiler::cmpfun(.alphaScreening)
   Y <- matrix(rdata[, (i + 1):N], nrow = T, ncol = nPeer)
   dXY <- X - Y
   
-  if (!hac) {
+  # Additional filter: Nonoverlapping observations
+  # Iterate over selIds
+  D <- !is.na(dXY)
+  # See that it has no shared obs with the second one. 
+  selId.in  <- which(colSums(D) != 0)
+  selId.out <- selId.in + i  
+  
+  # #####################################
+  # # Correct structure of if/else.  
+  # if (!hac) {
+  #   
+  #   #####################################
+  #   # Correct this function. Will be slower (#20190002)
+  #   
+  #   # if (is.null(factors)) {
+  #   #   fit <- stats::lm(dXY ~ 1, na.action = stats::na.omit) 
+  #   # } else {
+  #   #   fit <- stats::lm(dXY ~ 1 + factors, na.action = stats::na.omit)
+  #   # }
+  #   # sumfit <- summary(fit)
+  #   # if (nPeer == 1) {
+  #   #   pvali[N] <- sumfit$coef[1, 4]
+  #   #   dalphai[N] <- sumfit$coef[1, 1]
+  #   #   tstati[N] <- sumfit$coef[1, 3]
+  #   # } else {
+  #   #   k <- 1
+  #   #   for (j in (i + 1):N) {
+  #   #     pvali[j] <- sumfit[[k]]$coef[1, 4]
+  #   #     dalphai[j] <- sumfit[[k]]$coef[1, 1]
+  #   #     tstati[j] <- sumfit[[k]]$coef[1, 3]
+  #   #     k <- k + 1
+  #   #   }
+  #   # }
+  #   
+  #   #####################################
+  #   # New proposal that's in line with hac = TRUE
+  #   # Doesn't use lists. 
+  #   
+  #   if (nPeer == 1) {
+  #     if (is.null(factors)) {
+  #       fit <- stats::lm(dXY ~ 1, na.action = stats::na.omit)
+  #     } else {
+  #       fit <- stats::lm(dXY ~ 1 + factors, na.action = stats::na.omit)
+  #     }
+  #     sumfit <- summary(fit)
+  #     pvali[N] <- sumfit$coef[1, 4]
+  #     dalphai[N] <- sumfit$coef[1, 1]
+  #     tstati[N] <- sumfit$coef[1, 3]
+  #   } else { # end of nPeer == 1
+  #     k <- 1
+  #     for (j in (i + 1):N) {
+  #       if (is.null(factors)) {
+  #         fit <- stats::lm(dXY[, k] ~ 1, na.action = stats::na.omit)
+  #       } else {
+  #         fit <- stats::lm(dXY[, k] ~ 1 + factors, na.action = stats::na.omit)
+  #       }
+  #       sumfit <- summary(fit)
+  #       pvali[j] <- sumfit$coef[1, 4]
+  #       dalphai[j] <- sumfit$coef[1, 1]
+  #       tstati[j] <- sumfit$coef[1, 3]
+  #       k <- k + 1
+  #     }
+  #   }
+  #   
+  #   #####################################
+  #   #
+  # } else { # end of HAC = FALSE
+  #   if (nPeer == 1) {
+  #     if (is.null(factors)) {
+  #       fit <- stats::lm(dXY ~ 1, na.action = stats::na.omit)
+  #     } else {
+  #       fit <- stats::lm(dXY ~ 1 + factors, na.action = stats::na.omit)
+  #     }
+  #     sumfit <- lmtest::coeftest(fit, vcov. = sandwich::vcovHAC(fit))
+  #     pvali[N] <- sumfit[1, 4]
+  #     dalphai[N] <- sumfit[1, 1]
+  #     tstati[N] <- sumfit[1, 3]
+  #   } else {
+  #     k <- 1
+  #     for (j in (i + 1):N) {
+  #       if (is.null(factors)) {
+  #         fit <- stats::lm(dXY[, k] ~ 1, na.action = stats::na.omit)
+  #       } else {
+  #         fit <- stats::lm(dXY[, k] ~ 1 + factors, na.action = stats::na.omit)
+  #       }
+  #       sumfit <- lmtest::coeftest(fit, vcov. = sandwich::vcovHAC(fit))
+  #       pvali[j] <- sumfit[1, 4]
+  #       dalphai[j] <- sumfit[1, 1]
+  #       tstati[j] <- sumfit[1, 3]
+  #       k <- k + 1
+  #     }
+  #   }
+  # }
+  
+  #####################################
+  # Updated function. 
+  
+  # Now will not iterate from 1:N; but it will iterate over selIds. 
+  # This means that potentially the invertion of the matrix doesn't work? 
+  # It does; dXY is properly defined. 
+  
+  if (nPeer == 1) {
     if (is.null(factors)) {
       fit <- stats::lm(dXY ~ 1, na.action = stats::na.omit)
     } else {
       fit <- stats::lm(dXY ~ 1 + factors, na.action = stats::na.omit)
-    }
-    sumfit <- summary(fit)
-    if (nPeer == 1) {
+    } # end of factors/no factors
+    
+    # HAC within loop.
+    if (!hac) {
+      sumfit <- summary(fit)
       pvali[N] <- sumfit$coef[1, 4]
       dalphai[N] <- sumfit$coef[1, 1]
       tstati[N] <- sumfit$coef[1, 3]
     } else {
-      k <- 1
-      for (j in (i + 1):N) {
-        pvali[j] <- sumfit[[k]]$coef[1, 4]
-        dalphai[j] <- sumfit[[k]]$coef[1, 1]
-        tstati[j] <- sumfit[[k]]$coef[1, 3]
-        k <- k + 1
-      }
-    }
-  } else {
-    if (nPeer == 1) {
-      if (is.null(factors)) {
-        fit <- stats::lm(dXY ~ 1, na.action = stats::na.omit)
-      } else {
-        fit <- stats::lm(dXY ~ 1 + factors, na.action = stats::na.omit)
-      }
       sumfit <- lmtest::coeftest(fit, vcov. = sandwich::vcovHAC(fit))
       pvali[N] <- sumfit[1, 4]
       dalphai[N] <- sumfit[1, 1]
       tstati[N] <- sumfit[1, 3]
-    } else {
-      k <- 1
-      for (j in (i + 1):N) {
-        if (is.null(factors)) {
-          fit <- stats::lm(dXY[, k] ~ 1, na.action = stats::na.omit)
-        } else {
-          fit <- stats::lm(dXY[, k] ~ 1 + factors, na.action = stats::na.omit)
-        }
+    }
+  } else {
+    # end of nPeer == 1
+    
+    # k selects the columns in dXY
+    #   k will match with redefined selId.in
+    # j plugs them into the correct list, but it uses an efficient allocation "(i + 1):N"
+    #   j matches with selId.out
+    # We make a correction for k in (20190004)
+    
+    # k <- 1
+    # for (j in (i + 1):N) {
+    for (idx in 1:length(selId.in)) {
+      
+      # proper indices
+      k <- selId.in[idx]
+      j <- selId.out[idx]
+      
+      if (is.null(factors)) {
+        fit <- stats::lm(dXY[, k] ~ 1, na.action = stats::na.omit)
+      } else {
+        fit <- stats::lm(dXY[, k] ~ 1 + factors, na.action = stats::na.omit)
+      } # end of factors/no factors
+      
+      # HAC within loop.
+      if (!hac) {
+        sumfit <- summary(fit)
+        pvali[j] <- sumfit$coef[1, 4]
+        dalphai[j] <- sumfit$coef[1, 1]
+        tstati[j] <- sumfit$coef[1, 3]
+      } else{
         sumfit <- lmtest::coeftest(fit, vcov. = sandwich::vcovHAC(fit))
         pvali[j] <- sumfit[1, 4]
         dalphai[j] <- sumfit[1, 1]
         tstati[j] <- sumfit[1, 3]
-        k <- k + 1
       }
+      
+      # k <- k + 1
     }
   }
   
