@@ -2,6 +2,7 @@
 [![CRAN](http://www.r-pkg.org/badges/version/PeerPerformance)](https://cran.r-project.org/package=PeerPerformance) 
 [![Downloads](http://cranlogs.r-pkg.org/badges/PeerPerformance?color=brightgreen)](http://www.r-pkg.org/pkg/PeerPerformance)
 [![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/PeerPerformance?color=brightgreen)](http://www.r-pkg.org/pkg/PeerPerformance)
+[![JBF](https://img.shields.io/badge/JBF-10.1080%2F00031305.2017.1375990-brightgreen)](https://doi.org/10.1016/j.jbankfin.2017.10.014)
 
 `PeerPerformance` (Ardia and Boudt, 20xx) is an R package for the peer-performance evaluation of financial investments with
 luck-correction. In particular, it implements the peer performance ratios 
