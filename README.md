@@ -23,7 +23,7 @@ By using `PeerPerformance` you agree to the following rules:
 
 Ardia, D., Boudt, K. (2018).      
 The peer performance ratios of hedge funds.      
-_Journal of Banking and Finance_ **87**, pp.351-368.    
+_Journal of Banking and Finance_, 87, 351-368.    
 [https://doi.org/10.1016/j.jbankfin.2017.10.014](https://doi.org/10.1016/j.jbankfin.2017.10.014)  
 [https://doi.org/10.2139/ssrn.2000901](https://doi.org/10.2139/ssrn.2000901)
 
@@ -31,7 +31,7 @@ _Journal of Banking and Finance_ **87**, pp.351-368.
 
 Ardia, D., Boudt, K. (2015).
 Testing equality of modified Sharpe ratios.  
-_Finance Research Letters_ **13**, pp.97-104.   
+_Finance Research Letters_, 13, 97-104.   
 [https://doi.org/10.1016/j.frl.2015.02.008](https://doi.org/10.1016/j.frl.2015.02.008)   
 [https://doi.org/10.2139/ssrn.2516591](https://doi.org/10.2139/ssrn.2516591)
 
@@ -41,5 +41,5 @@ https://CRAN.R-project.org/package=PeerPerformance
 
 Ledoit, O., Wolf, M. (2008).   
 Robust performance hypothesis testing with the Sharpe ratio.    
-_Journal of Empirical Finance_ **15**(5), pp.850-859.  
+_Journal of Empirical Finance_, 15(5), 850-859.  
 [https://doi.org/10.1016/j.jempfin.2008.03.002](https://doi.org/10.1016/j.jempfin.2008.03.002) 
