@@ -17,7 +17,7 @@ and [Ardia and Boudt (2015)](https://doi.org/10.1016/j.frl.2015.02.008).
 
 By using `PeerPerformance` you agree to the following rules: 
 
-1) You must cite Ardia and Boud (2018) in working papers and published papers that use `PeerPerformance`.
+1) You must cite Ardia and Boudt (2018) in working papers and published papers that use `PeerPerformance`.
 2) You must place the following URL in a footnote to help others find `PeerPerformance`: https://CRAN.R-project.org/package=PeerPerformance 
 3) You assume all risk for the use of `PeerPerformance`.
 
