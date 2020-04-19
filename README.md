@@ -21,7 +21,7 @@ By using `PeerPerformance` you agree to the following rules:
 3) You assume all risk for the use of `PeerPerformance`.
 
 Ardia, D., Boudt, K. (2018).      
-The peer performance ratios of hedge funds_.      
+The peer performance ratios of hedge funds.      
 _Journal of Banking and Finance_ **87**, pp.351-368.    
 [https://doi.org/10.1016/j.jbankfin.2017.10.014](https://doi.org/10.1016/j.jbankfin.2017.10.014)  
 [https://doi.org/10.2139/ssrn.2000901 ](https://doi.org/10.2139/ssrn.2000901)
