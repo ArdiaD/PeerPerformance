@@ -1,5 +1,5 @@
 # PeerPerformance
-[![JBF](https://img.shields.io/badge/JBF-10.1016%2F0jbankfin.2017.10.014-brightgreen)](https://doi.org/10.1016/j.jbankfin.2017.10.014)
+[![JBF](https://img.shields.io/badge/JBF-10.1016%2F0j.jbankfin.2017.10.014-brightgreen)](https://doi.org/10.1016/j.jbankfin.2017.10.014)
 [![CRAN](http://www.r-pkg.org/badges/version/PeerPerformance)](https://cran.r-project.org/package=PeerPerformance) 
 [![Downloads](http://cranlogs.r-pkg.org/badges/PeerPerformance?color=brightgreen)](http://www.r-pkg.org/pkg/PeerPerformance)
 [![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/PeerPerformance?color=brightgreen)](http://www.r-pkg.org/pkg/PeerPerformance)
