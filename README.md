@@ -23,20 +23,19 @@ By using `PeerPerformance` you agree to the following rules:
 2) You must place the following URL in a footnote to help others find `PeerPerformance`: https://CRAN.R-project.org/package=PeerPerformance 
 3) You assume all risk for the use of `PeerPerformance`.
 
+Ardia, D., Boudt, K. (2018).      
+The peer performance ratios of hedge funds_.      
+_Journal of Banking and Finance_ **87**, pp.351-368.    
+[https://doi.org/10.1016/j.jbankfin.2017.10.014](https://doi.org/10.1016/j.jbankfin.2017.10.014)  
+[https://doi.org/10.2139/ssrn.2000901 ](https://doi.org/10.2139/ssrn.2000901)
 
-# References
+# Other references
 
 Ardia, D., Boudt, K. (2015).
 Testing equality of modified Sharpe ratios.  
 _Finance Research Letters_ **13**, pp.97-104.   
 [https://doi.org/10.1016/j.frl.2015.02.008](https://doi.org/10.1016/j.frl.2015.02.008)   
 [https://doi.org/10.2139/ssrn.2516591](https://doi.org/10.2139/ssrn.2516591)
-
-Ardia, D., Boudt, K. (2018).      
-The peer performance ratios of hedge funds_.      
-_Journal of Banking and Finance_ **87**, pp.351-368.    
-[https://doi.org/10.1016/j.jbankfin.2017.10.014](https://doi.org/10.1016/j.jbankfin.2017.10.014)
-[https://doi.org/10.2139/ssrn.2000901 ](https://doi.org/10.2139/ssrn.2000901)  
 
 Ardia, D., Boudt, K. (20xx).      
 _PeerPerformance: Luck-corrected peer performance analysis in R_.     
