@@ -14,10 +14,15 @@ In addition, the package implements the testing framework for the Sharpe and mod
 Ledoit and Wolf (2008) and Ardia and Boudt (2015).
 }
 \note{
+By using \code{PeerPerformance}  you agree to the following rules:
+\itemize{
+\item You must cite Ardia and Boudt (2018) in working papers and published papers that use \code{PeerPerformance}. Use \code{citation("PeerPerformance")}.
+\item You must place the following URL in a footnote to help others find \code{PeerPerformance}: \url{https://CRAN.R-project.org/package=PeerPerformance}. 
+\item You assume all risk for the use of \code{PeerPerformance}.
+}
+
 Full description of the methodologies implemented in the various functions is available 
 in Ledoit and Wolf (2008) and Ardia and Boudt (2015, 2018).
-
-Please cite the package in publications. Use \code{citation("PeerPerformance")}.
 }
 \section{Functions}{
 

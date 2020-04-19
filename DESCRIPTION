@@ -1,12 +1,10 @@
 Package: PeerPerformance
-Version: 2.2.1
-Date: 2018-08-29
+Version: 2.2.2
+Date: 2020-04-19
 Title: Luck-Corrected Peer Performance Analysis in R
-Authors@R: c(person("David", "Ardia", role = c("aut", "cre"),
+Authors@R: c(person("David", "Ardia", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-2823-782X")
                      email = "david.ardia.ch@gmail.com"),
               person("Kris", "Boudt", role = "aut"))
-Author: David Ardia [aut, cre],
-  Kris Boudt [aut]
 Maintainer: David Ardia <david.ardia.ch@gmail.com>
 Depends:
     parallel,
