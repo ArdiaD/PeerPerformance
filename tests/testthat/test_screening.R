@@ -86,3 +86,4 @@ test_that("Modified Sharpe", {
   expect_true(f.test.pval(tmp$pizero))
   expect_true(f.test.pval(tmp$pineg))
 }) 
+

@@ -1,4 +1,4 @@
-library(testthat)
-library(PeerPerformance)
+library("testthat")
+library("PeerPerformance")
 
-test_check("PeerPerformance")
+#test_check("PeerPerformance")

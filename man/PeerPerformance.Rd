@@ -3,7 +3,6 @@
 \docType{package}
 \name{PeerPerformance}
 \alias{PeerPerformance}
-\alias{PeerPerformance-package}
 \title{PeerPerformance: Luck-corrected peer performance analysis in R}
 \description{
 \code{PeerPerformance} (Ardia and Boudt, 20xx) is an \R package for the peer-performance evaluation of financial investments with 
@@ -14,12 +13,10 @@ In addition, the package implements the testing framework for the Sharpe and mod
 Ledoit and Wolf (2008) and Ardia and Boudt (2015).
 }
 \note{
-By using \code{PeerPerformance}  you agree to the following rules:
-\itemize{
-\item You must cite Ardia and Boudt (2018) in working papers and published papers that use \code{PeerPerformance}. Use \code{citation("PeerPerformance")}.
-\item You must place the following URL in a footnote to help others find \code{PeerPerformance}: \url{https://CRAN.R-project.org/package=PeerPerformance}. 
-\item You assume all risk for the use of \code{PeerPerformance}.
-}
+By using \code{PeerPerformance} you agree to the following rules: (1) You must cite Ardia and Boudt (2018) in 
+working papers and published papers that use \code{PeerPerformance} (use \code{citation("PeerPerformance")}), (2) you 
+must place the URL \url{https://CRAN.R-project.org/package=PeerPerformance} in a footnote to help 
+others find \code{PeerPerformance}, and (3) you assume all risk for the use of \code{PeerPerformance}.
 
 Full description of the methodologies implemented in the various functions is available 
 in Ledoit and Wolf (2008) and Ardia and Boudt (2015, 2018).

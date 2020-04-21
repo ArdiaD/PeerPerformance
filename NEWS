@@ -1,6 +1,7 @@
 Changes in Version 2.2.2 (DA)
   o fix documentation
   o fix ORCID
+  o fix but with testing
 
 Changes in Version 2.2.1 (DA)
   o switch to parallel package

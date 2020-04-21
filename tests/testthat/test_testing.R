@@ -48,3 +48,4 @@ test_that("Modified Sharpe testing", {
   tmp = msharpeTesting(x, y, control = list(type  = 2, pBoot = 2))
   expect_true(f.test.pval(tmp$pval))
 })
+

@@ -16,9 +16,12 @@
 #' @section Update:
 #' The latest version of the package is available at \url{https://github.com/ArdiaD/PeerPerformance}
 #' @author David Ardia and Kris Boudt.
+#' @note By using \code{PeerPerformance} you agree to the following rules: (1) You must cite Ardia and Boudt (2018) in 
+#' working papers and published papers that use \code{PeerPerformance} (use \code{citation("PeerPerformance")}), (2) you 
+#' must place the URL \url{https://CRAN.R-project.org/package=PeerPerformance} in a footnote to help 
+#' others find \code{PeerPerformance}, and (3) you assume all risk for the use of \code{PeerPerformance}.
 #' @note Full description of the methodologies implemented in the various functions is available 
 #' in Ledoit and Wolf (2008) and Ardia and Boudt (2015, 2018).
-#' @note Please cite the package in publications. Use \code{citation("PeerPerformance")}. 
 #' @references 
 #' Ardia, D., Boudt, K. (2015).  
 #' Testing equality of modified Sharpe ratios.

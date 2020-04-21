@@ -4,7 +4,8 @@ Date: 2020-04-19
 Title: Luck-Corrected Peer Performance Analysis in R
 Authors@R: c(person("David", "Ardia", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-2823-782X"),
                      email = "david.ardia.ch@gmail.com"),
-              person("Kris", "Boudt", role = "aut"))
+              person("Kris", "Boudt", role = "aut"),
+              person("Nabil", "Bouamara", role = "ctb"))
 Maintainer: David Ardia <david.ardia.ch@gmail.com>
 Depends:
     parallel,
@@ -18,4 +19,4 @@ Description: Provides functions to perform the peer performance
 BugReports: https://github.com/ArdiaD/PeerPerformance/issues
 URL: https://github.com/ArdiaD/PeerPerformance
 License: GPL (>=2)
-RoxygenNote: 6.1.0
+RoxygenNote: 7.1.0

@@ -4,7 +4,9 @@
 \name{hfdata}
 \alias{hfdata}
 \title{Hedge fund data}
-\format{A matrix of size 60 x 100, containing 60 monthly net returns for 100 hedge funds. Returns have been modified.}
+\format{
+A matrix of size 60 x 100, containing 60 monthly net returns for 100 hedge funds. Returns have been modified.
+}
 \source{
 HFR database
 }
