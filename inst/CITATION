@@ -27,7 +27,7 @@ citEntry(entry = "article",
 	textVersion = paste("Ardia, D., Boudt, K. (2018).",
 	  "The peer performance ratios of hedge funds.",
 	  "Journal of Banking and Finance 87, pp 351-368",
-    "10.1016/j.jbankfin.2017.10.014")
+    "doi:10.1016/j.jbankfin.2017.10.014")
 )
 
 citEntry(entry = "article",

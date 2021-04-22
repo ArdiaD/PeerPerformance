@@ -1,7 +1,4 @@
 # PeerPerformance
-[![CRAN](http://www.r-pkg.org/badges/version/PeerPerformance)](https://cran.r-project.org/package=PeerPerformance) 
-[![Downloads](http://cranlogs.r-pkg.org/badges/PeerPerformance?color=brightgreen)](http://www.r-pkg.org/pkg/PeerPerformance)
-[![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/PeerPerformance?color=brightgreen)](http://www.r-pkg.org/pkg/PeerPerformance)
 
 `PeerPerformance` is an R package for the peer-performance evaluation of financial investments with
 luck-correction. In particular, it implements the peer performance ratios 
@@ -36,5 +33,4 @@ _Finance Research Letters_, 13, 97-104.
 
 Ledoit, O., Wolf, M. (2008).   
 Robust performance hypothesis testing with the Sharpe ratio.    
-_Journal of Empirical Finance_, 15(5), 850-859.  
-[https://doi.org/10.1016/j.jempfin.2008.03.002](https://doi.org/10.1016/j.jempfin.2008.03.002) 
+_Journal of Empirical Finance_, 15(5), 850-859.

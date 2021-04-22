@@ -1,8 +1,9 @@
-Changes in Version 2.2.2 (DA)
-  o fix documentation
-  o fix ORCID
-  o fix but with testing
-
+Changes in Version 2.2.4 (DA)
+  o doc fixed
+  
+Changes in Version 2.2.3 (DA)
+  o url fixed
+  
 Changes in Version 2.2.1 (DA)
   o switch to parallel package
   o references updated
