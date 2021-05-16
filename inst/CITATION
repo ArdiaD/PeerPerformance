@@ -4,17 +4,6 @@ vers <- paste("version", meta$Version)
 
 citHeader("To cite 'PeerPerformance' in publications use:")
 
-citEntry(entry = "manual",
-  title  = "{PeerPerformance}: {L}uck-corrected peer performance analysis in {R}",
-  author = personList(person("Ardia","David"),
-                      person("Kris","Boudt")),
-   year = year,
-	 note = vers,
-	 url  = "https://github.com/ArdiaD/PeerPerformance",
-	 textVersion = paste("Ardia, D., Boudt, K. (", year,"). ",
-     "'PeerPerformance': Luck-corrected peer performance analysis in 'R'. ", vers, ".", sep = "")
-)
-
 citEntry(entry = "article",
   title  = "The peer performance ratios of hedge funds",
 	author = personList(person("David","Ardia"),

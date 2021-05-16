@@ -1,7 +1,7 @@
 #' @name PeerPerformance
 #' @docType package
 #' @title PeerPerformance: Luck-corrected peer performance analysis in R
-#' @description \code{PeerPerformance} (Ardia and Boudt, 20xx) is an \R package for the peer-performance evaluation of financial investments with 
+#' @description \code{PeerPerformance} is an \R package for the peer-performance evaluation of financial investments with 
 #' luck-correction, useful in the financial industry. In particular, it implements the peer performance ratios of Ardia and Boudt 
 #' (2018) which measure the percentage of peers a focal (hedge) fund outperforms and underperforms, after 
 #' correction for luck. It is useful for fund or portfolio managers to benchmark their investments or screen a universe of new funds. 
@@ -32,11 +32,6 @@
 #' The peer performance ratios of hedge Funds. 
 #' \emph{Journal of Banking and Finance} \bold{87}, pp.351-.368.
 #' \doi{10.1016/j.jbankfin.2017.10.014}
-#' 
-#' Ardia, D., Boudt, K. (20xx).    
-#' \emph{PeerPerformance: Luck-corrected peer performance analysis in R}.    
-#' R package.   
-#' \url{https://github.com/ArdiaD/PeerPerformance}
 #' 
 #' Barras, L., Scaillet, O., Wermers, R. (2010).  
 #' False discoveries in mutual fund performance: Measuring luck in estimated alphas.  

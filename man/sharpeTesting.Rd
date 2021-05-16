@@ -100,7 +100,7 @@ Testing equality of modified Sharpe ratios.
 \doi{10.1016/j.frl.2015.02.008}
 
 Ardia, D., Boudt, K. (2018).  
-The peer performance ratios of hedge Funds. 
+The peer performance ratios of hedge funds. 
 \emph{Journal of Banking and Finance} \bold{87}, pp.351-.368.
 \doi{10.1016/j.jbankfin.2017.10.014}
 
