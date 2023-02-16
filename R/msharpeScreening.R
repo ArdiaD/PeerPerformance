@@ -222,7 +222,7 @@ msharpeScreening <- compiler::cmpfun(.msharpeScreening)
     if (nObs[k] < minObs) {
       next
     }
-    rets <- cbind(X[idx[, k], 1], Y[idx[, k], k])
+    rets <- cbind(X[idx[, k], k], Y[idx[, k], k])
     
     if (type == 1) {
       tmp <- msharpeTestAsymptotic(rets, level, na.neg, hac, ttype)
