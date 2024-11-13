@@ -181,7 +181,7 @@
 #' @examples
 #' ## Load the data (randomized data of monthly hedge fund returns)
 #' data("hfdata")
-#' rets = hfdata[,1:10]
+#' rets = hfdata[,1:5]
 #'
 #' ## Sharpe screening
 #' sharpeScreening(rets, control = list(nCore = 1))
