@@ -7,10 +7,10 @@
 sharpeTesting(x, y, control = list())
 }
 \arguments{
-\item{x}{Vector (of lenght \eqn{T}) of returns for the first fund. \code{NA}
+\item{x}{Vector (of length \eqn{T}) of returns for the first fund. \code{NA}
 values are allowed.}
 
-\item{y}{Vector (of lenght \eqn{T}) returns for the second fund. \code{NA}
+\item{y}{Vector (of length \eqn{T}) returns for the second fund. \code{NA}
 values are allowed.}
 
 \item{control}{Control parameters (see *Details*).}
@@ -51,17 +51,17 @@ or product (\code{type = 2}). Default: \code{type = 2}.
 \item \code{'hac'} Heteroscedastic-autocorrelation consistent standard
 errors. Default: \code{hac = FALSE}.
 \item \code{'nBoot'} Number of boostrap replications for computing the p-value. Default: \code{nBoot =
-499}. 
+499}.
 \item \code{'bBoot'} Block length in the circular bootstrap. Default:
 \code{bBoot = 1}, i.e. iid bootstrap. \code{bBoot = 0} uses optimal
-block-length. 
+block-length.
 \item \code{'pBoot'} Symmetric p-value (\code{pBoot = 1}) or
 asymmetric p-value (\code{pBoot = 2}). Default: \code{pBoot = 1}.
 }
 }
 \note{
-Further details on the methdology with an application to the hedge
-fund industry is given in in Ardia and Boudt (2018). 
+Further details on the methodology with an application to the hedge
+fund industry is given in in Ardia and Boudt (2018).
 
 Some internal functions where adapted from Michael Wolf MATLAB code.
 }
@@ -75,18 +75,18 @@ y = hfdata[,2]
 ctr = list(type = 1)
 out = sharpeTesting(x, y, control = ctr)
 print(out)
-  
+
 ## Run Sharpe testing (asymptotic hac)
 ctr = list(type = 1, hac = TRUE)
 out = sharpeTesting(x, y, control = ctr)
 print(out)
-  
+
 ## Run Sharpe testing (iid bootstrap)
 set.seed(1234)
 ctr = list(type = 2, nBoot = 250)
 out = sharpeTesting(x, y, control = ctr)
 print(out)
-  
+
 ## Run Sharpe testing (circular bootstrap)
 set.seed(1234)
 ctr = list(type = 2, nBoot = 250, bBoot = 5)
@@ -94,31 +94,29 @@ out = sharpeTesting(x, y, control = ctr)
 print(out)
 }
 \references{
-Ardia, D., Boudt, K. (2015).  
+Ardia, D., Boudt, K. (2015).
 Testing equality of modified Sharpe ratios.
-\emph{Finance Research Letters} \bold{13}, pp.97--104. 
-\doi{10.1016/j.frl.2015.02.008}
+\emph{Finance Research Letters} \bold{13}, 97--104.
 
-Ardia, D., Boudt, K. (2018).  
-The peer performance ratios of hedge funds. 
-\emph{Journal of Banking and Finance} \bold{87}, pp.351-.368.
-\doi{10.1016/j.jbankfin.2017.10.014}
+Ardia, D., Boudt, K. (2018).
+The peer performance ratios of hedge funds.
+\emph{Journal of Banking and Finance} \bold{87}, 351-.368.
 
-Barras, L., Scaillet, O., Wermers, R. (2010).  
-False discoveries in mutual fund performance: Measuring luck in estimated alphas.  
-\emph{Journal of Finance} \bold{65}(1), pp.179--216.
+Barras, L., Scaillet, O., Wermers, R. (2010).
+False discoveries in mutual fund performance: Measuring luck in estimated alphas.
+\emph{Journal of Finance} \bold{65}(1), 179--216.
 
-Sharpe, W.F. (1994).  
-The Sharpe ratio.  
-\emph{Journal of Portfolio Management} \bold{21}(1), pp.49--58.
+Sharpe, W.F. (1994).
+The Sharpe ratio.
+\emph{Journal of Portfolio Management} \bold{21}(1), 49--58.
 
-Ledoit, O., Wolf, M. (2008). 
-Robust performance hypothesis testing with the Sharpe ratio.  
-\emph{Journal of Empirical Finance} \bold{15}(5), pp.850--859.
+Ledoit, O., Wolf, M. (2008).
+Robust performance hypothesis testing with the Sharpe ratio.
+\emph{Journal of Empirical Finance} \bold{15}(5), 850--859.
 
-Storey, J. (2002).  
+Storey, J. (2002).
 A direct approach to false discovery rates.
-\emph{Journal of the Royal Statistical Society B} \bold{64}(3), pp.479--498.
+\emph{Journal of the Royal Statistical Society B} \bold{64}(3), 479--498.
 }
 \seealso{
 \code{\link{sharpe}}, \code{\link{sharpeScreening}} and

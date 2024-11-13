@@ -4,7 +4,7 @@
 \alias{alphaScreening}
 \title{Screening using the alpha outperformance ratio}
 \usage{
-alphaScreening(X, factors = NULL, control = list())
+alphaScreening(X, factors = NULL, control = list(), screen_beta = FALSE)
 }
 \arguments{
 \item{X}{Matrix \eqn{(T \times N)}{(TxN)} of \eqn{T} returns for the \eqn{N}
@@ -14,6 +14,11 @@ funds. \code{NA} values are allowed.}
 \eqn{K} factors. \code{NA} values are allowed.}
 
 \item{control}{Control parameters (see *Details*).}
+
+\item{screen_beta}{Boolean to screen all factors' coefficients (beta).
+Default: \code{screen_beta=FALSE} (i.e. only outputs the alpha).
+If \code{screen_beta=TRUE}, each element of the returned list will have a new first dimension
+representing each coefficient (the first one being alpha)}
 }
 \value{
 A list with the following components:\cr
@@ -57,17 +62,15 @@ funds that have a significantly lower alpha. In a pairwise testing
 framework, a fund can have a significantly higher alpha because of luck. We
 correct for this by applying the false discovery rate approach by Storey (2002).
 
-The methodology proceeds as follows: 
+The methodology proceeds as follows:
 \itemize{
 \item (1) compute all pairwise tests of alpha differences. This means that for a universe of
 \eqn{N} funds, we perform \eqn{N(N-1)/2}{N*(N-1)/2} tests. The algorithm has
-been parallelized and the computational burden can be splitted across several
+been parallelized and the computational burden can be split across several
 cores. The number of cores can be defined in \code{control}, see below.
-
 \item (2) for each fund, the false discovery rate approach by Storey (2002)
-is used to determine the proportions of over, equal, and underperfoming
+is used to determine the proportions of over, equal, and underperforming
 funds, in terms of alpha, in the database.}
-
 The argument \code{control} is a list that can supply any of the following
 components:
 \itemize{
@@ -77,15 +80,15 @@ standard errors. Default: \code{hac = FALSE}.
 \code{minObs = 10}.
 \item \code{'minObsPi'} Minimum number of observations
 for computing the p-values). Default: \code{minObsPi = 1}.
-\item \code{'nCore'} Number of cores used to perform the screeing. Default:
+\item \code{'nCore'} Number of cores used to perform the screening. Default:
 \code{nCore = 1}.
 \item \code{'lambda'} Threshold value to compute pi0.
 Default: \code{lambda = NULL}, i.e. data driven choice.
 }
 }
 \note{
-Further details on the methdology with an application to the hedge
-fund industry is given in Ardia and Boudt (2018). 
+Further details on the methodology with an application to the hedge
+fund industry is given in Ardia and Boudt (2018).
 
 Application of the false discovery rate approach applied to the mutual fund
 industry has been presented in Barras, Scaillet and Wermers (2010).
@@ -99,7 +102,7 @@ presented in Ledoit and Wolf (2008) are not supported by the
 data("hfdata")
 rets = hfdata[,1:10]
 
-## Run alpha screening 
+## Run alpha screening
 ctr = list(nCore = 1)
 alphaScreening(rets, control = ctr)
 
@@ -108,38 +111,38 @@ ctr = list(nCore = 1, hac = TRUE)
 alphaScreening(rets, control = ctr)
 }
 \references{
-Ardia, D., Boudt, K. (2015).  
+Ardia, D., Boudt, K. (2015).
 Testing equality of modified Sharpe ratios.
-\emph{Finance Research Letters} \bold{13}, pp.97--104. 
+\emph{Finance Research Letters} \bold{13}, pp.97--104.
 \doi{10.1016/j.frl.2015.02.008}
 
-Ardia, D., Boudt, K. (2018).  
-The peer performance ratios of hedge funds. 
+Ardia, D., Boudt, K. (2018).
+The peer performance ratios of hedge funds.
 \emph{Journal of Banking and Finance} \bold{87}, pp.351-.368.
 \doi{10.1016/j.jbankfin.2017.10.014}
 
-Barras, L., Scaillet, O., Wermers, R. (2010).  
-False discoveries in mutual fund performance: Measuring luck in estimated alphas.  
+Barras, L., Scaillet, O., Wermers, R. (2010).
+False discoveries in mutual fund performance: Measuring luck in estimated alphas.
 \emph{Journal of Finance} \bold{65}(1), pp.179--216.
 
-Carhart, M. (1997).  
+Carhart, M. (1997).
 On persistence in mutual fund performance.
 \emph{Journal of Finance} \bold{52}(1), pp.57--82.
 
-Fama, E., French, K. (2010).  
-Luck versus skill in the cross-section of mutual fund returns.  
+Fama, E., French, K. (2010).
+Luck versus skill in the cross-section of mutual fund returns.
 \emph{Journal of Finance} \bold{65}(5), pp.1915--1947.
 
-Fung, W., Hsieh, D. (2004).  
+Fung, W., Hsieh, D. (2004).
 Hedge fund benchmarks: A risk based approach.
 \emph{Financial Analysts Journal} \bold{60}(5), pp.65--80.
 
-Storey, J. (2002).  
+Storey, J. (2002).
 A direct approach to false discovery rates.
 \emph{Journal of the Royal Statistical Society B} \bold{64}(3), pp.479--498.
 
-Treynor, J. L., Black, F. (1973).  
-How to use security analysis to improve portfolio selection.  
+Treynor, J. L., Black, F. (1973).
+How to use security analysis to improve portfolio selection.
 \emph{Journal of Business} \bold{46}(1), pp.66--86.
 }
 \seealso{

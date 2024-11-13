@@ -7,10 +7,10 @@
 msharpeTesting(x, y, level = 0.9, na.neg = TRUE, control = list())
 }
 \arguments{
-\item{x}{Vector (of lenght \eqn{T}) of returns for the first fund. \code{NA}
+\item{x}{Vector (of length \eqn{T}) of returns for the first fund. \code{NA}
 values are allowed.}
 
-\item{y}{Vector (of lenght \eqn{T}) of returns for the second fund. \code{NA}
+\item{y}{Vector (of length \eqn{T}) of returns for the second fund. \code{NA}
 values are allowed.}
 
 \item{level}{Modified Value-at-Risk level. Default: \code{level = 0.90}.}
@@ -51,17 +51,17 @@ two funds are used.
 
 The argument \code{control} is a list that can supply any of the following
 components:
-\itemize{ 
+\itemize{
 \item \code{'type'} Asymptotic approach (\code{type = 1}) or
 studentized circular bootstrap approach (\code{type = 2}). Default:
-\code{type = 1}. 
+\code{type = 1}.
 \item \code{'ttype'} Test based on ratio (\code{type = 1})
 or product (\code{type = 2}). Default: \code{type = 2}.
 \item \code{'hac'} Heteroscedastic-autocorrelation consistent standard
-errors. Default: \code{hac = FALSE}. 
+errors. Default: \code{hac = FALSE}.
 \item \code{'minObs'} Minimum number of concordant observations to compute the ratios. Default: \code{minObs =
-10}. 
-\item \code{'nBoot'} Number of boostrap replications for computing the
+10}.
+\item \code{'nBoot'} Number of bootstrap replications for computing the
 p-value. Default: \code{nBoot = 499}.
 \item \code{'bBoot'} Block length in
 the circular bootstrap. Default: \code{bBoot = 1}, i.e. iid bootstrap.
@@ -72,8 +72,8 @@ Default: \code{pBoot = 1}.
 }
 }
 \note{
-Further details on the methdology with an application to the hedge
-fund industry is given in Ardia and Boudt (2018). 
+Further details on the methodology with an application to the hedge
+fund industry is given in Ardia and Boudt (2018).
 
 Some internal functions where adapted from Michael Wolf MATLAB code.
 }
@@ -92,7 +92,7 @@ print(out)
 ctr = list(type = 1, hac = TRUE)
 out = msharpeTesting(x, y, level = 0.95, control = ctr)
 print(out)
-  
+
 ## Run modified Sharpe testing (iid bootstrap)
 set.seed(1234)
 ctr = list(type = 2, nBoot = 250)
@@ -106,33 +106,33 @@ out = msharpeTesting(x, y, level = 0.95, control = ctr)
 print(out)
 }
 \references{
-Ardia, D., Boudt, K. (2015).  
+Ardia, D., Boudt, K. (2015).
 Testing equality of modified Sharpe ratios.
-\emph{Finance Research Letters} \bold{13}, pp.97--104. 
+\emph{Finance Research Letters} \bold{13}, pp.97--104.
 \doi{10.1016/j.frl.2015.02.008}
 
-Ardia, D., Boudt, K. (2018).  
-The peer performance ratios of hedge funds. 
+Ardia, D., Boudt, K. (2018).
+The peer performance ratios of hedge funds.
 \emph{Journal of Banking and Finance} \bold{87}, pp.351-.368.
 \doi{10.1016/j.jbankfin.2017.10.014}
 
-Barras, L., Scaillet, O., Wermers, R. (2010).  
-False discoveries in mutual fund performance: Measuring luck in estimated alphas.  
+Barras, L., Scaillet, O., Wermers, R. (2010).
+False discoveries in mutual fund performance: Measuring luck in estimated alphas.
 \emph{Journal of Finance} \bold{65}(1), pp.179--216.
 
-Favre, L., Galeano, J.A. (2002).  
-Mean-modified Value-at-Risk Optimization with Hedge Funds.  
+Favre, L., Galeano, J.A. (2002).
+Mean-modified Value-at-Risk Optimization with Hedge Funds.
 \emph{Journal of Alternative Investments} \bold{5}(2), pp.21--25.
 
-Gregoriou, G. N., Gueyie, J.-P. (2003).  
-Risk-adjusted performance of funds of hedge funds using a modified Sharpe ratio.  
+Gregoriou, G. N., Gueyie, J.-P. (2003).
+Risk-adjusted performance of funds of hedge funds using a modified Sharpe ratio.
 \emph{Journal of Wealth Management} \bold{6}(3), pp.77--83.
 
-Ledoit, O., Wolf, M. (2008). 
-Robust performance hypothesis testing with the Sharpe ratio.  
+Ledoit, O., Wolf, M. (2008).
+Robust performance hypothesis testing with the Sharpe ratio.
 \emph{Journal of Empirical Finance} \bold{15}(5), pp.850--859.
 
-Storey, J. (2002).  
+Storey, J. (2002).
 A direct approach to false discovery rates.
 \emph{Journal of the Royal Statistical Society B} \bold{64}(3), pp.479--498.
 }

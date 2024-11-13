@@ -57,17 +57,17 @@ rate approach by Storey (2002).
 For the testing, only the intersection of non-\code{NA} observations for the
 two funds are used.
 
-The methodology proceeds as follows: 
+The methodology proceeds as follows:
 \itemize{
 \item (1) compute all
 pairwise tests of Sharpe differences using the bootstrap approach of Ledoit
 and Wolf (2002). This means that for a universe of \eqn{N} funds, we perform
 \eqn{N(N-1)/2}{N*(N-1)/2} tests. The algorithm has been parallelized and the
-computational burden can be splitted across several cores. The number of cores
+computational burden can be split across several cores. The number of cores
 can be defined in \code{control}, see below.
 \item (2) for each fund, the
 false discovery rate approach by Storey (2002) is used to determine the
-proportions over, equal, and underperfoming funds, in terms of Sharpe ratio,
+proportions over, equal, and underperforming funds, in terms of Sharpe ratio,
 in the database.
 }
 The argument \code{control} is a list that can supply any of the following
@@ -80,11 +80,11 @@ studentized circular bootstrap approach (\code{type = 2}). Default:
 or product (\code{type = 2}). Default: \code{type = 2}.
 \item \code{'hac'} Heteroscedastic-autocorrelation consistent standard
 errors. Default: \code{hac = FALSE}.
-\item \code{'nBoot'} Number of boostrap replications for computing the p-value. Default: \code{nBoot =
-499}. 
+\item \code{'nBoot'} Number of bootstrap replications for computing the p-value. Default: \code{nBoot =
+499}.
 \item \code{'bBoot'} Block length in the circular bootstrap. Default:
 \code{bBoot = 1}, i.e. iid bootstrap. \code{bBoot = 0} uses optimal
-block-length. 
+block-length.
 \item \code{'pBoot'} Symmetric p-value (\code{pBoot = 1}) or
 asymmetric p-value (\code{pBoot = 2}). Default: \code{pBoot = 1}.
 \item \code{'nCore'} Number of cores to be used. Default: \code{nCore = 1}.
@@ -97,7 +97,7 @@ number of observations to compute pi0. Default: \code{minObsPi = 1}.
 }
 }
 \note{
-Further details on the methdology with an application to the hedge
+Further details on the methodology with an application to the hedge
 fund industry is given in in Ardia and Boudt (2018).
 
 Some internal functions where adapted from Michael Wolf MATLAB code.
@@ -110,38 +110,36 @@ industry has been presented in Barraz, Scaillet and Wermers (2010).
 data("hfdata")
 rets = hfdata[,1:10]
 
-## Sharpe screening 
+## Sharpe screening
 sharpeScreening(rets, control = list(nCore = 1))
 
 ## Sharpe screening with bootstrap and HAC standard deviation
 sharpeScreening(rets, control = list(nCore = 1, type = 2, hac = TRUE))
 }
 \references{
-Ardia, D., Boudt, K. (2015).  
+Ardia, D., Boudt, K. (2015).
 Testing equality of modified Sharpe ratios.
-\emph{Finance Research Letters} \bold{13}, pp.97--104. 
-\doi{10.1016/j.frl.2015.02.008}
+\emph{Finance Research Letters} \bold{13}, 97--104.
 
-Ardia, D., Boudt, K. (2018).  
-The peer performance ratios of hedge funds. 
-\emph{Journal of Banking and Finance} \bold{87}, pp.351-.368.
-\doi{10.1016/j.jbankfin.2017.10.014}
+Ardia, D., Boudt, K. (2018).
+The peer performance ratios of hedge funds.
+\emph{Journal of Banking and Finance} \bold{87}, 351--368.
 
-Barras, L., Scaillet, O., Wermers, R. (2010).  
-False discoveries in mutual fund performance: Measuring luck in estimated alphas.  
-\emph{Journal of Finance} \bold{65}(1), pp.179--216.
+Barras, L., Scaillet, O., Wermers, R. (2010).
+False discoveries in mutual fund performance: Measuring luck in estimated alphas.
+\emph{Journal of Finance} \bold{65}(1), 179--216.
 
-Sharpe, W.F. (1994).  
-The Sharpe ratio.  
-\emph{Journal of Portfolio Management} \bold{21}(1), pp.49--58.
+Sharpe, W.F. (1994).
+The Sharpe ratio.
+\emph{Journal of Portfolio Management} \bold{21}(1), 49--58.
 
-Ledoit, O., Wolf, M. (2008). 
-Robust performance hypothesis testing with the Sharpe ratio.  
-\emph{Journal of Empirical Finance} \bold{15}(5), pp.850--859.
+Ledoit, O., Wolf, M. (2008).
+Robust performance hypothesis testing with the Sharpe ratio.
+\emph{Journal of Empirical Finance} \bold{15}(5), 850--859.
 
-Storey, J. (2002).  
+Storey, J. (2002).
 A direct approach to false discovery rates.
-\emph{Journal of the Royal Statistical Society B} \bold{64}(3), pp.479--498.
+\emph{Journal of the Royal Statistical Society B} \bold{64}(3), 479--498.
 }
 \seealso{
 \code{\link{sharpe}}, \code{\link{sharpeTesting}},

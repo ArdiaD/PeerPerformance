@@ -1,9 +1,17 @@
+Changes in Version 2.3.1 (DA)
+  o doc fixed
+
+Changes in Version 2.3.0 (DA,SL)
+  o doc fixed
+  o alphaScreening now also outputs the betas
+  o bug in lambda resampling fixed
+
 Changes in Version 2.2.5 (DA)
   o doc fixed
-  
+
 Changes in Version 2.2.3 (DA)
   o url fixed
-  
+
 Changes in Version 2.2.1 (DA)
   o switch to parallel package
   o references updated
@@ -16,7 +24,7 @@ Changes in Version 2.1.3 (DA)
 
 Changes in Version 2.1.2 (DA)
   o documentation fixes
-  
+
 Changes in Version 2.1.1 (DA)
   o documentation fixes
   o first CRAN release
@@ -36,7 +44,7 @@ Changes in version 2.0.10 (DA)
 
 Changes in version 2.0.9 (DA)
   o Update CITATION and DESCRIPTION
-  
+
 Changes in version 2.0.8 (DA)
   o Small improvements with compiler
   o Citations updated

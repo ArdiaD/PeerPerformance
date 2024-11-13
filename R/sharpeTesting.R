@@ -3,13 +3,13 @@
 # #' @name .sharpeTesting
 # #' @import compiler
 .sharpeTesting <- function(x, y, control = list()) {
-  
+
   x <- as.matrix(x)
   y <- as.matrix(y)
-  
+
   # process control parameters
   ctr <- processControl(control)
-  
+
   # check if enough data are available for testing
   dxy <- x - y
   idx <- (!is.nan(dxy) & !is.na(dxy))
@@ -18,7 +18,7 @@
   if (T < ctr$minObs) {
     stop("intersection of 'x' and 'y' is shorter than 'minObs'")
   }
-  
+
   # sharpe testing
   if (ctr$type == 1) {
     # ==> asymptotic approach
@@ -31,13 +31,14 @@
     bsids <- bootIndices(T, ctr$nBoot, ctr$bBoot)
     tmp <- sharpeTestBootstrap(rets, bsids, ctr$bBoot, ctr$ttype, ctr$pBoot)
   }
-  
+
   # info on the funds
   info <- infoFund(rets)
-  
+
   ## form output
-  out <- list(n = T, sharpe = info$sharpe, dsharpe = -diff(info$sharpe), 
+  out <- list(n = T, sharpe = info$sharpe, dsharpe = -diff(info$sharpe),
               tstat = as.vector(tmp$tstat), pval = as.vector(tmp$pval))
+  class(out) <- "TESTING"
   return(out)
 }
 
@@ -48,10 +49,10 @@
 #' absolute risk adjusted performance of hedge funds. This function performs
 #' the testing of Sharpe ratio difference for two funds using the approach by
 #' Ledoit and Wolf (2002).
-#' 
+#'
 #' For the testing, only the intersection of non-\code{NA} observations for the
 #' two funds are used.
-#' 
+#'
 #' The argument \code{control} is a list that can supply any of the following
 #' components:
 #' \itemize{
@@ -63,85 +64,83 @@
 #' \item \code{'hac'} Heteroscedastic-autocorrelation consistent standard
 #' errors. Default: \code{hac = FALSE}.
 #' \item \code{'nBoot'} Number of boostrap replications for computing the p-value. Default: \code{nBoot =
-#' 499}. 
+#' 499}.
 #' \item \code{'bBoot'} Block length in the circular bootstrap. Default:
 #' \code{bBoot = 1}, i.e. iid bootstrap. \code{bBoot = 0} uses optimal
-#' block-length. 
+#' block-length.
 #' \item \code{'pBoot'} Symmetric p-value (\code{pBoot = 1}) or
 #' asymmetric p-value (\code{pBoot = 2}). Default: \code{pBoot = 1}.
 #' }
-#' @param x Vector (of lenght \eqn{T}) of returns for the first fund. \code{NA}
+#' @param x Vector (of length \eqn{T}) of returns for the first fund. \code{NA}
 #' values are allowed.
-#' @param y Vector (of lenght \eqn{T}) returns for the second fund. \code{NA}
+#' @param y Vector (of length \eqn{T}) returns for the second fund. \code{NA}
 #' values are allowed.
 #' @param control Control parameters (see *Details*).
 #' @return A list with the following components:\cr
-#' 
+#'
 #' \code{n}: Number of non-\code{NA} concordant observations.\cr
-#' 
+#'
 #' \code{sharpe}: Vector (of length 2) of unconditional Sharpe ratios.\cr
-#' 
+#'
 #' \code{dsharpe}: Sharpe ratios difference.\cr
-#' 
+#'
 #' \code{tstat}: t-stat of Sharpe ratios differences.\cr
-#' 
+#'
 #' \code{pval}: pvalues of test of Sharpe ratios differences.
-#' @note Further details on the methdology with an application to the hedge
-#' fund industry is given in in Ardia and Boudt (2018). 
-#' 
+#' @note Further details on the methodology with an application to the hedge
+#' fund industry is given in in Ardia and Boudt (2018).
+#'
 #' Some internal functions where adapted from Michael Wolf MATLAB code.
 #' @author David Ardia and Kris Boudt.
 #' @seealso \code{\link{sharpe}}, \code{\link{sharpeScreening}} and
 #' \code{\link{msharpeTesting}}.
-#' @references 
-#' Ardia, D., Boudt, K. (2015).  
+#' @references
+#' Ardia, D., Boudt, K. (2015).
 #' Testing equality of modified Sharpe ratios.
-#' \emph{Finance Research Letters} \bold{13}, pp.97--104. 
-#' \doi{10.1016/j.frl.2015.02.008}
-#' 
-#' Ardia, D., Boudt, K. (2018).  
-#' The peer performance ratios of hedge funds. 
-#' \emph{Journal of Banking and Finance} \bold{87}, pp.351-.368.
-#' \doi{10.1016/j.jbankfin.2017.10.014}
-#' 
-#' Barras, L., Scaillet, O., Wermers, R. (2010).  
-#' False discoveries in mutual fund performance: Measuring luck in estimated alphas.  
-#' \emph{Journal of Finance} \bold{65}(1), pp.179--216.
-#' 
-#' Sharpe, W.F. (1994).  
-#' The Sharpe ratio.  
-#' \emph{Journal of Portfolio Management} \bold{21}(1), pp.49--58.
-#' 
-#' Ledoit, O., Wolf, M. (2008). 
-#' Robust performance hypothesis testing with the Sharpe ratio.  
-#' \emph{Journal of Empirical Finance} \bold{15}(5), pp.850--859.
-#' 
-#' Storey, J. (2002).  
+#' \emph{Finance Research Letters} \bold{13}, 97--104.
+#'
+#' Ardia, D., Boudt, K. (2018).
+#' The peer performance ratios of hedge funds.
+#' \emph{Journal of Banking and Finance} \bold{87}, 351-.368.
+#'
+#' Barras, L., Scaillet, O., Wermers, R. (2010).
+#' False discoveries in mutual fund performance: Measuring luck in estimated alphas.
+#' \emph{Journal of Finance} \bold{65}(1), 179--216.
+#'
+#' Sharpe, W.F. (1994).
+#' The Sharpe ratio.
+#' \emph{Journal of Portfolio Management} \bold{21}(1), 49--58.
+#'
+#' Ledoit, O., Wolf, M. (2008).
+#' Robust performance hypothesis testing with the Sharpe ratio.
+#' \emph{Journal of Empirical Finance} \bold{15}(5), 850--859.
+#'
+#' Storey, J. (2002).
 #' A direct approach to false discovery rates.
-#' \emph{Journal of the Royal Statistical Society B} \bold{64}(3), pp.479--498.
+#' \emph{Journal of the Royal Statistical Society B} \bold{64}(3), 479--498.
 #' @keywords htest
 #' @examples
 #' ## Load the data (randomized data of monthly hedge fund returns)
 #' data("hfdata")
 #' x = hfdata[,1]
 #' y = hfdata[,2]
-#' 
+#'
 #' ## Run Sharpe testing (asymptotic)
 #' ctr = list(type = 1)
 #' out = sharpeTesting(x, y, control = ctr)
 #' print(out)
-#'   
+#'
 #' ## Run Sharpe testing (asymptotic hac)
 #' ctr = list(type = 1, hac = TRUE)
 #' out = sharpeTesting(x, y, control = ctr)
 #' print(out)
-#'   
+#'
 #' ## Run Sharpe testing (iid bootstrap)
 #' set.seed(1234)
 #' ctr = list(type = 2, nBoot = 250)
 #' out = sharpeTesting(x, y, control = ctr)
 #' print(out)
-#'   
+#'
 #' ## Run Sharpe testing (circular bootstrap)
 #' set.seed(1234)
 #' ctr = list(type = 2, nBoot = 250, bBoot = 5)
@@ -154,7 +153,7 @@ sharpeTesting <- compiler::cmpfun(.sharpeTesting)
 #@name .sharpe.ratio.diff
 #@title Difference of sharpe ratios
 .sharpe.ratio.diff <- function(X, Y, ttype) {
-  
+
   if (is.null(Y)) {
     Y <- X[, 2, drop = FALSE]
     X <- X[, 1, drop = FALSE]
@@ -166,7 +165,7 @@ sharpeTesting <- compiler::cmpfun(.sharpeTesting)
   Y_ <- sweep(x = Y, MARGIN = 2, STATS = mu2.hat, FUN = "-")
   sig1.hat <- sqrt(colSums(X_^2)/(n - 1))
   sig2.hat <- sqrt(colSums(Y_^2)/(n - 1))
-  
+
   if (ttype == 1) {
     SR1.hat <- mu1.hat/sig1.hat
     SR2.hat <- mu2.hat/sig2.hat
@@ -184,7 +183,7 @@ sharpe.ratio.diff <- compiler::cmpfun(.sharpe.ratio.diff)
 # #' @importFrom stats pnorm
 # #' @import compiler
 .sharpeTestAsymptotic <- function(rets, hac, ttype) {
-  
+
   dsharpe <- sharpe.ratio.diff(rets, Y = NULL, ttype)
   se <- se.sharpe.asymptotic(rets, hac, ttype)
   tstat <- dsharpe/se
@@ -199,10 +198,10 @@ sharpeTestAsymptotic <- compiler::cmpfun(.sharpeTestAsymptotic)
 # #' @importFrom stats cov ar
 # #' @import compiler
 .se.sharpe.asymptotic <- function(X, hac, ttype) {
-  
+
   # estimation of (robust) Psi function; see Ledoit Wolf paper
   compute.Psi.hat <- function(V.hat, hac) {
-    
+
     if (hac) {
       T <- length(V.hat[, 1])
       alpha.hat <- compute.alpha.hat(V.hat)
@@ -211,7 +210,7 @@ sharpeTestAsymptotic <- compiler::cmpfun(.sharpeTestAsymptotic)
       j <- 1
       while (j < S.star) {
         Gamma.hat <- compute.Gamma.hat(V.hat, j)
-        Psi.hat <- Psi.hat + kernel.Parzen(j/S.star) * (Gamma.hat + 
+        Psi.hat <- Psi.hat + kernel.Parzen(j/S.star) * (Gamma.hat +
                                                           t(Gamma.hat))
         j <- j + 1
       }
@@ -220,21 +219,21 @@ sharpeTestAsymptotic <- compiler::cmpfun(.sharpeTestAsymptotic)
       Psi.hat <- stats::cov(V.hat)
     }
     return(Psi.hat)
-    
+
   }
-  
+
   # Parzen kernel
   kernel.Parzen <- function(x) {
-    
-    if (abs(x) <= 0.5) 
-      result <- 1 - 6 * x^2 + 6 * abs(x)^3 else if (abs(x) <= 1) 
+
+    if (abs(x) <= 0.5)
+      result <- 1 - 6 * x^2 + 6 * abs(x)^3 else if (abs(x) <= 1)
         result <- 2 * (1 - abs(x))^3 else result <- 0
         return(result)
-        
+
   }
-  
+
   compute.alpha.hat <- function(V.hat) {
-    
+
     p <- ncol(V.hat)
     num <- den <- 0
     for (i in 1:p) {
@@ -245,27 +244,27 @@ sharpeTestAsymptotic <- compiler::cmpfun(.sharpeTestAsymptotic)
       den <- den + sig.hat^4/(1 - rho.hat)^4
     }
     return(num/den)
-    
+
   }
-  
+
   compute.Gamma.hat <- function(V.hat, j) {
-    
+
     T <- nrow(V.hat)
     p <- ncol(V.hat)
     Gamma.hat <- matrix(0, p, p)
-    if (j >= T) 
+    if (j >= T)
       stop("j must be smaller than the row dimension!")
     for (i in ((j + 1):T)) {
-      Gamma.hat <- Gamma.hat + tcrossprod(V.hat[i, ], V.hat[i - j, 
+      Gamma.hat <- Gamma.hat + tcrossprod(V.hat[i, ], V.hat[i - j,
                                                             ])
     }
     Gamma.hat <- Gamma.hat/T
     return(Gamma.hat)
-    
+
   }
-  
+
   T <- nrow(X)
-  
+
   if (ttype == 1) {
     mu.hat <- colMeans(X)
     gamma.hat <- colMeans(X^2)
@@ -293,35 +292,35 @@ sharpeTestAsymptotic <- compiler::cmpfun(.sharpeTestAsymptotic)
     V.hat[, c(1, 3)] <- sweep(x = X, MARGIN = 2, STATS = m1, FUN = "-")
     V.hat[, c(2, 4)] <- sweep(x = X^2, MARGIN = 2, STATS = g2, FUN = "-")
   }
-  
+
   Psi.hat <- compute.Psi.hat(V.hat, hac)
   se <- as.numeric(sqrt(crossprod(gradient, Psi.hat %*% gradient)/T))
   return(se)
-  
+
 }
 se.sharpe.asymptotic <- compiler::cmpfun(.se.sharpe.asymptotic)
 
 # #' @name .sharpeTestBootstrap
 # #' @import compiler
 .sharpeTestBootstrap <- function(rets, bsids, b, ttype, pBoot, d = 0) {
-  
+
   T <- nrow(rets)
   x <- rets[, 1, drop = FALSE]
   y <- rets[, 2, drop = FALSE]
   dsharpe <- as.numeric(sharpe.ratio.diff(x, y, ttype) - d)
   se <- se.sharpe.bootstrap(x, y, b, ttype)
   # se = se.sharpe.asymptotic(X = cbind(x, y), hac = TRUE, ttype = ttype)
-  
+
   # bootstrap indices
   nBoot <- ncol(bsids)
   bsidx <- 1 + bsids%%T  # ensure that the bootstrap indices match the length of the time series
   bsX <- matrix(x[bsidx], T, nBoot)
   bsY <- matrix(y[bsidx], T, nBoot)
-  
+
   bsdsharpe <- sharpe.ratio.diff(bsX, bsY, ttype)
   bsse <- se.sharpe.bootstrap(bsX, bsY, b, ttype)
   tstat <- dsharpe/se
-  
+
   if (pBoot == 1) {
     # first type p-value calculation
     bststat <- abs(bsdsharpe - dsharpe)/bsse
@@ -330,12 +329,12 @@ se.sharpe.asymptotic <- compiler::cmpfun(.se.sharpe.asymptotic)
   } else {
     # second type p-value calculation (as in Barras)
     bststat <- (bsdsharpe - dsharpe)/bsse
-    pval <- 2 * min(sum(bststat > tstat) + 1, sum(bststat < tstat) + 
+    pval <- 2 * min(sum(bststat > tstat) + 1, sum(bststat < tstat) +
                       1)/(nBoot + 1)
     # pval = 2 * min(sum(bststat > tstat), sum(bststat < tstat)) / nBoot
   }
-  
-  out <- list(dsharpe = dsharpe, tstat = tstat, se = se, bststat = bststat, 
+
+  out <- list(dsharpe = dsharpe, tstat = tstat, se = se, bststat = bststat,
               pval = pval)
   return(out)
 }
@@ -346,11 +345,11 @@ sharpeTestBootstrap <- compiler::cmpfun(.sharpeTestBootstrap)
 # #' @importFrom stats cov
 # #' @import compiler
 .se.sharpe.bootstrap <- function(X, Y, b, ttype) {
-  
+
   ## Compute Psi with two approaches: 1) iid bootstrap, 2) circular block
   ## bootstrap
   compute.Psi.hat <- function(V.hat, b) {
-    
+
     T <- length(V.hat[, 1])
     if (b == 1) {
       # ==> standard estimation
@@ -360,16 +359,16 @@ sharpeTestBootstrap <- compiler::cmpfun(.sharpeTestBootstrap)
       l <- floor(T/b)
       Psi.hat <- matrix(0, 4, 4)
       for (j in (1:l)) {
-        zeta <- b^0.5 * colMeans(V.hat[((j - 1) * b + 1):(j * b), 
+        zeta <- b^0.5 * colMeans(V.hat[((j - 1) * b + 1):(j * b),
                                        , drop = FALSE])
         Psi.hat <- Psi.hat + tcrossprod(zeta)
       }
       Psi.hat <- Psi.hat/l
     }
     return(Psi.hat)
-    
+
   }
-  
+
   T <- nrow(X)
   N <- ncol(Y)
   if (ttype == 1) {
@@ -385,9 +384,9 @@ sharpeTestBootstrap <- compiler::cmpfun(.sharpeTestBootstrap)
     V.hat <- array(NA, c(T, 4, N))
     V.hat[, 1, ] <- sweep(x = X, MARGIN = 2, STATS = mu1.hat, FUN = "-")
     V.hat[, 2, ] <- sweep(x = Y, MARGIN = 2, STATS = mu2.hat, FUN = "-")
-    V.hat[, 3, ] <- sweep(x = X^2, MARGIN = 2, STATS = gamma1.hat, 
+    V.hat[, 3, ] <- sweep(x = X^2, MARGIN = 2, STATS = gamma1.hat,
                           FUN = "-")
-    V.hat[, 4, ] <- sweep(x = Y^2, MARGIN = 2, STATS = gamma2.hat, 
+    V.hat[, 4, ] <- sweep(x = Y^2, MARGIN = 2, STATS = gamma2.hat,
                           FUN = "-")
   } else {
     m1X <- colMeans(X)
@@ -398,33 +397,33 @@ sharpeTestBootstrap <- compiler::cmpfun(.sharpeTestBootstrap)
     m2Y <- colMeans(Y_^2)
     g2X <- m2X + m1X^2
     g2Y <- m2Y + m1Y^2
-    
+
     cst1X <- 1/(2 * sqrt(m2X))
     cst1Y <- 1/(2 * sqrt(m2Y))
-    
+
     dm1X <- matrix(rep(c(1, 0, 0, 0), N), 4, N, FALSE)
     dm1Y <- matrix(rep(c(0, 0, 1, 0), N), 4, N, FALSE)
     dsigX <- rbind(-2 * cst1X * m1X, cst1X, 0, 0)
     dsigY <- rbind(0, 0, -2 * cst1Y * m1Y, cst1Y)
-    
+
     # matrix form
     m1X_ <- matrix(m1X, nrow = 4, ncol = N, byrow = TRUE)
     m1Y_ <- matrix(m1Y, nrow = 4, ncol = N, byrow = TRUE)
     m2X_ <- matrix(m2X, nrow = 4, ncol = N, byrow = TRUE)
     m2Y_ <- matrix(m2Y, nrow = 4, ncol = N, byrow = TRUE)
-    
+
     dm1X_ <- matrix(dm1X, nrow = 4, ncol = N, byrow = FALSE)
     dm1Y_ <- matrix(dm1Y, nrow = 4, ncol = N, byrow = FALSE)
     dsigX_ <- matrix(dsigX, nrow = 4, ncol = N, byrow = FALSE)
     dsigY_ <- matrix(dsigY, nrow = 4, ncol = N, byrow = FALSE)
-    
+
     cst2X_ <- sqrt(m2X_)
     cst2Y_ <- sqrt(m2Y_)
-    
+
     # gradient
     tmp1 <- dm1X_ * cst2Y_ + dsigY_ * m1X_
     tmp2 <- dm1Y_ * cst2X_ + dsigX_ * m1Y_
-    
+
     # =======
     gradient <- array(NA, c(4, 1, N))
     gradient[1:4, 1, ] <- tmp1 - tmp2
@@ -434,14 +433,14 @@ sharpeTestBootstrap <- compiler::cmpfun(.sharpeTestBootstrap)
     V.hat[, 2, ] <- sweep(x = X^2, MARGIN = 2, STATS = g2X, FUN = "-")
     V.hat[, 4, ] <- sweep(x = Y^2, MARGIN = 2, STATS = g2Y, FUN = "-")
   }
-  Psi.hat <- array(apply(X = V.hat, MARGIN = 3, FUN = compute.Psi.hat, 
+  Psi.hat <- array(apply(X = V.hat, MARGIN = 3, FUN = compute.Psi.hat,
                          b = b), c(4, 4, N))
   se <- vector("double", N)
   for (i in 1:N) {
-    se[i] <- sqrt(crossprod(gradient[, , i], Psi.hat[, , i] %*% gradient[, 
+    se[i] <- sqrt(crossprod(gradient[, , i], Psi.hat[, , i] %*% gradient[,
                                                                          , i])/T)
   }
   return(se)
-  
+
 }
 se.sharpe.bootstrap <- compiler::cmpfun(.se.sharpe.bootstrap)

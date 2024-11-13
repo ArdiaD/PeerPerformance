@@ -76,7 +76,7 @@ or product (\code{type = 2}). Default: \code{type = 2}.
 \item \code{'hac'} heteroscedastic-autocorrelation consistent standard
 errors. Default: \code{hac = FALSE}.
 \item \code{'nBoot'} Number of
-boostrap replications for computing the p-value. Default: \code{nBoot =
+bootstrap replications for computing the p-value. Default: \code{nBoot =
 499}.
 \item \code{'bBoot'} Block length in the circular bootstrap. Default:
 \code{bBoot = 1}, i.e. iid bootstrap. \code{bBoot = 0} uses optimal
@@ -92,8 +92,8 @@ the ratios. Default: \code{minObs = 10}.
 }
 }
 \note{
-Further details on the methdology with an application to the hedge
-fund industry is given in in Ardia and Boudt (2018). 
+Further details on the methodology with an application to the hedge
+fund industry is given in in Ardia and Boudt (2018).
 
 Some internal functions where adapted from Wolf's R code.
 
@@ -105,42 +105,40 @@ industry has been presented in Barraz, Scaillet and Wermers (2010).
 data("hfdata")
 rets = hfdata[,1:10]
 
-## Modified Sharpe screening 
+## Modified Sharpe screening
 msharpeScreening(rets, control = list(nCore = 1))
 
 ## Modified Sharpe screening with bootstrap and HAC standard deviation
 msharpeScreening(rets, control = list(nCore = 1, type = 2, hac = TRUE))
 }
 \references{
-Ardia, D., Boudt, K. (2015).  
+Ardia, D., Boudt, K. (2015).
 Testing equality of modified Sharpe ratios.
-\emph{Finance Research Letters} \bold{13}, pp.97--104. 
-\doi{10.1016/j.frl.2015.02.008}
+\emph{Finance Research Letters} \bold{13}, 97--104.
 
-Ardia, D., Boudt, K. (2018).  
-The peer performance ratios of hedge funds. 
-\emph{Journal of Banking and Finance} \bold{87}, pp.351-.368.
-\doi{10.1016/j.jbankfin.2017.10.014}
+Ardia, D., Boudt, K. (2018).
+The peer performance ratios of hedge funds.
+\emph{Journal of Banking and Finance} \bold{87}, 351--368.
 
-Barras, L., Scaillet, O., Wermers, R. (2010).  
-False discoveries in mutual fund performance: Measuring luck in estimated alphas.  
-\emph{Journal of Finance} \bold{65}(1), pp.179--216.
+Barras, L., Scaillet, O., Wermers, R. (2010).
+False discoveries in mutual fund performance: Measuring luck in estimated alphas.
+\emph{Journal of Finance} \bold{65}(1), 179--216.
 
-Favre, L., Galeano, J.A. (2002).  
-Mean-modified Value-at-Risk Optimization with Hedge Funds.  
-\emph{Journal of Alternative Investments} \bold{5}(2), pp.21--25.
+Favre, L., Galeano, J.A. (2002).
+Mean-modified Value-at-Risk Optimization with Hedge Funds.
+\emph{Journal of Alternative Investments} \bold{5}(2), 21--25.
 
-Gregoriou, G. N., Gueyie, J.-P. (2003).  
-Risk-adjusted performance of funds of hedge funds using a modified Sharpe ratio.  
-\emph{Journal of Wealth Management} \bold{6}(3), pp.77--83.
+Gregoriou, G. N., Gueyie, J.-P. (2003).
+Risk-adjusted performance of funds of hedge funds using a modified Sharpe ratio.
+\emph{Journal of Wealth Management} \bold{6}(3), 77--83.
 
-Ledoit, O., Wolf, M. (2008). 
-Robust performance hypothesis testing with the Sharpe ratio.  
-\emph{Journal of Empirical Finance} \bold{15}(5), pp.850--859.
+Ledoit, O., Wolf, M. (2008).
+Robust performance hypothesis testing with the Sharpe ratio.
+\emph{Journal of Empirical Finance} \bold{15}(5), 850--859.
 
-Storey, J. (2002).  
+Storey, J. (2002).
 A direct approach to false discovery rates.
-\emph{Journal of the Royal Statistical Society B} \bold{64}(3), pp.479--498.
+\emph{Journal of the Royal Statistical Society B} \bold{64}(3), 479--498.
 }
 \seealso{
 \code{\link{msharpe}}, \code{\link{msharpeTesting}},

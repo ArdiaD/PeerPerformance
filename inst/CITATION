@@ -4,9 +4,9 @@ vers <- paste("version", meta$Version)
 
 citHeader("To cite 'PeerPerformance' in publications use:")
 
-citEntry(entry = "article",
+bibentry(bibtype = "article",
   title  = "The peer performance ratios of hedge funds",
-	author = personList(person("David","Ardia"),
+	author = c(person("David","Ardia"),
                       person("Kris","Boudt")),
   year = "2018",
   journal = "Journal of Banking and Finance",
@@ -19,9 +19,9 @@ citEntry(entry = "article",
     "doi:10.1016/j.jbankfin.2017.10.014")
 )
 
-citEntry(entry = "article",
+bibentry(bibtype = "article",
   title  = "Testing equality of modified {S}harpe ratios",
-	author = personList(person("David","Ardia"),
+	author = c(person("David","Ardia"),
                       person("Kris","Boudt")),
   year    = "2015",
   journal = "Finance Research Letters",

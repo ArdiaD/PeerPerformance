@@ -7,7 +7,7 @@
 sharpe(X, na.rm = TRUE)
 }
 \arguments{
-\item{X}{Vector (of lenght \eqn{T}) or matrix (of size \eqn{T \times
+\item{X}{Vector (of length \eqn{T}) or matrix (of size \eqn{T \times
 N}{TxN}) of returns for \eqn{N} funds. \code{NA} values are allowed.}
 
 \item{na.rm}{A logical value indicating whether \code{NA} values should be
@@ -35,18 +35,18 @@ out = sharpe(hfdata, na.rm = FALSE)
 print(out)
 }
 \references{
-Ardia, D., Boudt, K. (2015).  
+Ardia, D., Boudt, K. (2015).
 Testing equality of modified Sharpe ratios.
-\emph{Finance Research Letters} \bold{13}, pp.97--104. 
+\emph{Finance Research Letters} \bold{13}, pp.97--104.
 \doi{10.1016/j.frl.2015.02.008}
 
-Ardia, D., Boudt, K. (2016).  
-The Peer Ratios Performance of Hedge Funds. 
+Ardia, D., Boudt, K. (2016).
+The Peer Ratios Performance of Hedge Funds.
 \emph{Working paper}.
 \doi{10.2139/ssrn.2000901}
 
-Sharpe, W.F. (1994).  
-The Sharpe ratio.  
+Sharpe, W.F. (1994).
+The Sharpe ratio.
 \emph{Journal of Portfolio Management} \bold{21}(1), pp.49--58.
 \doi{10.3905/jpm.1994.409501}
 }

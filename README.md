@@ -7,7 +7,7 @@ correction for luck. It is useful for fund or portfolio managers to
 benchmark their investments or screen a universe of new funds. 
 In addition, it implements the testing framework for the Sharpe and modified Sharpe ratios, described 
 in [Ledoit and Wolf (2008)](https://doi.org/10.1016/j.jempfin.2008.03.002) 
-and [Ardia and Boudt (2015)](https://doi.org/10.1016/j.frl.2015.02.008).
+and [Ardia and Boudt (2015)](https://doi.org/10.1016/j.frl.2015.02.008). See also Ardia et al. (2022,2023) for applications in sustainable finance.
 
 ## Please cite the package in publications!
 
@@ -30,6 +30,18 @@ Testing equality of modified Sharpe ratios.
 _Finance Research Letters_, 13, 97-104.   
 [https://doi.org/10.1016/j.frl.2015.02.008](https://doi.org/10.1016/j.frl.2015.02.008)   
 [https://doi.org/10.2139/ssrn.2516591](https://doi.org/10.2139/ssrn.2516591)
+
+Ardia, D., Bluteau, K., Tran, D. (2022).
+How easy is it for investment managers to deploy their talent in green and brown stocks?
+_Finance Research Letters_, 48, 102992.
+[https://doi.org/10.1016/j.frl.2022.102992](https://doi.org/10.1016/j.frl.2022.102992)   
+[https://doi.org/10.2139/ssrn.4009286](https://doi.org/10.2139/ssrn.4009286)
+
+Ardia, D., Bluteau, K., Lortie-Cloutier, G., Tran, D. (2023).
+Factor exposure heterogeneity in green and brown stocks.
+_Finance Research Letters_, 55, Part A, pp.103900.
+[https://doi.org/10.1016/j.frl.2023.103900](https://doi.org/10.1016/j.frl.2023.103900)   
+[https://doi.org/10.2139/ssrn.4362696](https://doi.org/10.2139/ssrn.4362696)
 
 Ledoit, O., Wolf, M. (2008).   
 Robust performance hypothesis testing with the Sharpe ratio.    

@@ -4,8 +4,8 @@
 #@title Control parameters processsing
 processControl <- function(control) {
   if (!is.list(control) || length(control) == 0) {
-    control <- list(type = 1, ttype = 2, hac = FALSE, nBoot = 499, 
-                    bBoot = 1, pBoot = 1, nCore = 1, minObs = 10, minObsPi = 1, 
+    control <- list(type = 1, ttype = 2, hac = FALSE, nBoot = 249,
+                    bBoot = 1, pBoot = 1, nCore = 1, minObs = 10, minObsPi = 1,
                     lambda = NULL)
   }
   nam <- names(control)
@@ -55,7 +55,7 @@ alphaFactor <- function(X, factors = NULL) {
 #' @description Function which computes the Sharpe ratio.
 #' @details The Sharpe ratio (Sharpe 1992) is one industry standard for measuring the
 #' absolute risk adjusted performance of hedge funds.
-#' @param X Vector (of lenght \eqn{T}) or matrix (of size \eqn{T \times
+#' @param X Vector (of length \eqn{T}) or matrix (of size \eqn{T \times
 #' N}{TxN}) of returns for \eqn{N} funds. \code{NA} values are allowed.
 #' @param na.rm A logical value indicating whether \code{NA} values should be
 #' stripped before the computation. Default \code{na.rm = TRUE}
@@ -63,30 +63,30 @@ alphaFactor <- function(X, factors = NULL) {
 #' @author David Ardia and Kris Boudt.
 #' @seealso \code{\link{sharpeTesting}}, \code{\link{sharpeScreening}} and
 #' \code{\link{msharpe}}.
-#' @references 
-#' Ardia, D., Boudt, K. (2015).  
+#' @references
+#' Ardia, D., Boudt, K. (2015).
 #' Testing equality of modified Sharpe ratios.
-#' \emph{Finance Research Letters} \bold{13}, pp.97--104. 
+#' \emph{Finance Research Letters} \bold{13}, pp.97--104.
 #' \doi{10.1016/j.frl.2015.02.008}
-#' 
-#' Ardia, D., Boudt, K. (2016).  
-#' The Peer Ratios Performance of Hedge Funds. 
+#'
+#' Ardia, D., Boudt, K. (2016).
+#' The Peer Ratios Performance of Hedge Funds.
 #' \emph{Working paper}.
 #' \doi{10.2139/ssrn.2000901}
-#' 
-#' Sharpe, W.F. (1994).  
-#' The Sharpe ratio.  
+#'
+#' Sharpe, W.F. (1994).
+#' The Sharpe ratio.
 #' \emph{Journal of Portfolio Management} \bold{21}(1), pp.49--58.
 #' \doi{10.3905/jpm.1994.409501}
 #' @keywords htest
 #' @examples
 #' ## Load the data
 #' data('hfdata')
-#' 
+#'
 #' ## Compute the Sharpe ratio
 #' out = sharpe(hfdata)
 #' print(out)
-#' 
+#'
 #' out = sharpe(hfdata, na.rm = FALSE)
 #' print(out)
 #' @export
@@ -115,7 +115,7 @@ sharpe <- function(X, na.rm = TRUE) {
 #' @details The modified Sharpe ratio (Favre and Galeano 2002) is one industry
 #' standard for measuring the absolute risk adjusted performance of hedge
 #' funds.
-#' @param X Vector (of lenght \eqn{T}) or matrix (of size \eqn{T \times
+#' @param X Vector (of length \eqn{T}) or matrix (of size \eqn{T \times
 #' N}{TxN}) of returns.  \code{NA} values are allowed.
 #' @param level Modified Value-at-Risk level. Default: \code{level = 0.90}.
 #' @param na.rm A logical value indicating whether \code{NA} values should be
@@ -128,34 +128,30 @@ sharpe <- function(X, na.rm = TRUE) {
 #' @author David Ardia and Kris Boudt.
 #' @seealso \code{\link{msharpeTesting}}, \code{\link{msharpeScreening}} and
 #' \code{\link{sharpe}}.
-#' @references 
-#' Ardia, D., Boudt, K. (2015).  
+#' @references
+#' Ardia, D., Boudt, K. (2015).
 #' Testing equality of modified Sharpe ratios.
-#' \emph{Finance Research Letters} \bold{13}, pp.97--104. 
-#' \doi{10.1016/j.frl.2015.02.008}
-#' 
-#' Ardia, D., Boudt, K. (2016).  
-#' The Peer Ratios Performance of Hedge Funds. 
-#' \emph{Working paper}.
-#' \doi{10.2139/ssrn.2000901}
-#' 
-#' Favre, L., Galeano, J.A. (2002).  
-#' Mean-modified Value-at-Risk Optimization with Hedge Funds.  
-#' \emph{Journal of Alternative Investments} \bold{5}(2), pp.21--25.
-#' \doi{10.3905/jai.2002.319052}
-#' 
-#' Gregoriou, G. N., Gueyie, J.-P. (2003).  
-#' Risk-adjusted performance of funds of hedge funds using a modified Sharpe ratio.  
-#' \emph{Journal of Wealth Management} \bold{6}(3), pp.77--83.
-#' \doi{10.3905/jwm.2003.442378}
+#' \emph{Finance Research Letters} \bold{13}, 97--104.
+#'
+#' Ardia, D., Boudt, K. (2018).
+#' The peer performance ratios of hedge Funds.
+#' \emph{Journal of Banking and Finance} \bold{87}, 351--368.
+#'
+#' Favre, L., Galeano, J.A. (2002).
+#' Mean-modified Value-at-Risk Optimization with Hedge Funds.
+#' \emph{Journal of Alternative Investments} \bold{5}(2), 21--25.
+#'
+#' Gregoriou, G. N., Gueyie, J.-P. (2003).
+#' Risk-adjusted performance of funds of hedge funds using a modified Sharpe ratio.
+#' \emph{Journal of Wealth Management} \bold{6}(3), 77--83.
 #' @keywords htest
 #' @examples
 #' ## Load the data (randomized data of monthly hedge fund returns)
 #' data('hfdata')
-#' 
+#'
 #' out = msharpe(hfdata)
 #' print(out)
-#' 
+#'
 #' out = msharpe(hfdata, na.rm = FALSE)
 #' print(out)
 #' @export
@@ -177,7 +173,7 @@ msharpe <- function(X, level = 0.9, na.rm = TRUE, na.neg = TRUE) {
   za <- stats::qnorm(1 - level)
   skew <- m3/m2^(3/2)
   kurt <- (m4/m2^2) - 3
-  mVaR <- -m1 + sqrt(m2) * (-za - (1/6) * (za^2 - 1) * skew - (1/24) * 
+  mVaR <- -m1 + sqrt(m2) * (-za - (1/6) * (za^2 - 1) * skew - (1/24) *
                               (za^3 - 3 * za) * kurt + (1/36) * (2 * za^3 - 5 * za) * skew^2)
   if (na.neg) {
     mVaR[mVaR < 0] <- NA
@@ -188,7 +184,7 @@ msharpe <- function(X, level = 0.9, na.rm = TRUE, na.neg = TRUE) {
 
 # #' @name .infoFund
 # #' @import compiler
-.infoFund <- function(X, factors = NULL, level = NULL, na.rm = TRUE, na.neg = TRUE) {
+.infoFund <- function(X, factors = NULL, level = NULL, na.rm = TRUE, na.neg = TRUE, screen_beta=FALSE) {
   X <- as.matrix(X)
   N <- ncol(X)
   nObs <- colSums(is.finite(X))
@@ -196,16 +192,22 @@ msharpe <- function(X, level = 0.9, na.rm = TRUE, na.neg = TRUE) {
   rX <- sweep(x = X, MARGIN = 2, STATS = muX, FUN = "-")
   sigX <- sqrt(colSums(rX^2, na.rm = na.rm)/(nObs - 1))
   sharpe_ <- muX/sigX
-  
+
   # if (is.null(factors)) {
   #   fit <- stats::lm(X ~ 1)
   # } else {
   #   fit <- stats::lm(X ~ 1 + factors)
   # }
-  # alpha_ <- as.vector(fit$coef[1, ]) #output is a vector. 
-  
+  # alpha_ <- as.vector(fit$coef[1, ]) #output is a vector.
+
   # FIX
-  alpha_ <- rep(NA, ncol(X)) # preallocate space. 
+  # preallocate space.
+  if(screen_beta){
+    alpha_ <- matrix(NA, nrow=ncol(factors)+1, ncol=ncol(X))
+  }else{
+    alpha_ <- rep(NA, ncol(X))
+  }
+
   if (is.null(factors)) {
     for (col in 1:ncol(X)) {
       fit <- stats::lm(X[,col] ~ 1)
@@ -214,16 +216,21 @@ msharpe <- function(X, level = 0.9, na.rm = TRUE, na.neg = TRUE) {
   } else {
     for (col in 1:ncol(X)) {
       fit <- stats::lm(X[,col] ~ 1 + factors)
-      alpha_[col] <- fit$coef[1]
+      if(screen_beta){
+        alpha_[, col] <- fit$coef
+      }else{
+        alpha_[col] <- fit$coef[1]
+      }
+
     }
   }
-  
+
   msharpe_ <- NULL
   if (!is.null(level)) {
     msharpe_ <- msharpe(X, level = level, na.rm = na.rm, na.neg = na.neg)
   }
-  
-  out <- list(nObs = nObs, mu = muX, sig = sigX, sharpe = sharpe_, alpha = alpha_, 
+
+  out <- list(nObs = nObs, mu = muX, sig = sigX, sharpe = sharpe_, alpha = alpha_,
               msharpe = msharpe_)
   return(out)
 }
@@ -234,7 +241,7 @@ infoFund <- compiler::cmpfun(.infoFund)
 .bootIndices <- function(T, nBoot, bBoot) {
   idsBoot <- matrix(data = NA, nrow = T, ncol = nBoot)
   if (bBoot == 1) {
-    idsBoot <- matrix(sample.int(T, size = T * nBoot, replace = TRUE), 
+    idsBoot <- matrix(sample.int(T, size = T * nBoot, replace = TRUE),
                       nrow = T, ncol = nBoot)
   } else {
     for (i in 1:nBoot) {
@@ -244,7 +251,7 @@ infoFund <- compiler::cmpfun(.infoFund)
       start.points <- sample.int(T, size = l, replace = TRUE)
       for (j in (1:l)) {
         start <- start.points[j]
-        seqb[((j - 1) * bBoot + 1):(j * bBoot)] <- ids[start:(start + 
+        seqb[((j - 1) * bBoot + 1):(j * bBoot)] <- ids[start:(start +
                                                                 bBoot - 1)]
       }
       idsBoot[, i] <- seqb
