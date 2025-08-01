@@ -50,7 +50,7 @@ studentized circular bootstrap approach (\code{type = 2}). Default:
 or product (\code{type = 2}). Default: \code{type = 2}.
 \item \code{'hac'} Heteroscedastic-autocorrelation consistent standard
 errors. Default: \code{hac = FALSE}.
-\item \code{'nBoot'} Number of boostrap replications for computing the p-value. Default: \code{nBoot =
+\item \code{'nBoot'} Number of bootstrap replications for computing the p-value. Default: \code{nBoot =
 499}.
 \item \code{'bBoot'} Block length in the circular bootstrap. Default:
 \code{bBoot = 1}, i.e. iid bootstrap. \code{bBoot = 0} uses optimal
