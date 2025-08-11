@@ -1,4 +1,4 @@
-# PeerPerformance
+# PeerPerformance: Luck-Corrected Peer Performance Analysis in R
 
 `PeerPerformance` is an R package for the peer-performance evaluation of financial investments with
 luck-correction. In particular, it implements the peer performance ratios 
