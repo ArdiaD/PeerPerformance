@@ -2,7 +2,8 @@
 
 #@name .alphaScreening
 #@description See alphaScreening
-.alphaScreening <- function(X, factors = NULL, control = list(), screen_beta=FALSE) {
+.alphaScreening <- function(X, factors = NULL, control = list(), 
+                            screen_beta=FALSE) {
 
   # process control
   ctr <- processControl(control)
@@ -12,7 +13,8 @@
 
   if (screen_beta & !is.null(factors)) {
     row_return <- 1:(1 + ncol(factors))
-    pval <- dalpha <- tstat <- array(rep(NA, N * N * (1 + ncol(factors))), dim = c((1 + ncol(factors)), N, N))
+    pval <- dalpha <- tstat <- array(rep(NA, N * N * (1 + ncol(factors))), 
+                                     dim = c((1 + ncol(factors)), N, N))
   } else {
     row_return <- 1
     pval <- dalpha <- tstat <- array(rep(NA, N*N), dim = c(1, N, N))
@@ -31,8 +33,10 @@
 
     liststocks <- liststocks[1:(length(liststocks) - 1)]
 
-  	z <- parallel::clusterApplyLB(cl = cl, x = as.list(liststocks), fun = alphaScreeningi,
-                                    rdata = X, factors = factors, T = T, N = N, hac = ctr$hac, screen_beta)
+  	z <- parallel::clusterApplyLB(cl = cl, x = as.list(liststocks), 
+  	                              fun = alphaScreeningi,
+                                  rdata = X, factors = factors, T = T, N = N, 
+  	                              hac = ctr$hac, screen_beta)
 
     parallel::stopCluster(cl)
 
