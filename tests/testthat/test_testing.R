@@ -1,7 +1,7 @@
 context("Testing") 
 
-f.test.pval = function(pval) {
-  out = pval >= 0 && pval <= 1
+f.test.pval <- function(pval) {
+  out <- pval >= 0 && pval <= 1
   return(out)
 }
 
