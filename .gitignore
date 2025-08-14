@@ -12,3 +12,4 @@ Rcpp.pro
 Rcpp.pro.user
 *.autosave
 .#*
+inst/.DS_Store

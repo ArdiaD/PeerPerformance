@@ -5,8 +5,9 @@
 # #' @title See sharpeBlockSize
 # #' @importFrom stats rgeom
 # #' @import compiler
-.sharpeBlockSize <- function(x, y, control = list(), b.vec = c(1, 3, 6, 
-                                                               10), alpha = 0.05, M = 199, K = 500, b.av = 5, T.start = 50) {
+.sharpeBlockSize <- function(x, y, control = list(), b.vec = c(1, 3, 6, 10), 
+                             alpha = 0.05, M = 199, K = 500, b.av = 5, 
+                             T.start = 50) {
   
   sb.sequence <- function(T, b.av, length = T) {
     
