@@ -1,5 +1,9 @@
+^renv$
+^renv\.lock$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^README\.md$
 ^Contributing.md$
-paper
-bin
+^\.github$
+^CRAN-SUBMISSION$
+^cran-comments\.md$
