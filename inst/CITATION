@@ -1,8 +1,18 @@
-if(!exists("meta") || is.null(meta)) meta <- packageDescription("PeerPerformance")
-year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date)
-vers <- paste("version", meta$Version)
-
 citHeader("To cite 'PeerPerformance' in publications use:")
+
+bibentry(bibtype = "Manual",
+  title  = "PeerPerformance: Luck-Corrected Peer Performance Analysis in R",
+  author = c(person("David","Ardia"),
+             person("Benjamin","Seguin")),
+  year   = 2025,
+  note   = paste("R package version", vers),
+  organization = "CRAN",
+  url    = "https://CRAN.R-project.org/package=PeerPerformance",
+  textVersion = paste("Ardia, D., Seguin, B. (2025).",
+    "spantest: Mean-Variance Spanning Tests in R.",
+    "R package version", vers,
+    "Retrieved from https://CRAN.R-project.org/package=PeerPerformance")
+)
 
 bibentry(bibtype = "article",
   title  = "The peer performance ratios of hedge funds",

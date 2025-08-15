@@ -1,13 +1,11 @@
 Package: PeerPerformance
 Version: 2.3.2
-Date: 2025-08-14
 Title: Luck-Corrected Peer Performance Analysis in R
 Authors@R: c(person("David", "Ardia", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-2823-782X"), email = "david.ardia.ch@gmail.com"),
               person("Kris", "Boudt", role = "aut", comment = c(ORCID = "0000-0002-1000-5142")),
               person("Nabil", "Bouamara", role = "ctb"),
               person("Sebastien", "Legros", role = "ctb"),
               person("Benjamin", "Seguin", role = "ctb"))
-Maintainer: David Ardia <david.ardia.ch@gmail.com>
 Depends: parallel, sandwich, lmtest, compiler
 Suggests: testthat
 Description: Provides functions to perform the peer performance
@@ -16,8 +14,4 @@ BugReports: https://github.com/ArdiaD/PeerPerformance/issues
 URL: https://github.com/ArdiaD/PeerPerformance
 License: GPL (>= 2)
 RoxygenNote: 7.3.2
-NeedsCompilation: no
-Packaged: 2021-05-16 15:34:09 UTC; ardiad
-Repository: CRAN
-Date/Publication: 2021-05-16 17:10:08 UTC
 Encoding: UTF-8
