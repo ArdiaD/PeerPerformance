@@ -100,7 +100,7 @@ presented in Ledoit and Wolf (2008) are not supported by the
 \examples{
 ## Load the data (randomized data of monthly hedge fund returns)
 data("hfdata")
-rets = hfdata[,1:5]
+rets = hfdata[,1:4]
 
 ## Run alpha screening
 ctr = list(nCore = 1)
