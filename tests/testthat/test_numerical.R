@@ -178,6 +178,34 @@ test_that("plot works on a single focal fund (cross-group)", {
   expect_equal(length(out), 3L)
 })
 
+test_that("targetPeerPerformance equals screening with Y = X", {
+  rets <- hfdata[, 1:10]
+  focals <- c(2, 5, 7)
+  tp <- targetPeerPerformance(rets, funds = focals, method = "alpha",
+                              control = list(nCore = 1, lambda = 0.5))
+  yx <- alphaScreening(rets[, focals], Y = rets,
+                       control = list(nCore = 1, lambda = 0.5))
+  expect_equal(unname(tp$pizero), unname(yx$pizero), tolerance = 1e-10)
+  expect_equal(unname(tp$pipos),  unname(yx$pipos),  tolerance = 1e-10)
+  expect_equal(unname(tp$npeer),  rep(9L, 3))
+  expect_s3_class(tp, "SCREENING")
+  ## selection by name works and rows are labelled
+  colnames(rets) <- paste0("F", 1:10)
+  tp2 <- targetPeerPerformance(rets, funds = c("F2", "F5"), method = "sharpe",
+                               control = list(nCore = 1))
+  expect_equal(rownames(tp2$pval), c("F2", "F5"))
+})
+
+test_that("summary.SCREENING produces a ranked table", {
+  set.seed(1)
+  sc <- alphaScreening(hfdata[, 1:12], control = list(nCore = 1))
+  s <- summary(sc)
+  expect_s3_class(s, "summary.SCREENING")
+  expect_equal(nrow(s$table), 12L)
+  expect_true(all(c("estimate", "pipos", "pineg", "wins", "losses") %in% names(s$table)))
+  expect_identical(print(s), s)
+})
+
 test_that("print and plot methods dispatch and return invisibly", {
   set.seed(1234)
   sc <- alphaScreening(hfdata[, 1:12], control = list(nCore = 1))

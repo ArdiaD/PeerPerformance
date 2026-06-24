@@ -148,6 +148,111 @@ as.data.frame.SCREENING <- function(x, row.names = NULL, optional = FALSE, ...) 
   df
 }
 
+#' @name summary.SCREENING
+#' @title Summary method for the 'SCREENING' object
+#' @description Produces a ranked summary of a screening: distribution of the
+#' performance measure, the peer performance ratios, optional win/loss counts
+#' from the pairwise tests, and the top/bottom funds (overall and by
+#' out-/underperformance ratio). Originally contributed by Murilo Pedro.
+#' @param object A \code{SCREENING} object.
+#' @param coef For a \code{screen_beta} screening, which coefficient row to use
+#' (default 1, the alpha).
+#' @param top Number of best/worst funds to display. Default: 5.
+#' @param p_level Significance level for the win/loss counts (used only when the
+#' object carries square \code{pval}/\code{tstat} matrices). Default: 0.05.
+#' @param ... Further arguments (ignored).
+#' @return An object of class \code{summary.SCREENING}.
+#' @author Murilo Pedro, David Ardia and Kris Boudt.
+#' @seealso \code{\link{alphaScreening}}.
+#' @keywords htest
+#' @export
+#' @importFrom stats quantile median
+#' @importFrom utils head tail
+summary.SCREENING <- function(object, coef = 1L, top = 5L, p_level = 0.05, ...) {
+  x <- object
+  measure <- if (!is.null(x$alpha)) "alpha" else if (!is.null(x$sharpe)) "sharpe" else if (!is.null(x$msharpe)) "msharpe" else stop("no recognized measure in the 'SCREENING' object")
+
+  est <- x[[measure]]
+  if (is.matrix(est)) est <- est[coef, ]
+  est <- as.numeric(est)
+
+  funds <- names(x$pizero)
+  if (is.null(funds)) funds <- names(x$n)
+  if (is.null(funds) || length(funds) != length(est)) {
+    funds <- paste0("Fund ", seq_along(est))
+  }
+  pick <- function(v) {
+    if (is.null(v)) return(rep(NA_real_, length(est)))
+    if (is.matrix(v)) v <- v[coef, ]
+    as.numeric(v)
+  }
+
+  tab <- data.frame(fund = funds, n = pick(x$n), npeer = pick(x$npeer),
+                    estimate = est, lambda = pick(x$lambda),
+                    pizero = pick(x$pizero), pipos = pick(x$pipos),
+                    pineg = pick(x$pineg), stringsAsFactors = FALSE)
+
+  ## win/loss counts only when pval/tstat are square (within-group screening)
+  if (is.matrix(x$pval) && is.matrix(x$tstat) &&
+      nrow(x$pval) == length(funds) && ncol(x$pval) == length(funds)) {
+    tab$wins   <- rowSums((x$pval < p_level) & (x$tstat > 0), na.rm = TRUE)
+    tab$losses <- rowSums((x$pval < p_level) & (x$tstat < 0), na.rm = TRUE)
+    tab$net    <- tab$wins - tab$losses
+  }
+
+  tab$rank <- rank(-tab$estimate, ties.method = "first")
+  tab <- tab[order(tab$rank), , drop = FALSE]
+
+  est_stats <- c(min  = min(tab$estimate, na.rm = TRUE),
+                 q25  = unname(stats::quantile(tab$estimate, 0.25, na.rm = TRUE)),
+                 med  = stats::median(tab$estimate, na.rm = TRUE),
+                 mean = mean(tab$estimate, na.rm = TRUE),
+                 q75  = unname(stats::quantile(tab$estimate, 0.75, na.rm = TRUE)),
+                 max  = max(tab$estimate, na.rm = TRUE))
+
+  top <- max(1L, min(as.integer(top), nrow(tab)))
+  ord_plus  <- order(-tab$pipos, -tab$estimate)
+  ord_minus <- order(-tab$pineg, -tab$estimate)
+
+  res <- list(measure = measure, coef = coef, p_level = p_level,
+              n_funds = nrow(tab), stats = est_stats, table = tab,
+              top = utils::head(tab, top), bottom = utils::tail(tab, top),
+              top_pi_plus  = utils::head(tab[ord_plus, , drop = FALSE], top),
+              top_pi_minus = utils::head(tab[ord_minus, , drop = FALSE], top))
+  class(res) <- "summary.SCREENING"
+  res
+}
+
+#' @name print.summary.SCREENING
+#' @title Print method for the 'summary.SCREENING' object
+#' @description Print method for the object returned by
+#' \code{\link{summary.SCREENING}}.
+#' @param x A \code{summary.SCREENING} object.
+#' @param ... Further arguments (ignored).
+#' @return Invisibly returns \code{x}.
+#' @author Murilo Pedro, David Ardia and Kris Boudt.
+#' @keywords htest
+#' @export
+print.summary.SCREENING <- function(x, ...) {
+  fmt <- function(z) formatC(as.numeric(z), format = "f", digits = 4)
+  round_df <- function(df) {
+    cols <- intersect(c("estimate", "pizero", "pipos", "pineg", "lambda"), names(df))
+    for (cc in cols) df[[cc]] <- fmt(df[[cc]])
+    df
+  }
+  cat("\nPeer performance screening summary (", x$measure, ")\n", sep = "")
+  cat("  Funds: ", x$n_funds, "\n\n", sep = "")
+  s <- x$stats
+  cat("  ", x$measure, " distribution: min ", fmt(s["min"]), " | 25% ", fmt(s["q25"]),
+      " | med ", fmt(s["med"]), " | mean ", fmt(s["mean"]), " | 75% ", fmt(s["q75"]),
+      " | max ", fmt(s["max"]), "\n\n", sep = "")
+  cat("Top funds (by ", x$measure, "):\n", sep = "")
+  print(round_df(x$top), row.names = FALSE, right = TRUE)
+  cat("\nTop funds (by outperformance ratio pi+):\n")
+  print(round_df(x$top_pi_plus), row.names = FALSE, right = TRUE)
+  invisible(x)
+}
+
 #' @name exposureHeterogeneity
 #' @title Factor exposure heterogeneity from a beta screening
 #' @description Aggregates the per-fund equal-performance ratios of a
