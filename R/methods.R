@@ -153,7 +153,7 @@ as.data.frame.SCREENING <- function(x, row.names = NULL, optional = FALSE, ...) 
 #' @description Produces a ranked summary of a screening: distribution of the
 #' performance measure, the peer performance ratios, optional win/loss counts
 #' from the pairwise tests, and the top/bottom funds (overall and by
-#' out-/underperformance ratio). Originally contributed by Murilo Pedro.
+#' out-/underperformance ratio). Originally contributed by Murilo Andre Peres Pereira.
 #' @param object A \code{SCREENING} object.
 #' @param coef For a \code{screen_beta} screening, which coefficient row to use
 #' (default 1, the alpha).
@@ -162,7 +162,7 @@ as.data.frame.SCREENING <- function(x, row.names = NULL, optional = FALSE, ...) 
 #' object carries square \code{pval}/\code{tstat} matrices). Default: 0.05.
 #' @param ... Further arguments (ignored).
 #' @return An object of class \code{summary.SCREENING}.
-#' @author Murilo Pedro, David Ardia and Kris Boudt.
+#' @author Murilo Andre Peres Pereira, David Ardia and Kris Boudt.
 #' @seealso \code{\link{alphaScreening}}.
 #' @keywords htest
 #' @export
@@ -230,7 +230,7 @@ summary.SCREENING <- function(object, coef = 1L, top = 5L, p_level = 0.05, ...) 
 #' @param x A \code{summary.SCREENING} object.
 #' @param ... Further arguments (ignored).
 #' @return Invisibly returns \code{x}.
-#' @author Murilo Pedro, David Ardia and Kris Boudt.
+#' @author Murilo Andre Peres Pereira, David Ardia and Kris Boudt.
 #' @keywords htest
 #' @export
 print.summary.SCREENING <- function(x, ...) {

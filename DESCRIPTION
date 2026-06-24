@@ -8,7 +8,8 @@ Authors@R: c(person("David", "Ardia", role = c("aut", "cre"),
              comment = c(ORCID = "0000-0002-1000-5142")),
              person("Nabil", "Bouamara", role = "ctb"),
              person("Sebastien", "Legros", role = "ctb"),
-             person("Benjamin", "Seguin", role = "ctb"))
+             person("Benjamin", "Seguin", role = "ctb"),
+             person("Murilo Andre", "Peres Pereira", role = "ctb"))
 Depends: R (>= 3.5.0)
 Imports: compiler, graphics, grDevices, lmtest, parallel, sandwich, stats
 Suggests: testthat

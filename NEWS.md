@@ -1,8 +1,8 @@
 # Version 2.4.0 (DA)
-- Added `targetPeerPerformance()` (contributed by Murilo Pedro): screens a
+- Added `targetPeerPerformance()` (contributed by Murilo Andre Peres Pereira): screens a
   selected subset of funds against the whole universe; a convenience wrapper
   over the cross-group screening (`*Screening(X[, funds], Y = X)`)
-- Added a `summary` method for `SCREENING` objects (contributed by Murilo Pedro):
+- Added a `summary` method for `SCREENING` objects (contributed by Murilo Andre Peres Pereira):
   ranked table, distribution of the measure, win/loss counts and top funds
 - Added `rollScreening()`: rolling-window screening returning the time series of
   cross-sectionally averaged ratios (per factor when `screen_beta = TRUE`), with

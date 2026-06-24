@@ -19,6 +19,6 @@ Print method for the object returned by
 \code{\link{summary.SCREENING}}.
 }
 \author{
-Murilo Pedro, David Ardia and Kris Boudt.
+Murilo Andre Peres Pereira, David Ardia and Kris Boudt.
 }
 \keyword{htest}

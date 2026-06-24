@@ -26,12 +26,12 @@ An object of class \code{summary.SCREENING}.
 Produces a ranked summary of a screening: distribution of the
 performance measure, the peer performance ratios, optional win/loss counts
 from the pairwise tests, and the top/bottom funds (overall and by
-out-/underperformance ratio). Originally contributed by Murilo Pedro.
+out-/underperformance ratio). Originally contributed by Murilo Andre Peres Pereira.
 }
 \seealso{
 \code{\link{alphaScreening}}.
 }
 \author{
-Murilo Pedro, David Ardia and Kris Boudt.
+Murilo Andre Peres Pereira, David Ardia and Kris Boudt.
 }
 \keyword{htest}

@@ -65,6 +65,6 @@ out$sharpe
 \code{\link{msharpeScreening}}.
 }
 \author{
-Murilo Pedro, David Ardia and Kris Boudt.
+Murilo Andre Peres Pereira, David Ardia and Kris Boudt.
 }
 \keyword{htest}

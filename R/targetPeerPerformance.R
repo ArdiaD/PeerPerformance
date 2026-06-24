@@ -2,7 +2,7 @@
 ## This is a thin convenience wrapper over the cross-group screening
 ## (`*Screening(X[, funds], Y = X)`): each focal fund is screened against the
 ## whole universe `X` (its own column is excluded automatically). Originally
-## contributed by Murilo Pedro.
+## contributed by Murilo Andre Peres Pereira.
 
 .targetPeerPerformance <- function(X, funds,
                                    method = c("alpha", "sharpe", "msharpe"),
@@ -84,7 +84,7 @@
 #' whose \code{pval}/\code{tstat}/difference matrices have one row per focal fund
 #' and one column per universe fund. Works with the \code{print}, \code{plot},
 #' \code{summary}, and \code{as.data.frame} methods.
-#' @author Murilo Pedro, David Ardia and Kris Boudt.
+#' @author Murilo Andre Peres Pereira, David Ardia and Kris Boudt.
 #' @seealso \code{\link{alphaScreening}}, \code{\link{sharpeScreening}},
 #' \code{\link{msharpeScreening}}.
 #' @keywords htest
