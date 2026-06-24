@@ -87,8 +87,9 @@ errors. Default: \code{hac = FALSE}.
 bootstrap replications for computing the p-value. Default: \code{nBoot =
 499}.
 \item \code{'bBoot'} Block length in the circular bootstrap. Default:
-\code{bBoot = 1}, i.e. iid bootstrap. \code{bBoot = 0} uses optimal
-block-length.
+\code{bBoot = 1}, i.e. iid bootstrap. (The data-driven choice
+\code{bBoot = 0} is only available in \code{\link{msharpeTesting}}, not in
+screening.)
 \item \code{'pBoot'} Symmetric p-value (\code{pBoot = 1}) or
 asymmetric p-value (\code{pBoot = 2}). Default: \code{pBoot = 1}.
 \item \code{'nCore'} Number of cores to be used. Default: \code{nCore = 1}.
@@ -107,12 +108,12 @@ the focal fund. Default: \code{gammaNeg = 0.6}.
 }
 \note{
 Further details on the methodology with an application to the hedge
-fund industry is given in in Ardia and Boudt (2018).
+fund industry is given in Ardia and Boudt (2018).
 
 Some internal functions where adapted from Michael Wolf MATLAB code.
 
 Application of the false discovery rate approach applied to the mutual fund
-industry has been presented in Barraz, Scaillet and Wermers (2010).
+industry has been presented in Barras, Scaillet and Wermers (2010).
 }
 \examples{
 ## Load the data (randomized data of monthly hedge fund returns)

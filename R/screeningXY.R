@@ -20,7 +20,12 @@
   xi <- X[, i]
   for (j in 1:nY) {
     dxy <- xi - Y[, j]
-    ok <- !is.na(dxy) & !is.nan(dxy)
+    # usable rows: account for missing factors as lm(na.omit) would
+    if (is.null(factors)) {
+      ok <- !is.na(dxy) & !is.nan(dxy)
+    } else {
+      ok <- stats::complete.cases(dxy, factors)
+    }
     if (sum(ok) < minObs) {
       next
     }
@@ -32,8 +37,12 @@
     } else {
       fit <- stats::lm(dxy ~ 1 + factors, na.action = stats::na.omit)
     }
+    sfit <- summary(fit)
+    if (!is.finite(sfit$sigma) || sfit$sigma < sqrt(.Machine$double.eps)) {
+      next  # (near) deterministic differential: skip to avoid spurious significance
+    }
     if (!hac) {
-      sm <- summary(fit)$coef
+      sm <- sfit$coef
     } else {
       sm <- lmtest::coeftest(fit, vcov. = sandwich::vcovHAC(fit))
     }
@@ -131,6 +140,9 @@ alphaScreeningXY <- compiler::cmpfun(.alphaScreeningXY)
     } else {
       tmp <- sharpeTestBootstrap(rets, bsids, b, ttype, pBoot)
     }
+    if (!is.finite(tmp$tstat)) {
+      next  # degenerate pair (e.g. zero-variance series)
+    }
     dsharpei[j] <- tmp$dsharpe
     pvali[j]    <- tmp$pval
     tstati[j]   <- tmp$tstat
@@ -141,6 +153,10 @@ sharpeScreeningXYi <- compiler::cmpfun(.sharpeScreeningXYi)
 
 .sharpeScreeningXY <- function(X, Y, control = list()) {
   ctr <- processControl(control)
+  if (ctr$bBoot == 0) {
+    stop("'bBoot = 0' (data-driven block length) is not supported in screening; ",
+         "set an explicit block length 'bBoot >= 1'.")
+  }
   X <- as.matrix(X)
   Y <- as.matrix(Y)
   T <- nrow(X)
@@ -206,6 +222,9 @@ sharpeScreeningXY <- compiler::cmpfun(.sharpeScreeningXY)
     } else {
       tmp <- msharpeTestBootstrap(rets, level, na.neg, bsids, b, ttype, pBoot)
     }
+    if (!is.finite(tmp$tstat)) {
+      next  # degenerate pair or NA modified VaR (na.neg)
+    }
     dmsharpei[j] <- tmp$dmsharpe
     pvali[j]     <- tmp$pval
     tstati[j]    <- tmp$tstat
@@ -216,6 +235,10 @@ msharpeScreeningXYi <- compiler::cmpfun(.msharpeScreeningXYi)
 
 .msharpeScreeningXY <- function(X, Y, level = 0.9, na.neg = TRUE, control = list()) {
   ctr <- processControl(control)
+  if (ctr$bBoot == 0) {
+    stop("'bBoot = 0' (data-driven block length) is not supported in screening; ",
+         "set an explicit block length 'bBoot >= 1'.")
+  }
   X <- as.matrix(X)
   Y <- as.matrix(Y)
   T <- nrow(X)

@@ -13,6 +13,12 @@
   if (is.null(screen_beta)) {
     screen_beta <- ctr$screen_beta
   }
+  # screen_beta only makes sense with factors; coerce to FALSE otherwise
+  # (this avoids a downstream crash in infoFund() when factors is NULL)
+  if (isTRUE(screen_beta) && is.null(factors)) {
+    warning("'screen_beta = TRUE' requires 'factors'; it is ignored.")
+    screen_beta <- FALSE
+  }
 
   # cross-group screening: each fund in X against every fund in group Y
   if (!is.null(Y)) {
@@ -205,7 +211,7 @@
 #'
 #' Ardia, D., Boudt, K. (2018).
 #' The peer performance ratios of hedge funds.
-#' \emph{Journal of Banking and Finance} \bold{87}, pp.351-.368.
+#' \emph{Journal of Banking and Finance} \bold{87}, pp.351--368.
 #' \doi{10.1016/j.jbankfin.2017.10.014}
 #'
 #' Barras, L., Scaillet, O., Wermers, R. (2010).
@@ -290,17 +296,20 @@ alphaScreening <- compiler::cmpfun(.alphaScreening)
       fit <- stats::lm(dXY ~ 1 + factors, na.action = stats::na.omit)
     } # end of factors/no factors
 
-    # HAC within loop.
-    if (!hac) {
-      sumfit <- summary(fit)
-      pvali[row_return, N] <- sumfit$coef[row_return, 4]
-      dalphai[row_return, N] <- sumfit$coef[row_return, 1]
-      tstati[row_return, N] <- sumfit$coef[row_return, 3]
-    } else {
-      sumfit <- lmtest::coeftest(fit, vcov. = sandwich::vcovHAC(fit))
-      pvali[row_return, N] <- sumfit[row_return, 4]
-      dalphai[row_return, N] <- sumfit[row_return, 1]
-      tstati[row_return, N] <- sumfit[row_return, 3]
+    # skip (near) deterministic differentials (zero residual variance)
+    sfit_lm <- summary(fit)
+    if (is.finite(sfit_lm$sigma) && sfit_lm$sigma >= sqrt(.Machine$double.eps)) {
+      # HAC within loop.
+      if (!hac) {
+        pvali[row_return, N] <- sfit_lm$coef[row_return, 4]
+        dalphai[row_return, N] <- sfit_lm$coef[row_return, 1]
+        tstati[row_return, N] <- sfit_lm$coef[row_return, 3]
+      } else {
+        sumfit <- lmtest::coeftest(fit, vcov. = sandwich::vcovHAC(fit))
+        pvali[row_return, N] <- sumfit[row_return, 4]
+        dalphai[row_return, N] <- sumfit[row_return, 1]
+        tstati[row_return, N] <- sumfit[row_return, 3]
+      }
     }
   } else {
     # end of nPeer == 1
@@ -325,12 +334,17 @@ alphaScreening <- compiler::cmpfun(.alphaScreening)
         fit <- stats::lm(dXY[, k] ~ 1 + factors, na.action = stats::na.omit)
       } # end of factors/no factors
 
+      # skip (near) deterministic differentials (zero residual variance)
+      sfit_lm <- summary(fit)
+      if (!is.finite(sfit_lm$sigma) || sfit_lm$sigma < sqrt(.Machine$double.eps)) {
+        next
+      }
+
       # HAC within loop.
       if (!hac) {
-        sumfit <- summary(fit)
-        pvali[row_return, j] <- sumfit$coef[row_return, 4]
-        dalphai[row_return, j] <- sumfit$coef[row_return, 1]
-        tstati[row_return, j] <- sumfit$coef[row_return, 3]
+        pvali[row_return, j] <- sfit_lm$coef[row_return, 4]
+        dalphai[row_return, j] <- sfit_lm$coef[row_return, 1]
+        tstati[row_return, j] <- sfit_lm$coef[row_return, 3]
       } else{
         sumfit <- lmtest::coeftest(fit, vcov. = sandwich::vcovHAC(fit))
         pvali[row_return, j] <- sumfit[row_return, 4]

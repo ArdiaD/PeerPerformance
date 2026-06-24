@@ -11,7 +11,7 @@
 #' \itemize{
 #' \item Alpha: \code{\link{alphaTesting}} and \code{\link{alphaScreening}};
 #' \item Sharpe ratio: \code{\link{sharpe}}, \code{\link{sharpeTesting}} and \code{\link{sharpeScreening}};
-#' \item Modified Share ratio: \code{\link{msharpe}}, \code{\link{msharpeTesting}} and \code{\link{msharpeScreening}};
+#' \item Modified Sharpe ratio: \code{\link{msharpe}}, \code{\link{msharpeTesting}} and \code{\link{msharpeScreening}};
 #' \item Screening: \code{\link{alphaScreening}}, \code{\link{sharpeScreening}}, and \code{\link{msharpeScreening}}.
 #' }
 #' @section Update:
@@ -65,5 +65,5 @@
 #' \emph{Journal of the Royal Statistical Society B} \bold{64}(3), 479--498.
 #' @import lmtest
 #' @import sandwich
-#' @import compiler
+#' @importFrom compiler cmpfun
 NULL

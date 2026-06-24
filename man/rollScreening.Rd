@@ -12,6 +12,7 @@ rollScreening(
   width = 36L,
   by = 1L,
   level = 0.9,
+  na.neg = TRUE,
   control = list(),
   dates = NULL
 )
@@ -37,6 +38,10 @@ funds.}
 
 \item{level}{Modified Value-at-Risk level (for \code{screen = "msharpe"}).
 Default: \code{0.9}.}
+
+\item{na.neg}{A logical value passed to \code{\link{msharpeScreening}}
+(for \code{screen = "msharpe"}) indicating whether a negative modified
+Value-at-Risk yields \code{NA}. Default: \code{TRUE}.}
 
 \item{control}{Control parameters passed to the screening function (see
 \code{\link{alphaScreening}}); set \code{control = list(screen_beta = TRUE)}

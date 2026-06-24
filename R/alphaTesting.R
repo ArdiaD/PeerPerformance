@@ -19,6 +19,11 @@
 	if (is.null(screen_beta)) {
 		screen_beta <- ctr$screen_beta
 	}
+	# screen_beta only makes sense with factors
+	if (isTRUE(screen_beta) && is.null(factors)) {
+		warning("'screen_beta = TRUE' requires 'factors'; it is ignored.")
+		screen_beta <- FALSE
+	}
 	X <- as.matrix(x)
 	Y <- as.matrix(y)
 	dXY <- X - Y
@@ -97,10 +102,10 @@
 #' @param factors Matrix \eqn{(T \times K)}{(TxK)} of \eqn{T} returns for the
 #' \eqn{K} factors. \code{NA} values are allowed.
 #' @param screen_beta Boolean to screen all factors' coefficients (beta).
-#' Default: \code{screen_beta=FALSE} (i.e. only outputs the alpha).
-#' If \code{screen_beta=TRUE}, each element of the returned list will have a new first dimension
-#' representing each coefficient (the first one being alpha)
-#'
+#' Default: \code{screen_beta = NULL}, in which case the value is taken from
+#' \code{control$screen_beta} (itself defaulting to \code{FALSE}). When supplied
+#' directly, the argument takes precedence. \code{screen_beta = TRUE} requires
+#' \code{factors}.
 #' @param control Control parameters (see *Details*).
 #' @return A list with the following components:\cr
 #'
@@ -112,13 +117,18 @@
 #'
 #' \code{tstat}: t-stat of the alpha difference.\cr
 #'
-#' \code{pval}: p-value of the test of equal alpha.
+#' \code{pval}: p-value of the test of equal alpha.\cr
+#'
+#' When \code{screen_beta = TRUE}, \code{alpha} is a matrix (one row per
+#' coefficient, the first being the alpha) and \code{dalpha}, \code{tstat} and
+#' \code{pval} are vectors with one entry per coefficient; the \code{print}
+#' method reports the alpha (first) coefficient only.
 #' @note Further details on the methodology with an application to the hedge
-#' fund industry is given in in Ardia and Boudt (2018).
+#' fund industry is given in Ardia and Boudt (2018).
 #'
 #' Some internal functions where adapted from Michael Wolf MATLAB code.
 #' @author David Ardia and Kris Boudt.
-#' @seealso \code{\link{alphaScreening}}..
+#' @seealso \code{\link{alphaScreening}}.
 #' @references
 #' Ardia, D., Boudt, K. (2015).
 #' Testing equality of modified Sharpe ratios.
@@ -154,5 +164,5 @@
 #' alphaTesting(x, y)
 
 #' @export
-#' @import compiler
+#' @importFrom compiler cmpfun
 alphaTesting <- compiler::cmpfun(.alphaTesting)

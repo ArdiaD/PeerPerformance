@@ -17,5 +17,6 @@ Description: Provides functions to perform the peer performance
 BugReports: https://github.com/ArdiaD/PeerPerformance/issues
 URL: https://github.com/ArdiaD/PeerPerformance
 License: GPL (>= 2)
+LazyData: true
 Encoding: UTF-8
 Config/roxygen2/version: 8.0.0

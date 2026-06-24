@@ -42,6 +42,9 @@
 #' \code{1}.
 #' @param level Modified Value-at-Risk level (for \code{screen = "msharpe"}).
 #' Default: \code{0.9}.
+#' @param na.neg A logical value passed to \code{\link{msharpeScreening}}
+#' (for \code{screen = "msharpe"}) indicating whether a negative modified
+#' Value-at-Risk yields \code{NA}. Default: \code{TRUE}.
 #' @param control Control parameters passed to the screening function (see
 #' \code{\link{alphaScreening}}); set \code{control = list(screen_beta = TRUE)}
 #' to obtain per-factor heterogeneity series.
@@ -74,7 +77,7 @@
 #' @export
 rollScreening <- function(X, factors = NULL, Y = NULL,
                           screen = c("alpha", "sharpe", "msharpe"),
-                          width = 36L, by = 1L, level = 0.9,
+                          width = 36L, by = 1L, level = 0.9, na.neg = TRUE,
                           control = list(), dates = NULL) {
   screen <- match.arg(screen)
   X <- as.matrix(X)
@@ -86,7 +89,8 @@ rollScreening <- function(X, factors = NULL, Y = NULL,
     stop("'dates' must have length nrow(X)")
   }
   ctr <- processControl(control)
-  screen_beta <- isTRUE(ctr$screen_beta)
+  # screen_beta only applies to the alpha screening
+  screen_beta <- isTRUE(ctr$screen_beta) && screen == "alpha"
   Fmat <- if (!is.null(factors)) as.matrix(factors) else NULL
   Ymat <- if (!is.null(Y)) as.matrix(Y) else NULL
 
@@ -100,7 +104,8 @@ rollScreening <- function(X, factors = NULL, Y = NULL,
     sc <- switch(screen,
                  alpha   = alphaScreening(Xw, factors = Fw, control = control, Y = Yw),
                  sharpe  = sharpeScreening(Xw, control = control, Y = Yw),
-                 msharpe = msharpeScreening(Xw, level = level, control = control, Y = Yw))
+                 msharpe = msharpeScreening(Xw, level = level, na.neg = na.neg,
+                                            control = control, Y = Yw))
     frag <- .rollAgg(sc)
     frag <- cbind(window = k, index = idx[length(idx)], frag)
     frags[[k]] <- frag

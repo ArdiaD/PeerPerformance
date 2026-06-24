@@ -26,7 +26,7 @@ in Ledoit and Wolf (2008) and Ardia and Boudt (2015, 2018).
 \itemize{
 \item Alpha: \code{\link{alphaTesting}} and \code{\link{alphaScreening}};
 \item Sharpe ratio: \code{\link{sharpe}}, \code{\link{sharpeTesting}} and \code{\link{sharpeScreening}};
-\item Modified Share ratio: \code{\link{msharpe}}, \code{\link{msharpeTesting}} and \code{\link{msharpeScreening}};
+\item Modified Sharpe ratio: \code{\link{msharpe}}, \code{\link{msharpeTesting}} and \code{\link{msharpeScreening}};
 \item Screening: \code{\link{alphaScreening}}, \code{\link{sharpeScreening}}, and \code{\link{msharpeScreening}}.
 }
 }

@@ -45,7 +45,7 @@
 #' @name sharpeTesting
 #' @title Testing the difference of Sharpe ratios
 #' @description Function which performs the testing of the difference of Sharpe ratios.
-#' @details The Sharpe ratio (Sharpe 1992) is one industry standard for measuring the
+#' @details The Sharpe ratio (Sharpe 1994) is one industry standard for measuring the
 #' absolute risk adjusted performance of hedge funds. This function performs
 #' the testing of Sharpe ratio difference for two funds using the approach by
 #' Ledoit and Wolf (2002).
@@ -88,7 +88,7 @@
 #'
 #' \code{pval}: pvalues of test of Sharpe ratios differences.
 #' @note Further details on the methodology with an application to the hedge
-#' fund industry is given in in Ardia and Boudt (2018).
+#' fund industry is given in Ardia and Boudt (2018).
 #'
 #' Some internal functions where adapted from Michael Wolf MATLAB code.
 #' @author David Ardia and Kris Boudt.
@@ -101,7 +101,7 @@
 #'
 #' Ardia, D., Boudt, K. (2018).
 #' The peer performance ratios of hedge funds.
-#' \emph{Journal of Banking and Finance} \bold{87}, 351-.368.
+#' \emph{Journal of Banking and Finance} \bold{87}, 351--368.
 #'
 #' Barras, L., Scaillet, O., Wermers, R. (2010).
 #' False discoveries in mutual fund performance: Measuring luck in estimated alphas.
@@ -147,7 +147,7 @@
 #' out = sharpeTesting(x, y, control = ctr)
 #' print(out)
 #' @export
-#' @import compiler
+#' @importFrom compiler cmpfun
 sharpeTesting <- compiler::cmpfun(.sharpeTesting)
 
 #@name .sharpe.ratio.diff

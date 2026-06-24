@@ -46,6 +46,22 @@ processControl <- function(control) {
   if (!("gammaNeg" %in% nam) || is.null(control$gammaNeg)) {
     control$gammaNeg <- 0.6
   }
+
+  # basic validation of the (possibly user-supplied) values
+  if (!(control$type %in% c(1, 2))) stop("'control$type' must be 1 or 2")
+  if (!(control$ttype %in% c(1, 2))) stop("'control$ttype' must be 1 or 2")
+  if (!(control$pBoot %in% c(1, 2))) stop("'control$pBoot' must be 1 or 2")
+  if (!is.logical(control$hac)) stop("'control$hac' must be logical")
+  if (control$nBoot < 1) stop("'control$nBoot' must be >= 1")
+  if (control$bBoot < 0) stop("'control$bBoot' must be >= 0")
+  if (control$nCore < 1) stop("'control$nCore' must be >= 1")
+  if (control$minObs < 1) stop("'control$minObs' must be >= 1")
+  if (control$minObsPi < 0) stop("'control$minObsPi' must be >= 0")
+  if (!is.null(control$lambda) && (any(control$lambda < 0) || any(control$lambda >= 1)))
+    stop("'control$lambda' must lie in [0, 1)")
+  if (control$gammaPos <= 0 || control$gammaPos >= 1) stop("'control$gammaPos' must lie in (0, 1)")
+  if (control$gammaNeg <= 0 || control$gammaNeg >= 1) stop("'control$gammaNeg' must lie in (0, 1)")
+
   return(control)
 }
 

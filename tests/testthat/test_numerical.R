@@ -62,6 +62,31 @@ test_that("NA values are handled without error", {
   expect_true(all(is.finite(res$npeer)))
 })
 
+test_that("audit fixes: degenerate inputs are handled", {
+  ## A1: screen_beta = TRUE without factors warns and falls back (no crash)
+  expect_warning(r <- alphaScreening(hfdata[, 1:5], control = list(nCore = 1, screen_beta = TRUE)))
+  expect_false(is.matrix(r$pizero))
+
+  ## A2: bBoot = 0 in screening errors cleanly
+  expect_error(sharpeScreening(hfdata[, 1:4], control = list(nCore = 1, type = 2, bBoot = 0)))
+  expect_error(msharpeScreening(hfdata[, 1:4], control = list(nCore = 1, type = 2, bBoot = 0)))
+
+  ## A3: a peer differing from the focal fund by a constant is excluded
+  Y <- hfdata[, 11:14]; Y[, 2] <- hfdata[, 1] + 0.5
+  s <- alphaScreening(hfdata[, 1], Y = Y, control = list(nCore = 1))
+  expect_equal(s$npeer, 3L)
+  expect_false(any(s$pval == 0, na.rm = TRUE))
+
+  ## A4: rollScreening only stamps screen_beta for the alpha screen
+  rb <- rollScreening(hfdata[, 1:20], screen = "sharpe", width = 40, by = 20,
+                      control = list(nCore = 1, screen_beta = TRUE))
+  expect_false(isTRUE(attr(rb, "screen_beta")))
+
+  ## B5: invalid control values are rejected
+  expect_error(alphaScreening(hfdata[, 1:4], control = list(nCore = 1, type = 3)))
+  expect_error(alphaScreening(hfdata[, 1:4], control = list(nCore = 1, gammaPos = 1.5)))
+})
+
 test_that("cross-group screening (X vs Y) works and excludes self", {
   ## single focal fund against a peer group
   s <- alphaScreening(hfdata[, 1], Y = hfdata[, 11:30], control = list(nCore = 1))

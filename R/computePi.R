@@ -4,7 +4,7 @@
 # #' @title Compute pi0, pi+ and pi-
 # #' @importFrom stats qnorm
 # #' @import compiler
-.computePi <- function(pval, dalpha, tstat, lambda = 0.5, nBoot = 500,
+.computePi <- function(pval, dalpha, tstat, lambda = 0.5, nBoot = 499,
                        bpos = 0.4, bneg = 0.6, adjust = TRUE) {
 
   if (!is.matrix(pval) & !is.array(pval)) {
@@ -99,6 +99,10 @@ computePi <- compiler::cmpfun(.computePi)
     pval <- matrix(pval, nrow = 1)
   }
 
+  # Note: 'n' (number of trials in the truncated-binomial adjustment of adjustPi)
+  # is the number of columns of 'pval'. This matches the original Ardia & Boudt
+  # (2018) implementation; when some peers are NA it slightly over-counts the
+  # effective number of peers. Kept as-is for consistency with published results.
   n <- ncol(pval)
   pizero <- apply(pval>=lambda, 1, mean, na.rm=TRUE)
   # pizero <- mean(pval >= lambda, na.rm = TRUE)
@@ -114,7 +118,7 @@ computePi <- compiler::cmpfun(.computePi)
 computePizero <- compiler::cmpfun(.computePizero)
 
 # #' @name .adjustPi
-# #' @title Adjust estimated pi0 using quadratif fit
+# #' @title Adjust estimated pi0 using quadratic fit
 # #' @importFrom stats dnorm pnorm uniroot
 # #' @import compiler
 .adjustPi <- function(pi.hat, n = 100, lambda = 0.5) {
@@ -164,13 +168,16 @@ adjustPi <- compiler::cmpfun(.adjustPi)
 # #' @title Compute optimal lamba values
 # #' @importFrom stats runif
 # #' @import compiler
-.computeOptLambda <- function(pval, nBoot = 500, adjust = TRUE) {
+.computeOptLambda <- function(pval, nBoot = 499, adjust = TRUE) {
   if (!is.matrix(pval)) {
     pval <- matrix(pval, nrow = 1)
   }
 
   n <- nrow(pval)  # number of funds
 
+  # Grid for the data-driven lambda. Ardia & Boudt (2018) describe a finer grid
+  # {0.30, 0.32, ..., 0.70}; the coarser 0.1 step is kept here for consistency
+  # with the published package results (and is much faster).
   vlambda <- seq(0.3, 0.7, 0.1)
   nvlambda <- length(vlambda)
 

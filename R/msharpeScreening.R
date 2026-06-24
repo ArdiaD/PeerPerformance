@@ -15,6 +15,10 @@
 
   # process control
   ctr <- processControl(control)
+  if (ctr$bBoot == 0) {
+    stop("'bBoot = 0' (data-driven block length) is not supported in screening; ",
+         "set an explicit block length 'bBoot >= 1'.")
+  }
 
   # size of inputs and outputs
   T <- nrow(X)
@@ -99,8 +103,9 @@
 #' bootstrap replications for computing the p-value. Default: \code{nBoot =
 #' 499}.
 #' \item \code{'bBoot'} Block length in the circular bootstrap. Default:
-#' \code{bBoot = 1}, i.e. iid bootstrap. \code{bBoot = 0} uses optimal
-#' block-length.
+#' \code{bBoot = 1}, i.e. iid bootstrap. (The data-driven choice
+#' \code{bBoot = 0} is only available in \code{\link{msharpeTesting}}, not in
+#' screening.)
 #' \item \code{'pBoot'} Symmetric p-value (\code{pBoot = 1}) or
 #' asymmetric p-value (\code{pBoot = 2}). Default: \code{pBoot = 1}.
 #' \item \code{'nCore'} Number of cores to be used. Default: \code{nCore = 1}.
@@ -159,12 +164,12 @@
 #' \code{pineg}: Vector (of length \eqn{N}) of probability of underperformance
 #' performance.
 #' @note Further details on the methodology with an application to the hedge
-#' fund industry is given in in Ardia and Boudt (2018).
+#' fund industry is given in Ardia and Boudt (2018).
 #'
 #' Some internal functions where adapted from Michael Wolf MATLAB code.
 #'
 #' Application of the false discovery rate approach applied to the mutual fund
-#' industry has been presented in Barraz, Scaillet and Wermers (2010).
+#' industry has been presented in Barras, Scaillet and Wermers (2010).
 #' @author David Ardia and Kris Boudt.
 #' @seealso \code{\link{msharpe}}, \code{\link{msharpeTesting}},
 #' \code{\link{sharpeScreening}} and \code{\link{alphaScreening}}.
@@ -241,6 +246,9 @@ msharpeScreening <- compiler::cmpfun(.msharpeScreening)
     } else {
       tmp <- msharpeTestBootstrap(rets, level, na.neg, bsids, b,
                                   ttype, pBoot)
+    }
+    if (!is.finite(tmp$tstat)) {
+      next  # degenerate pair or NA modified VaR (na.neg)
     }
 
     dmsharpei[j] <- tmp$dmsharpe
