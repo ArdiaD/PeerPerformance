@@ -1,4 +1,9 @@
 # Version 2.4.0 (DA)
+- Fixed a bug in `sharpeScreening`/`msharpeScreening` on unbalanced panels: the
+  focal fund's returns were indexed with the first peer's missing-value mask
+  (`X[idx[, k], 1]`) instead of the current pair's (`X[idx[, k], k]`), which
+  could inject `NA`s and yield `NaN` p-values for some pairs (reported by
+  GitHub user NenoJo)
 - Added `targetPeerPerformance()` (contributed by Murilo Andre Peres Pereira): screens a
   selected subset of funds against the whole universe; a convenience wrapper
   over the cross-group screening (`*Screening(X[, funds], Y = X)`)

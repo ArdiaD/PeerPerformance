@@ -62,6 +62,20 @@ test_that("NA values are handled without error", {
   expect_true(all(is.finite(res$npeer)))
 })
 
+test_that("sharpe/msharpe screening on an unbalanced panel has no NaN (PR #14)", {
+  set.seed(1)
+  Tn <- 80
+  X <- matrix(rnorm(Tn * 4, 0.01, 0.05), Tn, 4)
+  X[1:25, 2] <- NA   # the FIRST peer of fund 1 is missing early
+  ss <- sharpeScreening(X, control = list(nCore = 1))
+  ms <- msharpeScreening(X, control = list(nCore = 1))
+  ## with the old 'X[idx[, k], 1]' indexing the focal returns were NA-contaminated
+  ## for some pairs, producing NaN p-values
+  expect_false(any(is.nan(ss$pval)))
+  expect_false(any(is.nan(ms$pval)))
+  expect_true(all(ss$pizero + ss$pipos + ss$pineg - 1 < 1e-8, na.rm = TRUE))
+})
+
 test_that("audit fixes: degenerate inputs are handled", {
   ## A1: screen_beta = TRUE without factors warns and falls back (no crash)
   expect_warning(r <- alphaScreening(hfdata[, 1:5], control = list(nCore = 1, screen_beta = TRUE)))
