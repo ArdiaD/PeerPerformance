@@ -24,6 +24,13 @@ Returns a tidy \code{data.frame} with one row per fund (or, when
 the screening was run with \code{screen_beta = TRUE}, one row per
 fund/coefficient), suitable for downstream filtering, ranking, and plotting.
 }
+\examples{
+\donttest{
+  data("hfdata")
+  sc <- alphaScreening(hfdata[, 1:10], control = list(nCore = 1))
+  head(as.data.frame(sc))
+}
+}
 \seealso{
 \code{\link{alphaScreening}}.
 }

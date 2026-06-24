@@ -25,6 +25,14 @@ Invisibly returns \code{x}.
 Time-series plot of the rolling peer performance ratios produced
 by \code{\link{rollScreening}}.
 }
+\examples{
+\donttest{
+  data("hfdata")
+  roll <- rollScreening(hfdata[, 1:15], width = 36, by = 12,
+                        control = list(nCore = 1))
+  plot(roll)
+}
+}
 \seealso{
 \code{\link{rollScreening}}.
 }

@@ -118,6 +118,12 @@ print.SCREENING <- function(x, ...) {
 #' @author David Ardia and Kris Boudt.
 #' @seealso \code{\link{alphaScreening}}.
 #' @keywords manip
+#' @examples
+#' \donttest{
+#'   data("hfdata")
+#'   sc <- alphaScreening(hfdata[, 1:10], control = list(nCore = 1))
+#'   head(as.data.frame(sc))
+#' }
 #' @export
 as.data.frame.SCREENING <- function(x, row.names = NULL, optional = FALSE, ...) {
   short <- if (!is.null(x$alpha)) "alpha" else if (!is.null(x$sharpe)) "sharpe" else "msharpe"
@@ -171,6 +177,12 @@ as.data.frame.SCREENING <- function(x, row.names = NULL, optional = FALSE, ...) 
 #' @author Murilo Andre Peres Pereira, David Ardia and Kris Boudt.
 #' @seealso \code{\link{alphaScreening}}.
 #' @keywords htest
+#' @examples
+#' \donttest{
+#'   data("hfdata")
+#'   sc <- alphaScreening(hfdata[, 1:10], control = list(nCore = 1))
+#'   summary(sc)
+#' }
 #' @export
 #' @importFrom stats quantile median
 #' @importFrom utils head tail
@@ -406,6 +418,13 @@ exposureHeterogeneity <- function(object) {
 #' @author David Ardia and Kris Boudt.
 #' @seealso \code{\link{exposureHeterogeneity}}.
 #' @keywords hplot
+#' @examples
+#' \donttest{
+#'   data("hfdata")
+#'   sc <- alphaScreening(hfdata[, 1:10], factors = hfdata[, 50:51],
+#'                        control = list(nCore = 1, screen_beta = TRUE))
+#'   plot(exposureHeterogeneity(sc))
+#' }
 #' @export
 #' @importFrom graphics barplot
 plot.exposureHeterogeneity <- function(x, ...) {

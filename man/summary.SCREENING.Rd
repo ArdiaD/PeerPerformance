@@ -28,6 +28,13 @@ performance measure, the peer performance ratios, optional win/loss counts
 from the pairwise tests, and the top/bottom funds (overall and by
 out-/underperformance ratio). Originally contributed by Murilo Andre Peres Pereira.
 }
+\examples{
+\donttest{
+  data("hfdata")
+  sc <- alphaScreening(hfdata[, 1:10], control = list(nCore = 1))
+  summary(sc)
+}
+}
 \seealso{
 \code{\link{alphaScreening}}.
 }

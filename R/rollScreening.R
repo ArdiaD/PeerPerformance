@@ -142,6 +142,13 @@ rollScreening <- function(X, factors = NULL, Y = NULL,
 #' @author David Ardia and Kris Boudt.
 #' @seealso \code{\link{rollScreening}}.
 #' @keywords hplot
+#' @examples
+#' \donttest{
+#'   data("hfdata")
+#'   roll <- rollScreening(hfdata[, 1:15], width = 36, by = 12,
+#'                         control = list(nCore = 1))
+#'   plot(roll)
+#' }
 #' @export
 #' @importFrom graphics matplot legend lines
 #' @importFrom grDevices hcl.colors

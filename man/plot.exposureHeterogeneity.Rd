@@ -18,6 +18,14 @@ Invisibly returns \code{x}.
 Bar plot of the heterogeneity measure \eqn{1-\pi^0_k} returned by
 \code{\link{exposureHeterogeneity}}.
 }
+\examples{
+\donttest{
+  data("hfdata")
+  sc <- alphaScreening(hfdata[, 1:10], factors = hfdata[, 50:51],
+                       control = list(nCore = 1, screen_beta = TRUE))
+  plot(exposureHeterogeneity(sc))
+}
+}
 \seealso{
 \code{\link{exposureHeterogeneity}}.
 }
