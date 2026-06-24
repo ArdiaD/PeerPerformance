@@ -1,5 +1,20 @@
 citHeader("To cite 'PeerPerformance' in publications use:")
 
+bibentry(bibtype = "Manual",
+  title   = "{PeerPerformance}: Luck-Corrected Peer Performance Analysis in R",
+  author  = c(person("David", "Ardia"),
+              person(c("Murilo", "Andre", "Peres"), "Pereira"),
+              person("Benjamin", "Seguin"),
+              person("Kris", "Boudt")),
+  year    = "2025",
+  note    = "R package version 2.4.0",
+  url     = "https://CRAN.R-project.org/package=PeerPerformance",
+  textVersion = paste("Ardia, D., Peres Pereira, M. A., Seguin, B., Boudt, K. (2025).",
+    "PeerPerformance: Luck-Corrected Peer Performance Analysis in R.",
+    "R package version 2.4.0.",
+    "https://CRAN.R-project.org/package=PeerPerformance")
+)
+
 bibentry(bibtype = "article",
   title  = "The peer performance ratios of hedge funds",
 	author = c(person("David","Ardia"),

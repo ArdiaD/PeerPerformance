@@ -13,7 +13,8 @@ Authors@R: c(person("David", "Ardia", role = c("aut", "cre", "cph", "fnd"),
              person("Benjamin", "Seguin", role = "ctb"))
 Depends: R (>= 3.5.0)
 Imports: compiler, graphics, grDevices, lmtest, parallel, sandwich, stats
-Suggests: testthat
+Suggests: knitr, rmarkdown, testthat
+VignetteBuilder: knitr
 Description: Provides functions to perform the peer performance
     analysis of funds' returns as described in Ardia and Boudt (2018) <doi:10.1016/j.jbankfin.2017.10.014>.
 BugReports: https://github.com/ArdiaD/PeerPerformance/issues

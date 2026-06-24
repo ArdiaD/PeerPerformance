@@ -1,0 +1,39 @@
+url: https://ardiad.github.io/PeerPerformance/
+
+template:
+  bootstrap: 5
+
+reference:
+- title: Peer performance screening
+  desc: Estimate the out-/equal-/under-performance ratios for a universe of funds.
+  contents:
+  - alphaScreening
+  - sharpeScreening
+  - msharpeScreening
+  - targetPeerPerformance
+  - rollScreening
+- title: Pairwise testing
+  desc: Test the equality of two funds' performance.
+  contents:
+  - alphaTesting
+  - sharpeTesting
+  - msharpeTesting
+- title: Performance ratios
+  contents:
+  - sharpe
+  - msharpe
+- title: Methods and helpers
+  desc: Inspect, summarize, visualize, and post-process screening results.
+  contents:
+  - print.SCREENING
+  - summary.SCREENING
+  - plot.SCREENING
+  - as.data.frame.SCREENING
+  - exposureHeterogeneity
+  - plot.exposureHeterogeneity
+  - plot.rollScreening
+  - print.TESTING
+- title: Data and package
+  contents:
+  - hfdata
+  - PeerPerformance

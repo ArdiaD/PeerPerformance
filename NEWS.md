@@ -1,4 +1,6 @@
 # Version 2.4.0 (DA)
+- Added a package vignette ("Luck-Corrected Peer Performance Analysis with
+  PeerPerformance"), a `pkgdown` configuration, and a package `CITATION` entry
 - Robustness: `processControl` now validates that scalar control values are
   single finite numbers / logicals; `computePi` checks the `lambda` length;
   `targetPeerPerformance` rejects non-whole `funds`; `rollScreening` validates

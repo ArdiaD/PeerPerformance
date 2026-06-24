@@ -1,0 +1,115 @@
+---
+title: "Luck-Corrected Peer Performance Analysis with PeerPerformance"
+author: "David Ardia, Murilo Andre Peres Pereira, Benjamin Seguin"
+output: rmarkdown::html_vignette
+bibliography: null
+vignette: >
+  %\VignetteIndexEntry{Luck-Corrected Peer Performance Analysis with PeerPerformance}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.width = 7,
+                      fig.height = 3.4)
+```
+
+## Overview
+
+`PeerPerformance` evaluates the performance of investment funds *relative to
+their peers*, with a correction for luck that is robust to false discoveries.
+For each fund $i$ it estimates three **peer performance ratios** that sum to
+one:
+
+- $\hat\pi^+_i$ -- the proportion of peers fund $i$ significantly **outperforms**,
+- $\hat\pi^0_i$ -- the proportion of peers with **equal** performance,
+- $\hat\pi^-_i$ -- the proportion of peers that **outperform** fund $i$.
+
+The estimators implement the methodology of Ardia and Boudt (2018,
+*Journal of Banking & Finance*); the modified Sharpe ratio test follows
+Ardia and Boudt (2015, *Finance Research Letters*). A naive percentile rank
+ignores that many funds may be statistically indistinguishable; the
+false-discovery-rate (FDR) correction of Storey (2002) corrects for this.
+
+```{r}
+library(PeerPerformance)
+data("hfdata")          # 60 monthly returns for 100 anonymized hedge funds
+dim(hfdata)
+```
+
+## Alpha peer performance screening
+
+`alphaScreening()` runs all pairwise tests and returns the three ratios for
+each fund. With `factors = NULL` it compares raw returns; supply a `factors`
+matrix to compare risk-adjusted alphas.
+
+```{r}
+set.seed(1234)
+rets <- hfdata[, 1:15]
+sc <- alphaScreening(rets, control = list(nCore = 1))
+round(rbind(pipos = sc$pipos, pizero = sc$pizero, pineg = sc$pineg), 3)[, 1:6]
+```
+
+The three ratios sum to one for every fund. A `summary()` method ranks the
+funds and reports the win/loss counts:
+
+```{r}
+summary(sc, top = 3)
+```
+
+The `plot()` method reproduces the Ardia and Boudt (2018) screening plot
+(funds sorted by performance; stacked out-/equal-/under-performance bars with
+the naive percentile-rank diagonal):
+
+```{r screenfig}
+plot(alphaScreening(hfdata[, 1:30], control = list(nCore = 1)))
+```
+
+## Sharpe and modified Sharpe ratios
+
+```{r}
+round(sharpe(rets[, 1:6]), 3)
+round(msharpe(rets[, 1:6], level = 0.95), 3)
+```
+
+Equality of two funds' (modified) Sharpe ratios is tested with
+`sharpeTesting()` / `msharpeTesting()`. The asymptotic test is the default; a
+studentized bootstrap (recommended for short or autocorrelated series) is
+requested with `control = list(type = 2)`.
+
+```{r}
+res <- msharpeTesting(hfdata[, 1], hfdata[, 2], level = 0.95)
+c(dmsharpe = res$dmsharpe, tstat = res$tstat, pval = res$pval)
+```
+
+`sharpeScreening()` and `msharpeScreening()` build the peer performance ratios
+from Sharpe (resp. modified Sharpe) comparisons instead of alphas.
+
+## Comparing a fund (or group) against a separate peer group
+
+The `Y` argument (or the convenience wrapper `targetPeerPerformance()`) screens
+a chosen fund, or subset of funds, against a separate universe.
+
+```{r}
+focal <- hfdata[, 1]
+peers <- hfdata[, 11:40]
+res_xy <- alphaScreening(focal, Y = peers, control = list(nCore = 1))
+round(c(pizero = res_xy$pizero, pipos = res_xy$pipos, pineg = res_xy$pineg), 3)
+```
+
+## Control parameters
+
+All screening/testing functions share a `control` list. Common fields include
+`nCore` (parallel cores), `lambda` (the $\lambda$ threshold for $\hat\pi^0$,
+`NULL` = data-driven), `gammaPos`/`gammaNeg` (the one-sided thresholds, default
+`0.4`/`0.6`), `hac` (HAC standard errors), and for the Sharpe/mSR routines
+`type` (asymptotic/bootstrap), `nBoot`, and `bBoot`. See `?alphaScreening`.
+
+## References
+
+- Ardia, D., Boudt, K. (2018). The peer performance ratios of hedge funds.
+  *Journal of Banking & Finance* **87**, 351--368.
+- Ardia, D., Boudt, K. (2015). Testing equality of modified Sharpe ratios.
+  *Finance Research Letters* **13**, 97--104.
+- Storey, J. (2002). A direct approach to false discovery rates.
+  *Journal of the Royal Statistical Society B* **64**(3), 479--498.
