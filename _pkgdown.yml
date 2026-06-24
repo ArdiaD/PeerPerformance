@@ -27,6 +27,7 @@ reference:
   contents:
   - print.SCREENING
   - summary.SCREENING
+  - confint.SCREENING
   - plot.SCREENING
   - as.data.frame.SCREENING
   - exposureHeterogeneity

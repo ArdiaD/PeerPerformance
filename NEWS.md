@@ -1,4 +1,11 @@
 # Version 2.4.0 (DA)
+- Added a `confint` method for `SCREENING` objects: nonparametric peer
+  (pairwise) bootstrap confidence intervals for the peer performance ratios
+  (`pipos`/`pizero`/`pineg`)
+- Added a reproducible Monte-Carlo validation script
+  (`system.file("scripts", "validation.R", package = "PeerPerformance")`):
+  checks the near-unbiasedness of `pizero` under the equal-performance null and
+  the size/power of the modified Sharpe equality test
 - Added a package vignette ("Luck-Corrected Peer Performance Analysis with
   PeerPerformance"), a `pkgdown` configuration, and a package `CITATION` entry
 - Robustness: `processControl` now validates that scalar control values are

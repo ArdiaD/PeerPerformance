@@ -197,7 +197,8 @@ test_that("rollScreening returns a tidy time series", {
                 dimnames = list(NULL, c("MKT", "SMB")))
   rb <- rollScreening(hfdata[, 1:30], factors = fac, width = 36, by = 12,
                       control = list(nCore = 1, screen_beta = TRUE))
-  expect_equal(sort(unique(rb$coefficient)), c("alpha", "MKT", "SMB"))
+  ## set comparison (locale-independent: avoids C vs UTF-8 sort order)
+  expect_setequal(unique(rb$coefficient), c("alpha", "MKT", "SMB"))
   pf <- tempfile(fileext = ".pdf"); pdf(pf); plot(rb); dev.off(); unlink(pf)
 })
 
@@ -264,4 +265,25 @@ test_that("seeded bootstrap tests are reproducible", {
   set.seed(321); q1 <- msharpeTesting(x, y, control = list(type = 2, nBoot = 200))$pval
   set.seed(321); q2 <- msharpeTesting(x, y, control = list(type = 2, nBoot = 200))$pval
   expect_identical(q1, q2)
+})
+
+test_that("confint.SCREENING brackets the point estimate and is valid", {
+  rets <- hfdata[, 1:12]
+  sc   <- alphaScreening(rets, control = list(nCore = 1))
+  set.seed(42)
+  ci <- confint(sc, parm = "pipos", nBoot = 200)
+  ## shape and naming
+  expect_equal(nrow(ci), ncol(rets))
+  expect_equal(ncol(ci), 2L)
+  expect_equal(rownames(ci), colnames(rets))
+  est <- attr(ci, "estimate")
+  ok  <- !is.na(ci[, 1]) & !is.na(ci[, 2])
+  ## bounds are ordered, inside [0, 1], and contain the point estimate
+  expect_true(all(ci[ok, 1] <= ci[ok, 2]))
+  expect_true(all(ci[ok, ] >= 0 & ci[ok, ] <= 1))
+  expect_true(all(ci[ok, 1] <= est[ok] + 1e-8 & est[ok] <= ci[ok, 2] + 1e-8))
+  ## screen_beta screenings are rejected
+  scb <- alphaScreening(rets, factors = hfdata[, 50, drop = FALSE],
+                        control = list(nCore = 1, screen_beta = TRUE))
+  expect_error(confint(scb), "screen_beta")
 })

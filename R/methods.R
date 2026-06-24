@@ -264,6 +264,85 @@ print.summary.SCREENING <- function(x, ...) {
   invisible(x)
 }
 
+#' @name confint.SCREENING
+#' @title Bootstrap confidence intervals for the peer performance ratios
+#' @description Computes confidence intervals for one of the peer performance
+#' ratios (\eqn{\hat\pi^+}, \eqn{\hat\pi^0}, or \eqn{\hat\pi^-}) of a
+#' \code{SCREENING} object, by a nonparametric peer (pairwise) bootstrap: for
+#' each focal fund its peers are resampled with replacement and the ratio is
+#' recomputed from the stored pairwise p-values and test statistics. The
+#' interval therefore reflects the peer-composition and aggregation uncertainty,
+#' holding the individual pairwise test statistics fixed.
+#' @param object A \code{SCREENING} object (within-group or cross-group; not
+#' \code{screen_beta}).
+#' @param parm Which ratio to bound: \code{"pipos"} (default), \code{"pizero"},
+#' or \code{"pineg"}.
+#' @param level Confidence level. Default: \code{0.95}.
+#' @param ... Unused.
+#' @param nBoot Number of bootstrap resamples. Default: \code{499}.
+#' @param gammaPos,gammaNeg One-sided thresholds used to recompute the ratios
+#' (should match those of the original screening). Defaults: \code{0.4},
+#' \code{0.6}.
+#' @return A matrix with one row per fund and two columns (lower and upper
+#' bounds); the point estimate is attached as attribute \code{"estimate"}.
+#' @author David Ardia and Kris Boudt.
+#' @seealso \code{\link{alphaScreening}}.
+#' @keywords htest
+#' @examples
+#' \donttest{
+#' data("hfdata")
+#' set.seed(1234)
+#' sc <- alphaScreening(hfdata[, 1:15], control = list(nCore = 1))
+#' confint(sc, parm = "pipos")
+#' }
+#' @export
+#' @importFrom stats quantile
+confint.SCREENING <- function(object, parm = c("pipos", "pizero", "pineg"),
+                              level = 0.95, ..., nBoot = 499L,
+                              gammaPos = 0.4, gammaNeg = 0.6) {
+  parm <- match.arg(parm)
+  est <- object[[parm]]
+  if (is.matrix(est) || (!is.null(dim(est)) && length(dim(est)) > 1L)) {
+    stop("confint is not supported for 'screen_beta' screenings")
+  }
+  pval  <- object$pval
+  tstat <- object$tstat
+  ddiff <- if (!is.null(object$dalpha)) object$dalpha
+           else if (!is.null(object$dsharpe)) object$dsharpe
+           else object$dmsharpe
+  if (is.null(pval) || !is.matrix(pval) || is.null(tstat) || is.null(ddiff)) {
+    stop("confint requires the pairwise 'pval'/'tstat'/difference matrices")
+  }
+  lambda <- object$lambda
+  m <- nrow(pval)
+  a <- (1 - level) / 2
+  lo <- hi <- rep(NA_real_, m)
+  for (i in seq_len(m)) {
+    pv <- pval[i, ]; dd <- ddiff[i, ]; ts <- tstat[i, ]
+    ok <- !is.na(pv) & !is.na(ts) & !is.na(dd)
+    n <- sum(ok)
+    if (n < 2L) next
+    pv <- pv[ok]; dd <- dd[ok]; ts <- ts[ok]
+    lam <- if (!is.null(lambda) && length(lambda) >= i && !is.na(lambda[i])) lambda[i] else 0.5
+    bs <- rep(NA_real_, nBoot)
+    for (b in seq_len(nBoot)) {
+      idx <- sample.int(n, n, replace = TRUE)
+      pp <- computePi(pv[idx], dd[idx], ts[idx], lambda = lam,
+                      bpos = gammaPos, bneg = gammaNeg)
+      bs[b] <- pp[[parm]]
+    }
+    qs <- stats::quantile(bs, c(a, 1 - a), na.rm = TRUE, names = FALSE)
+    lo[i] <- qs[1]; hi[i] <- qs[2]
+  }
+  out <- cbind(lower = lo, upper = hi)
+  colnames(out) <- paste0(formatC(100 * c(a, 1 - a), format = "g"), "%")
+  rn <- names(est)
+  if (is.null(rn)) rn <- names(object$n)
+  rownames(out) <- if (!is.null(rn)) rn else seq_len(m)
+  attr(out, "estimate") <- as.vector(est)
+  out
+}
+
 #' @name exposureHeterogeneity
 #' @title Factor exposure heterogeneity from a beta screening
 #' @description Aggregates the per-fund equal-performance ratios of a
