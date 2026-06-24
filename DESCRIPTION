@@ -4,12 +4,13 @@ Title: Luck-Corrected Peer Performance Analysis in R
 Authors@R: c(person("David", "Ardia", role = c("aut", "cre"),
              email = "david.ardia.ch@gmail.com",
              comment = c(ORCID = "0000-0003-2823-782X")),
-             person("Kris", "Boudt", role = "aut", 
-             comment = c(ORCID = "0000-0002-1000-5142")),
              person("Nabil", "Bouamara", role = "ctb"),
+             person("Kris", "Boudt", role = "aut",
+             comment = c(ORCID = "0000-0002-1000-5142")),
              person("Sebastien", "Legros", role = "ctb"),
-             person("Benjamin", "Seguin", role = "ctb"),
-             person("Murilo Andre", "Peres Pereira", role = "ctb"))
+             person("Murilo Andre", "Peres Pereira", role = "ctb",
+             comment = c(ORCID = "0009-0007-0086-4801")),
+             person("Benjamin", "Seguin", role = "ctb"))
 Depends: R (>= 3.5.0)
 Imports: compiler, graphics, grDevices, lmtest, parallel, sandwich, stats
 Suggests: testthat
