@@ -12,7 +12,7 @@ Rcpp.pro
 Rcpp.pro.user
 *.autosave
 .#*
-inst/.DS_Store
+.DS_Store
 
 # Retrieved 2017-Oct-12 from https://github.com/github/gitignore/blob/master/R.gitignore
 # Licensed under CC0-1.0 https://github.com/github/gitignore/blob/master/LICENSE
@@ -58,7 +58,6 @@ vignettes/*.pdf
 # File that is not used and is superceded
 R/npsurv.R
 R/parametric_backup.R
-tests
 inst/doc
 aucun
 /doc/
