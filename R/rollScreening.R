@@ -85,12 +85,16 @@ rollScreening <- function(X, factors = NULL, Y = NULL,
   if (width < 2L || width > T) {
     stop("'width' must be between 2 and nrow(X)")
   }
+  if (length(by) != 1L || !is.finite(by) || by < 1L) {
+    stop("'by' must be a single positive integer")
+  }
+  by <- as.integer(by)
   if (!is.null(dates) && length(dates) != T) {
     stop("'dates' must have length nrow(X)")
   }
   ctr <- processControl(control)
-  # screen_beta only applies to the alpha screening
-  screen_beta <- isTRUE(ctr$screen_beta) && screen == "alpha"
+  # screen_beta only applies to the alpha screening with factors
+  screen_beta <- isTRUE(ctr$screen_beta) && screen == "alpha" && !is.null(factors)
   Fmat <- if (!is.null(factors)) as.matrix(factors) else NULL
   Ymat <- if (!is.null(Y)) as.matrix(Y) else NULL
 

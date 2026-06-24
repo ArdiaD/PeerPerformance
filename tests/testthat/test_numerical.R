@@ -62,6 +62,23 @@ test_that("NA values are handled without error", {
   expect_true(all(is.finite(res$npeer)))
 })
 
+test_that("audit-v2: output naming and control validation", {
+  X <- hfdata[, 1:10]; colnames(X) <- paste0("HF", 1:10)
+  ## as.data.frame keeps fund names; targetPeerPerformance labels its outputs
+  tp <- targetPeerPerformance(X, funds = c("HF3", "HF7"), method = "sharpe",
+                              control = list(nCore = 1))
+  expect_equal(as.data.frame(tp)$fund, c("HF3", "HF7"))
+  ## rollScreening: screen_beta requires factors (alpha) -> attr FALSE without
+  suppressWarnings(
+    rb <- rollScreening(hfdata[, 1:12], screen = "alpha", width = 40, by = 20,
+                        control = list(nCore = 1, screen_beta = TRUE)))
+  expect_false(isTRUE(attr(rb, "screen_beta")))
+  ## input / control validation
+  expect_error(targetPeerPerformance(X, funds = 1.9, control = list(nCore = 1)))
+  expect_error(alphaScreening(X[, 1:4], control = list(nCore = 1, hac = c(TRUE, FALSE))))
+  expect_error(alphaScreening(X[, 1:4], control = list(nCore = 1, lambda = c(0.4, 0.5))))
+})
+
 test_that("sharpe/msharpe screening on an unbalanced panel has no NaN (PR #14)", {
   set.seed(1)
   Tn <- 80

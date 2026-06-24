@@ -1,4 +1,9 @@
 # Version 2.4.0 (DA)
+- Robustness: `processControl` now validates that scalar control values are
+  single finite numbers / logicals; `computePi` checks the `lambda` length;
+  `targetPeerPerformance` rejects non-whole `funds`; `rollScreening` validates
+  `by` and only flags `screen_beta` for the alpha screen with factors; output
+  fund names are preserved in `as.data.frame` and `targetPeerPerformance`
 - Fixed a bug in `sharpeScreening`/`msharpeScreening` on unbalanced panels: the
   focal fund's returns were indexed with the first peer's missing-value mask
   (`X[idx[, k], 1]`) instead of the current pair's (`X[idx[, k], k]`), which

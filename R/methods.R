@@ -126,7 +126,10 @@ as.data.frame.SCREENING <- function(x, row.names = NULL, optional = FALSE, ...) 
   lambda <- x$lambda; npeer <- x$npeer
 
   if (!is.matrix(pizero)) {
-    df <- data.frame(fund = seq_along(pizero))
+    fund_lbl <- names(pizero)
+    if (is.null(fund_lbl)) fund_lbl <- names(x$n)
+    if (is.null(fund_lbl)) fund_lbl <- seq_along(pizero)
+    df <- data.frame(fund = fund_lbl, stringsAsFactors = FALSE)
     df[[short]] <- as.vector(measure)
     df$pipos <- as.vector(pipos); df$pizero <- as.vector(pizero)
     df$pineg <- as.vector(pineg)
@@ -135,8 +138,11 @@ as.data.frame.SCREENING <- function(x, row.names = NULL, optional = FALSE, ...) 
   } else {
     ncoef <- nrow(pizero); N <- ncol(pizero)
     cn <- rownames(pizero); if (is.null(cn)) cn <- paste0("coef", seq_len(ncoef))
+    fcols <- colnames(pizero)
+    if (is.null(fcols)) fcols <- names(x$n)
+    if (is.null(fcols)) fcols <- seq_len(N)
     df <- data.frame(coefficient = rep(cn, times = N),
-                     fund = rep(seq_len(N), each = ncoef),
+                     fund = rep(fcols, each = ncoef),
                      stringsAsFactors = FALSE)
     df[[short]] <- as.vector(measure)
     df$pipos <- as.vector(pipos); df$pizero <- as.vector(pizero)
@@ -173,7 +179,12 @@ summary.SCREENING <- function(object, coef = 1L, top = 5L, p_level = 0.05, ...) 
   measure <- if (!is.null(x$alpha)) "alpha" else if (!is.null(x$sharpe)) "sharpe" else if (!is.null(x$msharpe)) "msharpe" else stop("no recognized measure in the 'SCREENING' object")
 
   est <- x[[measure]]
-  if (is.matrix(est)) est <- est[coef, ]
+  if (is.matrix(est)) {
+    ok_coef <- (is.numeric(coef) && length(coef) == 1L && coef >= 1 && coef <= nrow(est)) ||
+               (is.character(coef) && length(coef) == 1L && coef %in% rownames(est))
+    if (!ok_coef) stop("'coef' must be a valid coefficient row index or name")
+    est <- est[coef, ]
+  }
   est <- as.numeric(est)
 
   funds <- names(x$pizero)

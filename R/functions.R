@@ -48,6 +48,17 @@ processControl <- function(control) {
   }
 
   # basic validation of the (possibly user-supplied) values
+  for (nm in c("hac", "screen_beta")) {
+    v <- control[[nm]]
+    if (length(v) != 1L || !is.logical(v) || is.na(v))
+      stop("'control$", nm, "' must be a single TRUE/FALSE")
+  }
+  for (nm in c("type", "ttype", "pBoot", "nBoot", "bBoot", "nCore",
+               "minObs", "minObsPi", "gammaPos", "gammaNeg")) {
+    v <- control[[nm]]
+    if (length(v) != 1L || !is.numeric(v) || !is.finite(v))
+      stop("'control$", nm, "' must be a single finite number")
+  }
   if (!(control$type %in% c(1, 2))) stop("'control$type' must be 1 or 2")
   if (!(control$ttype %in% c(1, 2))) stop("'control$ttype' must be 1 or 2")
   if (!(control$pBoot %in% c(1, 2))) stop("'control$pBoot' must be 1 or 2")

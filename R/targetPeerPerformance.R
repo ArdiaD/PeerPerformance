@@ -18,6 +18,9 @@
 
   # resolve 'funds' to column indices (preserving the user-supplied order)
   idx <- if (is.numeric(funds)) {
+    if (anyNA(funds) || any(!is.finite(funds)) || any(funds != as.integer(funds))) {
+      stop("numeric 'funds' must be whole, finite, positive indices")
+    }
     as.integer(funds)
   } else {
     m <- match(funds, fund_names)
@@ -44,7 +47,12 @@
   fn <- fund_names[idx]
   dname <- switch(method, alpha = "dalpha", sharpe = "dsharpe", msharpe = "dmsharpe")
   for (el in c("n", "npeer", "lambda", "pizero", "pipos", "pineg", method)) {
-    if (!is.null(out[[el]]) && length(out[[el]]) == length(fn)) {
+    v <- out[[el]]
+    if (is.null(v)) next
+    if (is.matrix(v)) {
+      # screen_beta: coefficient-by-focal-fund matrices
+      if (ncol(v) == length(fn)) colnames(out[[el]]) <- fn
+    } else if (length(v) == length(fn)) {
       names(out[[el]]) <- fn
     }
   }

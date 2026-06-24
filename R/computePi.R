@@ -29,6 +29,9 @@
     }
 
   # n1 = ncol(pval) # n + 1 funds
+  if (!is.null(lambda) && !(length(lambda) %in% c(1L, m))) {
+    stop("'lambda' must be NULL, length 1, or length equal to the number of funds")
+  }
   if (length(lambda) == 1) {
     lambda <- rep(lambda, m)
   }
