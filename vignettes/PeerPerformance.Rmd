@@ -57,6 +57,14 @@ funds and reports the win/loss counts:
 summary(sc, top = 3)
 ```
 
+The ratios are point estimates; `confint()` attaches confidence intervals by a
+nonparametric peer (pairwise) bootstrap that resamples each fund's peers:
+
+```{r}
+set.seed(1234)
+round(confint(sc, parm = "pipos")[1:6, ], 3)
+```
+
 The `plot()` method reproduces the Ardia and Boudt (2018) screening plot
 (funds sorted by performance; stacked out-/equal-/under-performance bars with
 the naive percentile-rank diagonal):

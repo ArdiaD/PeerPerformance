@@ -9,6 +9,55 @@ In addition, it implements the testing framework for the Sharpe and modified Sha
 in [Ledoit and Wolf (2008)](https://doi.org/10.1016/j.jempfin.2008.03.002) 
 and [Ardia and Boudt (2015)](https://doi.org/10.1016/j.frl.2015.02.008). See also Ardia et al. (2022,2023) for applications in sustainable finance.
 
+## Installation
+
+The stable version is on [CRAN](https://CRAN.R-project.org/package=PeerPerformance):
+
+```r
+install.packages("PeerPerformance")
+```
+
+The development version can be installed from GitHub:
+
+```r
+# install.packages("remotes")
+remotes::install_github("ArdiaD/PeerPerformance")
+```
+
+## Features
+
+- **Peer performance screening** of a fund universe with luck correction:
+  `alphaScreening()` (risk-adjusted alphas, optionally with factor exposures
+  via `screen_beta = TRUE`), `sharpeScreening()` and `msharpeScreening()`
+  (Sharpe / modified Sharpe). Each returns the out-/equal-/under-performance
+  ratios (pi+, pi0, pi-).
+- **Cross-group screening**: the `Y` argument screens each fund (or a single
+  focal fund) against a *separate* peer group; `targetPeerPerformance()` is a
+  convenience wrapper for screening a chosen subset against the whole universe.
+- **Pairwise testing**: `alphaTesting()`, `sharpeTesting()`, `msharpeTesting()`.
+- **Methods** for screening results: `print()`, `summary()`, `plot()` (the
+  Ardia and Boudt 2018 screening plot), `confint()` (bootstrap confidence
+  intervals for the ratios), and `as.data.frame()` (tidy output).
+- **Dynamic and factor analyses**: `rollScreening()` (rolling-window ratios)
+  and `exposureHeterogeneity()` (factor exposure heterogeneity of Ardia et al.
+  2023).
+- A vignette (`vignette("PeerPerformance")`) and a reproducible Monte-Carlo
+  validation script
+  (`system.file("scripts", "validation.R", package = "PeerPerformance")`).
+
+## Quick start
+
+```r
+library("PeerPerformance")
+data("hfdata")
+
+## screen a universe of funds, luck-corrected
+sc <- alphaScreening(hfdata[, 1:30], control = list(nCore = 1))
+summary(sc)                    # ranked table with win/loss counts
+plot(sc)                       # peer performance screening plot
+confint(sc, parm = "pipos")    # bootstrap CIs for the outperformance ratios
+```
+
 ## Please cite the package in publications!
 
 By using `PeerPerformance` you agree to the following rules: 
