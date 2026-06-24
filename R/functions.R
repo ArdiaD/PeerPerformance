@@ -3,10 +3,8 @@
 #@name processControl
 #@title Control parameters processsing
 processControl <- function(control) {
-  if (!is.list(control) || length(control) == 0) {
-    control <- list(type = 1, ttype = 2, hac = FALSE, nBoot = 249,
-                    bBoot = 1, pBoot = 1, nCore = 1, minObs = 10, minObsPi = 1,
-                    lambda = NULL)
+  if (!is.list(control)) {
+    control <- list()
   }
   nam <- names(control)
   if (!("type" %in% nam) || is.null(control$type)) {
@@ -39,7 +37,26 @@ processControl <- function(control) {
   if (!("lambda" %in% nam) || is.null(control$lambda)) {
     control$lambda <- NULL
   }
+  if (!("screen_beta" %in% nam) || is.null(control$screen_beta)) {
+    control$screen_beta <- FALSE
+  }
+  if (!("gammaPos" %in% nam) || is.null(control$gammaPos)) {
+    control$gammaPos <- 0.4
+  }
+  if (!("gammaNeg" %in% nam) || is.null(control$gammaNeg)) {
+    control$gammaNeg <- 0.6
+  }
   return(control)
+}
+
+#@name .coefNames
+#@title Row labels for the screen_beta coefficients (alpha + factor betas)
+.coefNames <- function(factors) {
+  nm <- colnames(factors)
+  if (is.null(nm)) {
+    nm <- paste0("beta", seq_len(ncol(as.matrix(factors))))
+  }
+  c("alpha", nm)
 }
 
 #@name alphaFactor
@@ -53,7 +70,7 @@ alphaFactor <- function(X, factors = NULL) {
 #' @name sharpe
 #' @title Compute Sharpe ratio
 #' @description Function which computes the Sharpe ratio.
-#' @details The Sharpe ratio (Sharpe 1992) is one industry standard for measuring the
+#' @details The Sharpe ratio (Sharpe 1994) is one industry standard for measuring the
 #' absolute risk adjusted performance of hedge funds.
 #' @param X Vector (of length \eqn{T}) or matrix (of size \eqn{T \times
 #' N}{TxN}) of returns for \eqn{N} funds. \code{NA} values are allowed.
@@ -101,7 +118,7 @@ sharpe <- function(X, na.rm = TRUE) {
 #@name .sharpe
 #@title Compute Sharpe ratio
 .sharpe <- function(X, na.rm) {
-  nObs <- colSums(!is.nan(X), na.rm = na.rm)
+  nObs <- colSums(is.finite(X))
   mu.hat <- colMeans(X, na.rm = na.rm)
   X_ <- sweep(x = X, MARGIN = 2, STATS = mu.hat, FUN = "-")
   sig.hat <- sqrt(colSums(X_^2, na.rm = na.rm)/(nObs - 1))

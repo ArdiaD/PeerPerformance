@@ -4,13 +4,21 @@
 \alias{sharpeScreening}
 \title{Screening using the Sharpe outperformance ratio}
 \usage{
-sharpeScreening(X, control = list())
+sharpeScreening(X, control = list(), Y = NULL)
 }
 \arguments{
 \item{X}{Matrix \eqn{(T \times N)}{(TxN)} of \eqn{T} returns for the \eqn{N}
 funds. \code{NA} values are allowed.}
 
 \item{control}{Control parameters (see *Details*).}
+
+\item{Y}{Optional matrix \eqn{(T \times M)}{(TxM)} of returns for a second
+(peer) group of \eqn{M} funds. When supplied, the ratios are computed for
+each fund in \code{X} against the funds in \code{Y} (cross-group screening)
+instead of against the other funds in \code{X}; a single focal fund versus a
+peer group corresponds to \code{X} being a vector. Columns of \code{Y}
+identical to the focal fund are automatically excluded. Default:
+\code{Y = NULL}, i.e. within-group screening.}
 }
 \value{
 A list with the following components:\cr
@@ -94,6 +102,12 @@ the ratios. Default: \code{minObs = 10}.
 number of observations to compute pi0. Default: \code{minObsPi = 1}.
 \item \code{'lambda'} Threshold value to compute pi0. Default: \code{lambda
 = NULL}, i.e. data driven choice.
+\item \code{'gammaPos'} One-sided quantile level (of the standard Normal
+distribution) used as the critical value for counting outperformed peers.
+Default: \code{gammaPos = 0.4} (the value recommended in Ardia and Boudt, 2018).
+\item \code{'gammaNeg'} One-sided quantile level (of the standard Normal
+distribution) used as the critical value for counting peers that outperform
+the focal fund. Default: \code{gammaNeg = 0.6}.
 }
 }
 \note{

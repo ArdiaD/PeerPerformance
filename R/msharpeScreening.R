@@ -4,7 +4,14 @@
 # #' @title See msharpeScreening
 # #' @importFrom parallel makeCluster clusterApplyLB stopCluster
 # #' @import compiler
-.msharpeScreening <- function(X, level = 0.9, na.neg = TRUE, control = list()) {
+.msharpeScreening <- function(X, level = 0.9, na.neg = TRUE, control = list(),
+                              Y = NULL) {
+
+  # cross-group screening: each fund in X against every fund in group Y
+  if (!is.null(Y)) {
+    return(.msharpeScreeningXY(X, Y, level = level, na.neg = na.neg,
+                               control = control))
+  }
 
   # process control
   ctr <- processControl(control)
@@ -48,7 +55,7 @@
 
   # pi
   pi <- computePi(pval = pval, dalpha = dmsharpe, tstat = tstat, lambda = ctr$lambda,
-                  nBoot = ctr$nBoot)
+                  nBoot = ctr$nBoot, bpos = ctr$gammaPos, bneg = ctr$gammaNeg)
 
   # info on the funds
   info <- infoFund(X, level = level, na.neg = na.neg)
@@ -102,6 +109,12 @@
 #' \item \code{'minObsPi'} Minimum number of observations to compute pi0. Default: \code{minObsPi = 1}.
 #' \item \code{'lambda'} Threshold value to compute pi0. Default: \code{lambda
 #' = NULL}, i.e. data driven choice.
+#' \item \code{'gammaPos'} One-sided quantile level (of the standard Normal
+#' distribution) used as the critical value for counting outperformed peers.
+#' Default: \code{gammaPos = 0.4} (the value recommended in Ardia and Boudt, 2018).
+#' \item \code{'gammaNeg'} One-sided quantile level (of the standard Normal
+#' distribution) used as the critical value for counting peers that outperform
+#' the focal fund. Default: \code{gammaNeg = 0.6}.
 #' }
 #' @param X Matrix \eqn{(T \times N)}{(TxN)} of \eqn{T} returns for the \eqn{N}
 #' funds. \code{NA} values are allowed.
@@ -110,6 +123,13 @@
 #' returned if a negative modified Value-at-Risk is obtained.  Default
 #' \code{na.neg = TRUE}.
 #' @param control Control parameters (see *Details*).
+#' @param Y Optional matrix \eqn{(T \times M)}{(TxM)} of returns for a second
+#' (peer) group of \eqn{M} funds. When supplied, the ratios are computed for
+#' each fund in \code{X} against the funds in \code{Y} (cross-group screening)
+#' instead of against the other funds in \code{X}; a single focal fund versus a
+#' peer group corresponds to \code{X} being a vector. Columns of \code{Y}
+#' identical to the focal fund are automatically excluded. Default:
+#' \code{Y = NULL}, i.e. within-group screening.
 #' @return A list with the following components:\cr
 #'
 #' \code{n}: Vector (of length \eqn{N}) of number of non-\code{NA}
@@ -141,7 +161,7 @@
 #' @note Further details on the methodology with an application to the hedge
 #' fund industry is given in in Ardia and Boudt (2018).
 #'
-#' Some internal functions where adapted from Wolf's R code.
+#' Some internal functions where adapted from Michael Wolf MATLAB code.
 #'
 #' Application of the false discovery rate approach applied to the mutual fund
 #' industry has been presented in Barraz, Scaillet and Wermers (2010).

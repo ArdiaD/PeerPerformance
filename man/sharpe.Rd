@@ -20,7 +20,7 @@ A scalar or a vector (of size \eqn{N}) with the Sharpe ratios.
 Function which computes the Sharpe ratio.
 }
 \details{
-The Sharpe ratio (Sharpe 1992) is one industry standard for measuring the
+The Sharpe ratio (Sharpe 1994) is one industry standard for measuring the
 absolute risk adjusted performance of hedge funds.
 }
 \examples{

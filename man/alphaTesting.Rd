@@ -4,7 +4,7 @@
 \alias{alphaTesting}
 \title{Testing the difference of alpha outperformance ratios}
 \usage{
-alphaTesting(x, y, factors = NULL, control = list(), screen_beta = FALSE)
+alphaTesting(x, y, factors = NULL, control = list(), screen_beta = NULL)
 }
 \arguments{
 \item{x}{Vector (of length \eqn{T}) of returns for the first fund. \code{NA}
@@ -28,13 +28,13 @@ A list with the following components:\cr
 
 \code{n}: Number of non-\code{NA} concordant observations.\cr
 
-\code{alpha}: Vector (of length 2) of unconditional alpha outperformance ratios.\cr
+\code{alpha}: Vector (of length 2) of the two funds' unconditional alphas.\cr
 
-\code{dalpha}: alpha outperformance ratios difference.\cr
+\code{dalpha}: Difference of the two funds' alphas.\cr
 
-\code{tstat}: t-stat of alpha outperformance ratios differences.\cr
+\code{tstat}: t-stat of the alpha difference.\cr
 
-\code{pval}: pvalues of test of alpha outperformance ratios differences.
+\code{pval}: p-value of the test of equal alpha.
 }
 \description{
 Function which performs the testing of the difference of alpha outperformance ratios.

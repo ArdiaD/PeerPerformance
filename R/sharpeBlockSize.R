@@ -50,7 +50,7 @@
     for (t in 2:(T.start + T)) {
       Var.data[t, 1] <- coef1[1] + coef1[2] * Var.data[t - 1, 1] + 
         coef1[3] * Var.data[t - 1, 2] + resid.mat.star[t, 1]
-      Var.data[t, 2] <- coef2[1] + coef2[2] * Var.data[t - 1, 2] + 
+      Var.data[t, 2] <- coef2[1] + coef2[2] * Var.data[t - 1, 1] +
         coef2[3] * Var.data[t - 1, 2] + resid.mat.star[t, 2]
     }
     Var.data.trunc <- Var.data[(T.start + 1):(T.start + T), ]

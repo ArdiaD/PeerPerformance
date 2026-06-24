@@ -1,3 +1,37 @@
+# Version 2.4.0 (DA)
+- Added `rollScreening()`: rolling-window screening returning the time series of
+  cross-sectionally averaged ratios (per factor when `screen_beta = TRUE`), with
+  a `plot` method -- the dynamic design of Ardia et al. (2022, 2023)
+- `plot` on a cross-group screening omits the (within-group) percentile-rank
+  diagonal; a single focal fund is shown as one stacked bar
+- `screen_beta` can now also be set through `control` (e.g.
+  `control = list(screen_beta = TRUE)`); the function argument still works and
+  takes precedence
+- Cross-group screening: `alphaScreening`, `sharpeScreening` and
+  `msharpeScreening` gain a `Y` argument to screen each fund in `X` against a
+  second peer group `Y` (a single focal fund versus a group is `X` a vector);
+  columns of `Y` identical to the focal fund are excluded automatically
+- Added `as.data.frame` method for `SCREENING` objects (tidy, one row per fund,
+  or per fund/coefficient with `screen_beta = TRUE`)
+- `screen_beta = TRUE` output now labels the coefficient rows (alpha + factor
+  names), and `exposureHeterogeneity()` aggregates them into the factor
+  exposure heterogeneity measure of Ardia et al. (2023), with a `plot` method
+- Added `print` methods for the `TESTING` and `SCREENING` objects, and a
+  `plot` method for the `SCREENING` object that reproduces the peer performance
+  screening plot of Ardia and Boudt (2018)
+- `gammaPos` and `gammaNeg` (default 0.4 and 0.6) are now exposed in the `control`
+  list of the screening functions, controlling the one-sided thresholds used for
+  the out- and underperformance counts
+- Fixed the default number of bootstrap replications (`nBoot = 499`) when an empty
+  `control` list is supplied
+- Fixed the VAR(1) data-generating process in the optimal block-length routines
+  (`sharpeBlockSize`, `msharpeBlockSize`): the lagged cross term in the second
+  equation now uses the correct series
+- `sharpe()` now counts observations with `is.finite()`, consistent with the
+  other moment computations, when `NA`/`NaN` are present
+- Moved run-time dependencies from `Depends` to `Imports`
+- Documentation fixes (Sharpe 1994 reference, `alphaTesting` return values)
+
 # Version 2.3.2 (DA)
 - Several fixes in documentation and good practices
   

@@ -11,10 +11,14 @@
 # 	return(out)
 # }
 
-.alphaTesting <- function(x, y, factors=NULL, control=list(), screen_beta=FALSE){
+.alphaTesting <- function(x, y, factors=NULL, control=list(), screen_beta=NULL){
 	# process control
 	ctr <- processControl(control)
 	hac <- ctr$hac
+	# screen_beta: argument takes precedence, else fall back to control
+	if (is.null(screen_beta)) {
+		screen_beta <- ctr$screen_beta
+	}
 	X <- as.matrix(x)
 	Y <- as.matrix(y)
 	dXY <- X - Y
@@ -102,13 +106,13 @@
 #'
 #' \code{n}: Number of non-\code{NA} concordant observations.\cr
 #'
-#' \code{alpha}: Vector (of length 2) of unconditional alpha outperformance ratios.\cr
+#' \code{alpha}: Vector (of length 2) of the two funds' unconditional alphas.\cr
 #'
-#' \code{dalpha}: alpha outperformance ratios difference.\cr
+#' \code{dalpha}: Difference of the two funds' alphas.\cr
 #'
-#' \code{tstat}: t-stat of alpha outperformance ratios differences.\cr
+#' \code{tstat}: t-stat of the alpha difference.\cr
 #'
-#' \code{pval}: pvalues of test of alpha outperformance ratios differences.
+#' \code{pval}: p-value of the test of equal alpha.
 #' @note Further details on the methodology with an application to the hedge
 #' fund industry is given in in Ardia and Boudt (2018).
 #'

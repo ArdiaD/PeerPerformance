@@ -2,11 +2,23 @@
 
 #@name .alphaScreening
 #@description See alphaScreening
-.alphaScreening <- function(X, factors = NULL, control = list(), 
-                            screen_beta=FALSE) {
+.alphaScreening <- function(X, factors = NULL, control = list(),
+                            screen_beta = NULL, Y = NULL) {
 
   # process control
   ctr <- processControl(control)
+
+  # screen_beta can be passed either as an argument (takes precedence, for
+  # backward compatibility) or via the control list
+  if (is.null(screen_beta)) {
+    screen_beta <- ctr$screen_beta
+  }
+
+  # cross-group screening: each fund in X against every fund in group Y
+  if (!is.null(Y)) {
+    return(.alphaScreeningXY(X, Y, factors = factors, control = control,
+                             screen_beta = screen_beta))
+  }
 
   T <- nrow(X)
   N <- ncol(X)
@@ -53,7 +65,7 @@
 
   # pi
   pi <- computePi(pval = pval, dalpha = dalpha, tstat = tstat, lambda = ctr$lambda,
-                  nBoot = ctr$nBoot)
+                  nBoot = ctr$nBoot, bpos = ctr$gammaPos, bneg = ctr$gammaNeg)
 
 
   # info on the funds
@@ -66,6 +78,12 @@
   	npeer <- colSums(!is.na(pval))
   } else {
     npeer <- apply(!is.na(pval), c(1, 3), sum)
+    # label the coefficient rows (alpha + factor betas)
+    cn <- .coefNames(factors)
+    rownames(pi$pizero) <- rownames(pi$pipos) <- rownames(pi$pineg) <- cn
+    rownames(pi$lambda) <- cn
+    rownames(info$alpha) <- cn
+    rownames(npeer) <- cn
   }
 
   # form output
@@ -111,6 +129,15 @@
 #' \code{nCore = 1}.
 #' \item \code{'lambda'} Threshold value to compute pi0.
 #' Default: \code{lambda = NULL}, i.e. data driven choice.
+#' \item \code{'gammaPos'} One-sided quantile level (of the standard Normal
+#' distribution) used as the critical value for counting outperformed peers.
+#' Default: \code{gammaPos = 0.4} (the value recommended in Ardia and Boudt, 2018).
+#' \item \code{'gammaNeg'} One-sided quantile level (of the standard Normal
+#' distribution) used as the critical value for counting peers that outperform
+#' the focal fund. Default: \code{gammaNeg = 0.6}.
+#' \item \code{'screen_beta'} Screen the factor exposures (betas) in addition to
+#' the alpha; see the \code{screen_beta} argument. Default:
+#' \code{screen_beta = FALSE}.
 #' }
 #' @param X Matrix \eqn{(T \times N)}{(TxN)} of \eqn{T} returns for the \eqn{N}
 #' funds. \code{NA} values are allowed.
@@ -118,9 +145,20 @@
 #' \eqn{K} factors. \code{NA} values are allowed.
 #' @param control Control parameters (see *Details*).
 #' @param screen_beta Boolean to screen all factors' coefficients (beta).
-#' Default: \code{screen_beta=FALSE} (i.e. only outputs the alpha).
-#' If \code{screen_beta=TRUE}, each element of the returned list will have a new first dimension
-#' representing each coefficient (the first one being alpha)
+#' Default: \code{screen_beta = NULL}, in which case the value is taken from
+#' \code{control$screen_beta} (itself defaulting to \code{FALSE}, i.e. only the
+#' alpha is screened). When supplied directly, the argument takes precedence
+#' over the control list. If \code{TRUE}, each element of the returned list will
+#' have a new first dimension representing each coefficient (the first one being
+#' alpha).
+#' @param Y Optional matrix \eqn{(T \times M)}{(TxM)} of returns for a second
+#' (peer) group of \eqn{M} funds. When supplied, the ratios are computed for
+#' each fund in \code{X} \emph{against the funds in \code{Y}} (cross-group
+#' screening) instead of against the other funds in \code{X}. A single focal
+#' fund versus a peer group corresponds to \code{X} being a vector (or a
+#' one-column matrix). Columns of \code{Y} identical to the focal fund (e.g.
+#' when \code{X} is a subset of \code{Y}) are automatically excluded. Default:
+#' \code{Y = NULL}, i.e. within-group screening.
 #' @return A list with the following components:\cr
 #'
 #' \code{n}: Vector (of length \eqn{N}) of number of non-\code{NA}
@@ -206,6 +244,12 @@
 #' ## Run alpha screening with HAC standard deviation
 #' ctr = list(nCore = 1, hac = TRUE)
 #' alphaScreening(rets, control = ctr)
+#'
+#' ## Cross-group screening: a single focal fund against a peer group
+#' alphaScreening(hfdata[, 1], Y = hfdata[, 11:20], control = list(nCore = 1))
+#'
+#' ## Cross-group screening: peer group X against peer group Y
+#' alphaScreening(hfdata[, 1:5], Y = hfdata[, 11:20], control = list(nCore = 1))
 #' @export
 #' @importFrom parallel makeCluster clusterApplyLB stopCluster
 #' @importFrom compiler cmpfun
