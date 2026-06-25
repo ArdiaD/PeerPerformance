@@ -36,7 +36,7 @@ ctr <- list(nCore = 1)          # single core for reproducibility
 ## ===========================================================================
 N  <- 30L                       # funds
 TT <- 120L                      # months
-RA <- 50L                       # replications
+RA <- 100L                      # replications
 
 pi0A <- posA <- rankA <- numeric(RA)
 for (r in seq_len(RA)) {
@@ -61,7 +61,7 @@ cat(sprintf("    luck-corrected pi0           : %.3f  (sd %.3f) <- mass restored
 ## ===========================================================================
 ## (B) Planted skill: one third skilled, one third neutral, one third poor
 ## ===========================================================================
-RB <- 50L
+RB <- 100L
 mu_true <- c(rep(0.012, N %/% 3), rep(0.005, N %/% 3),
              rep(-0.002, N - 2L * (N %/% 3)))
 ## true population ratios (per fund), from the planted means (ties -> pi0)
@@ -111,3 +111,17 @@ cat(sprintf("    empirical size (H0 true) : %.3f  (target %.3f)\n",
 cat(sprintf("    empirical power (H0 false): %.3f\n", rej_pow / RC))
 cat("\nNote: the asymptotic test can be mildly oversized in short samples;\n",
     "use control = list(type = 2) for the studentized bootstrap.\n", sep = "")
+
+## ===========================================================================
+## Compact summary with Monte-Carlo standard errors (for reporting)
+## ===========================================================================
+binse <- function(p, R) sqrt(p * (1 - p) / R)   # binomial s.e. for a rate
+cat("\n--- summary (estimate (MC s.e.)) ----------------------------------\n")
+cat(sprintf("(A) naive-rank pi+        : %.3f (%.3f)\n", mean(rankA), stats::sd(rankA)/sqrt(RA)))
+cat(sprintf("(A) luck-corrected pi+    : %.3f (%.3f)   [true 0]\n",     mean(posA), stats::sd(posA)/sqrt(RA)))
+cat(sprintf("(A) luck-corrected pi0    : %.3f (%.3f)   [true 1]\n",     mean(pi0A), stats::sd(pi0A)/sqrt(RA)))
+cat(sprintf("(B) pi+ (planted skill)   : %.3f (%.3f)   [true %.3f]\n",  mean(posB), stats::sd(posB)/sqrt(RB), truePos))
+cat(sprintf("(B) pi- (planted skill)   : %.3f (%.3f)   [true %.3f]\n",  mean(negB), stats::sd(negB)/sqrt(RB), trueNeg))
+cat(sprintf("(C) mSR test size         : %.3f (%.3f)   [target 0.05]\n", rej_size/RC, binse(rej_size/RC, RC)))
+cat(sprintf("(C) mSR test power        : %.3f (%.3f)\n",                 rej_pow/RC,  binse(rej_pow/RC, RC)))
+cat(sprintf("settings: N=%d, T=%d, reps A/B=%d, reps C=%d, seed=1234\n", N, TT, RA, RC))
