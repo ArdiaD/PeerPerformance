@@ -10,3 +10,4 @@
 ^precran\.R$
 ^_pkgdown\.yml$
 ^docs$
+(^|/)\.DS_Store$

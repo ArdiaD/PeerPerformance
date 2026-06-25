@@ -17,8 +17,12 @@
   }
 
   # size of inputs and outputs
+  X <- as.matrix(X)
   T <- nrow(X)
   N <- ncol(X)
+  if (N < 2L) {
+    stop("within-group screening needs at least two funds in 'X'; supply 'Y' to screen a single fund against a peer group")
+  }
   pval <- dsharpe <- tstat <- matrix(data = NA, N, N)
 
   # determine which pairs can be compared (in a matrix way)
@@ -33,6 +37,7 @@
 
   if (length(liststocks) > 1) {
     cl <- parallel::makeCluster(ctr$nCore)
+    on.exit(parallel::stopCluster(cl), add = TRUE)
 
     liststocks <- liststocks[1:(length(liststocks) - 1)]
 
@@ -40,7 +45,6 @@
                                   rdata = X, T = T, N = N, nBoot = ctr$nBoot, bsids = bsids,
                                   minObs = ctr$minObs, type = ctr$type, hac = ctr$hac, b = ctr$bBoot,
                                   ttype = ctr$ttype, pBoot = ctr$pBoot)
-    parallel::stopCluster(cl)
 
     for (i in 1:length(liststocks)) {
       out <- z[[i]]

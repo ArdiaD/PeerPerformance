@@ -65,6 +65,9 @@ alphaScreeningXYi <- compiler::cmpfun(.alphaScreeningXYi)
   }
   nX <- ncol(X)
   nY <- ncol(Y)
+  if (nX < 1L || nY < 1L) {
+    stop("cross-group screening needs at least one fund in 'X' and one peer in 'Y'")
+  }
 
   if (screen_beta && !is.null(factors)) {
     ncoef <- 1L + ncol(factors)
@@ -75,11 +78,11 @@ alphaScreeningXYi <- compiler::cmpfun(.alphaScreeningXYi)
   pval <- dalpha <- tstat <- array(NA, dim = c(ncoef, nX, nY))
 
   cl <- parallel::makeCluster(ctr$nCore)
+  on.exit(parallel::stopCluster(cl), add = TRUE)
   z <- parallel::clusterApplyLB(cl = cl, x = as.list(1:nX),
                                 fun = alphaScreeningXYi, X = X, Y = Y,
                                 factors = factors, T = T, nY = nY, hac = ctr$hac,
                                 minObs = ctr$minObs, screen_beta = screen_beta)
-  parallel::stopCluster(cl)
 
   for (i in 1:nX) {
     out <- z[[i]]
@@ -165,18 +168,21 @@ sharpeScreeningXYi <- compiler::cmpfun(.sharpeScreeningXYi)
   }
   nX <- ncol(X)
   nY <- ncol(Y)
+  if (nX < 1L || nY < 1L) {
+    stop("cross-group screening needs at least one fund in 'X' and one peer in 'Y'")
+  }
 
   bsids <- bootIndices(T, ctr$nBoot, ctr$bBoot)
   pval <- dsharpe <- tstat <- matrix(NA, nX, nY)
 
   cl <- parallel::makeCluster(ctr$nCore)
+  on.exit(parallel::stopCluster(cl), add = TRUE)
   z <- parallel::clusterApplyLB(cl = cl, x = as.list(1:nX),
                                 fun = sharpeScreeningXYi, X = X, Y = Y, T = T,
                                 nY = nY, nBoot = ctr$nBoot, bsids = bsids,
                                 minObs = ctr$minObs, type = ctr$type,
                                 hac = ctr$hac, b = ctr$bBoot, ttype = ctr$ttype,
                                 pBoot = ctr$pBoot)
-  parallel::stopCluster(cl)
 
   for (i in 1:nX) {
     out <- z[[i]]
@@ -247,18 +253,21 @@ msharpeScreeningXYi <- compiler::cmpfun(.msharpeScreeningXYi)
   }
   nX <- ncol(X)
   nY <- ncol(Y)
+  if (nX < 1L || nY < 1L) {
+    stop("cross-group screening needs at least one fund in 'X' and one peer in 'Y'")
+  }
 
   bsids <- bootIndices(T, ctr$nBoot, ctr$bBoot)
   pval <- dmsharpe <- tstat <- matrix(NA, nX, nY)
 
   cl <- parallel::makeCluster(ctr$nCore)
+  on.exit(parallel::stopCluster(cl), add = TRUE)
   z <- parallel::clusterApplyLB(cl = cl, x = as.list(1:nX),
                                 fun = msharpeScreeningXYi, X = X, Y = Y,
                                 level = level, T = T, nY = nY, nBoot = ctr$nBoot,
                                 bsids = bsids, minObs = ctr$minObs,
                                 na.neg = na.neg, type = ctr$type, hac = ctr$hac,
                                 b = ctr$bBoot, ttype = ctr$ttype, pBoot = ctr$pBoot)
-  parallel::stopCluster(cl)
 
   for (i in 1:nX) {
     out <- z[[i]]

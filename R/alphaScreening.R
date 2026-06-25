@@ -26,8 +26,12 @@
                              screen_beta = screen_beta))
   }
 
+  X <- as.matrix(X)
   T <- nrow(X)
   N <- ncol(X)
+  if (N < 2L) {
+    stop("within-group screening needs at least two funds in 'X'; supply 'Y' to screen a single fund against a peer group")
+  }
 
   if (screen_beta & !is.null(factors)) {
     row_return <- 1:(1 + ncol(factors))
@@ -48,15 +52,15 @@
 
   if (length(liststocks) > 1) {
     cl <- parallel::makeCluster(ctr$nCore)
+    on.exit(parallel::stopCluster(cl), add = TRUE)
 
     liststocks <- liststocks[1:(length(liststocks) - 1)]
 
-  	z <- parallel::clusterApplyLB(cl = cl, x = as.list(liststocks), 
+  	z <- parallel::clusterApplyLB(cl = cl, x = as.list(liststocks),
   	                              fun = alphaScreeningi,
-                                  rdata = X, factors = factors, T = T, N = N, 
-  	                              hac = ctr$hac, screen_beta)
-
-    parallel::stopCluster(cl)
+                                  rdata = X, factors = factors, T = T, N = N,
+  	                              hac = ctr$hac, screen_beta = screen_beta,
+  	                              minObs = ctr$minObs)
 
     for (i in 1:length(liststocks)) {
       out <- z[[i]]
@@ -266,7 +270,8 @@ alphaScreening <- compiler::cmpfun(.alphaScreening)
 # #' @importFrom stats lm na.omit
 # #' @importFrom lmtest coeftest
 # #' @importFrom sandwich vcovHAC
-.alphaScreeningi <- function(i, rdata, factors, T, N, hac, screen_beta=FALSE) {
+.alphaScreeningi <- function(i, rdata, factors, T, N, hac, screen_beta=FALSE,
+                             minObs = 10) {
 
 
   if(screen_beta & !is.null(factors)){
@@ -282,77 +287,47 @@ alphaScreening <- compiler::cmpfun(.alphaScreening)
   Y <- matrix(rdata[, (i + 1):N], nrow = T, ncol = nPeer)
   dXY <- X - Y
 
-  # Additional filter: Nonoverlapping observations
-  # Iterate over selIds
-  D <- !is.na(dXY)
-  # See that it has no shared obs with the second one.
-  selId.in  <- which(colSums(D) != 0)
+  # Per-pair complete-case availability. Count only rows where the return
+  # differential AND the factors (when supplied) are observed, so a pair is
+  # tested only when at least 'minObs' usable observations remain. (Previously
+  # the factor NAs were ignored and 'minObs' was not enforced at the pair level.)
+  if (is.null(factors)) {
+    avail <- colSums(!is.na(dXY))
+  } else {
+    fok   <- stats::complete.cases(factors)          # length T, recycled per column
+    avail <- colSums(!is.na(dXY) & fok)
+  }
+  selId.in  <- which(avail >= minObs)
   selId.out <- selId.in + i
 
-  if (nPeer == 1) {
+  # k selects the column in dXY (matches selId.in); j places the result in the
+  # full N-vector (matches selId.out). seq_along guards the empty case.
+  for (idx in seq_along(selId.in)) {
+    k <- selId.in[idx]
+    j <- selId.out[idx]
+
     if (is.null(factors)) {
-      fit <- stats::lm(dXY ~ 1, na.action = stats::na.omit)
+      fit <- stats::lm(dXY[, k] ~ 1, na.action = stats::na.omit)
     } else {
-      fit <- stats::lm(dXY ~ 1 + factors, na.action = stats::na.omit)
+      fit <- stats::lm(dXY[, k] ~ 1 + factors, na.action = stats::na.omit)
     } # end of factors/no factors
 
     # skip (near) deterministic differentials (zero residual variance)
     sfit_lm <- summary(fit)
-    if (is.finite(sfit_lm$sigma) && sfit_lm$sigma >= sqrt(.Machine$double.eps)) {
-      # HAC within loop.
-      if (!hac) {
-        pvali[row_return, N] <- sfit_lm$coef[row_return, 4]
-        dalphai[row_return, N] <- sfit_lm$coef[row_return, 1]
-        tstati[row_return, N] <- sfit_lm$coef[row_return, 3]
-      } else {
-        sumfit <- lmtest::coeftest(fit, vcov. = sandwich::vcovHAC(fit))
-        pvali[row_return, N] <- sumfit[row_return, 4]
-        dalphai[row_return, N] <- sumfit[row_return, 1]
-        tstati[row_return, N] <- sumfit[row_return, 3]
-      }
+    if (!is.finite(sfit_lm$sigma) || sfit_lm$sigma < sqrt(.Machine$double.eps)) {
+      next
     }
-  } else {
-    # end of nPeer == 1
 
-    # k selects the columns in dXY
-    #   k will match with redefined selId.in
-    # j plugs them into the correct list, but it uses an efficient allocation "(i + 1):N"
-    #   j matches with selId.out
-    # We make a correction for k in (20190004)
-
-    # k <- 1
-    # for (j in (i + 1):N) {
-    for (idx in 1:length(selId.in)) {
-
-      # proper indices
-      k <- selId.in[idx]
-      j <- selId.out[idx]
-
-      if (is.null(factors)) {
-        fit <- stats::lm(dXY[, k] ~ 1, na.action = stats::na.omit)
-      } else {
-        fit <- stats::lm(dXY[, k] ~ 1 + factors, na.action = stats::na.omit)
-      } # end of factors/no factors
-
-      # skip (near) deterministic differentials (zero residual variance)
-      sfit_lm <- summary(fit)
-      if (!is.finite(sfit_lm$sigma) || sfit_lm$sigma < sqrt(.Machine$double.eps)) {
-        next
-      }
-
-      # HAC within loop.
-      if (!hac) {
-        pvali[row_return, j] <- sfit_lm$coef[row_return, 4]
-        dalphai[row_return, j] <- sfit_lm$coef[row_return, 1]
-        tstati[row_return, j] <- sfit_lm$coef[row_return, 3]
-      } else{
-        sumfit <- lmtest::coeftest(fit, vcov. = sandwich::vcovHAC(fit))
-        pvali[row_return, j] <- sumfit[row_return, 4]
-        dalphai[row_return, j] <- sumfit[row_return, 1]
-        tstati[row_return, j] <- sumfit[row_return, 3]
-      }
-
-      # k <- k + 1
+    # HAC within loop.
+    if (!hac) {
+      pvali[row_return, j] <- sfit_lm$coef[row_return, 4]
+      dalphai[row_return, j] <- sfit_lm$coef[row_return, 1]
+      tstati[row_return, j] <- sfit_lm$coef[row_return, 3]
+    } else {
+      sumfit <- lmtest::coeftest(fit, vcov. = sandwich::vcovHAC(fit))
+      pvali[row_return, j] <- sumfit[row_return, 4]
+      dalphai[row_return, j] <- sumfit[row_return, 1]
+      tstati[row_return, j] <- sumfit[row_return, 3]
     }
   }
 

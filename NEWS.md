@@ -1,4 +1,16 @@
 # Version 2.4.0 (DA)
+- Robustness (pre-submission audit): PSOCK clusters are now closed with
+  `on.exit()` so workers are not leaked on error; `processControl` requires the
+  count-like controls (`nBoot`, `bBoot`, `nCore`, `minObs`, `minObsPi`) to be
+  whole numbers and rejects a bootstrap block length exceeding the sample size;
+  within-group screening and cross-group screening now stop with a clear
+  message on degenerate inputs (a single fund, an empty peer group)
+- `alphaScreening`/`alphaTesting` now enforce `minObs` on the factor
+  complete-case sample (factor `NA`s were previously ignored), and
+  `alphaTesting(screen_beta = TRUE, hac = TRUE)` now returns the `alpha`
+  component as a coefficient-by-fund matrix, consistent with the non-HAC path
+  (the `print` method reports the alpha row)
+- `confint` is now tested for all three ratios (`pipos`/`pizero`/`pineg`)
 - Added a `confint` method for `SCREENING` objects: nonparametric peer
   (pairwise) bootstrap confidence intervals for the peer performance ratios
   (`pipos`/`pizero`/`pineg`)

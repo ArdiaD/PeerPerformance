@@ -27,7 +27,17 @@
 	X <- as.matrix(x)
 	Y <- as.matrix(y)
 	dXY <- X - Y
-	nObs <- colSums(is.finite(dXY))
+	# usable observations = rows where the return differential and (when
+	# supplied) the factors are all observed
+	if (is.null(factors)) {
+		ok <- stats::complete.cases(dXY)
+	} else {
+		ok <- stats::complete.cases(dXY, factors)
+	}
+	nObs <- sum(ok)
+	if (nObs < ctr$minObs) {
+		stop("fewer than 'control$minObs' usable observations to compare the two funds")
+	}
 	N <- 2
 
 
@@ -62,7 +72,7 @@
 		sumfit <- lmtest::coeftest(fit, vcov. = sandwich::vcovHAC(fit))
 		sumfitX <- lmtest::coeftest(fitX, vcov. = sandwich::vcovHAC(fitX))
 		sumfitY <- lmtest::coeftest(fitY, vcov. = sandwich::vcovHAC(fitY))
-		alpha <- c(sumfitX[row_return,1], sumfitY[row_return,1])
+		alpha <- cbind(sumfitX[row_return,1], sumfitY[row_return,1])
 		pval <- sumfit[row_return, 4]
 		dalpha <- sumfit[row_return, 1]
 		tstat <- sumfit[row_return, 3]

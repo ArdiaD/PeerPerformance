@@ -53,7 +53,7 @@
       }
 
       pizeroi <- computePizero(pvali, lambda = lambdai, adjust = adjust)
-      idxOK <- !is.na(pvali) & !is.na(dalphai)
+      idxOK <- !is.na(pvali) & !is.na(dalphai) & !is.na(tstati)
       n <- sum(idxOK)  # number of peers
       if (n <= 1) {
         next

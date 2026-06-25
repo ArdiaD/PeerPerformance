@@ -57,7 +57,10 @@ print.TESTING <- function(x, ...) {
   } else {
     label <- "alpha"; vals <- x$alpha; dval <- x$dalpha
   }
-  vals <- as.vector(vals); dval <- as.vector(dval)[1]
+  # for a screen_beta alpha test, x$alpha is a (K+1) x 2 matrix (rows =
+  # coefficients, cols = fund x / fund y) -- keep the alpha row, not a beta
+  if (is.matrix(vals)) vals <- vals[1, ] else vals <- as.vector(vals)
+  dval <- as.vector(dval)[1]
   cat("\nPeer performance test (", label, ")\n", sep = "")
   cat("  Number of (concordant) observations: ", x$n[1], "\n", sep = "")
   cat("  Measure (fund x, fund y) : ",

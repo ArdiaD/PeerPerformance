@@ -282,8 +282,42 @@ test_that("confint.SCREENING brackets the point estimate and is valid", {
   expect_true(all(ci[ok, 1] <= ci[ok, 2]))
   expect_true(all(ci[ok, ] >= 0 & ci[ok, ] <= 1))
   expect_true(all(ci[ok, 1] <= est[ok] + 1e-8 & est[ok] <= ci[ok, 2] + 1e-8))
+  ## all three ratios are supported: valid, ordered bounds that bracket the estimate
+  for (p in c("pizero", "pineg")) {
+    set.seed(42)
+    cp  <- confint(sc, parm = p, nBoot = 200)
+    ep  <- attr(cp, "estimate")
+    okp <- !is.na(cp[, 1]) & !is.na(cp[, 2])
+    expect_equal(dim(cp), c(ncol(rets), 2L))
+    expect_true(all(cp[okp, 1] <= cp[okp, 2]))
+    expect_true(all(cp[okp, ] >= 0 & cp[okp, ] <= 1))
+    expect_true(all(cp[okp, 1] <= ep[okp] + 1e-8 & ep[okp] <= cp[okp, 2] + 1e-8))
+  }
   ## screen_beta screenings are rejected
   scb <- alphaScreening(rets, factors = hfdata[, 50, drop = FALSE],
                         control = list(nCore = 1, screen_beta = TRUE))
   expect_error(confint(scb), "screen_beta")
+})
+
+test_that("alphaTesting screen_beta returns a (K+1) x 2 alpha matrix (HAC and not)", {
+  x <- hfdata[, 1]; y <- hfdata[, 2]
+  fac <- hfdata[, 50:51]                       # K = 2 factors
+  for (use_hac in c(FALSE, TRUE)) {
+    res <- alphaTesting(x, y, factors = fac,
+                        control = list(hac = use_hac), screen_beta = TRUE)
+    expect_equal(dim(res$alpha), c(ncol(fac) + 1L, 2L))   # rows = coef, cols = x/y
+    expect_length(res$dalpha, ncol(fac) + 1L)
+    ## print shows the two funds' *alphas* (row 1), not a beta
+    expect_output(print(res), "Peer performance test")
+  }
+})
+
+test_that("control validation rejects non-whole and out-of-range values", {
+  rets <- hfdata[, 1:4]
+  expect_error(alphaScreening(rets, control = list(nCore = 1, nBoot = 2.5)), "whole number")
+  expect_error(alphaScreening(rets, control = list(nCore = 1, minObs = -1)))
+  expect_error(sharpeScreening(rets, control = list(nCore = 1, bBoot = nrow(rets) + 1)),
+               "cannot exceed")
+  ## degenerate within-group input
+  expect_error(alphaScreening(hfdata[, 1], control = list(nCore = 1)), "at least two funds")
 })
