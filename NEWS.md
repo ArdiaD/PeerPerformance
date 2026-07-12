@@ -1,4 +1,21 @@
 # Version 2.4.0 (DA)
+- Bootstrap screening on unbalanced panels fixed: the bootstrap indices are now
+  pre-generated in the master for every distinct pairwise complete-case length
+  (previously a single full-length index matrix was remapped by modulo inside
+  the workers, which biased the iid resampling and broke the circular-block
+  structure for `bBoot > 1`); pairs shorter than the block length are left
+  untested; balanced panels are unaffected. All randomness stays in the master,
+  so seeded results do not depend on `nCore`
+- `nCore = 1` (the default) now runs serially without creating a PSOCK
+  cluster, removing the per-call cluster overhead (noticeable in
+  `rollScreening`'s window loop); results are identical to the cluster path
+- The symmetric bootstrap p-value of the Sharpe test now uses `>=`, consistent
+  with the modified Sharpe test (ties have probability zero for continuous
+  returns)
+- Documentation: HAC availability in `alphaScreening` clarified; the
+  `gammaPos`/`gammaNeg` counting rules are stated explicitly; misleading
+  "bootstrap and HAC" example headers fixed (`hac` is ignored when
+  `type = 2`); `summary` documents that win/loss counts are within-group only
 - Robustness (pre-submission audit): PSOCK clusters are now closed with
   `on.exit()` so workers are not leaked on error; `processControl` requires the
   count-like controls (`nBoot`, `bBoot`, `nCore`, `minObs`, `minObsPi`) to be

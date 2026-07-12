@@ -26,7 +26,10 @@ An object of class \code{summary.SCREENING}.
 Produces a ranked summary of a screening: distribution of the
 performance measure, the peer performance ratios, optional win/loss counts
 from the pairwise tests, and the top/bottom funds (overall and by
-out-/underperformance ratio). Originally contributed by Murilo Andre Peres Pereira.
+out-/underperformance ratio). The win/loss counts require the square
+(within-group) pairwise matrices and are therefore omitted for cross-group
+screenings (a \code{Y} peer group or \code{\link{targetPeerPerformance}}).
+Originally contributed by Murilo Andre Peres Pereira.
 }
 \examples{
 \donttest{

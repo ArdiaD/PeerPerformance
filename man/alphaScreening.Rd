@@ -103,11 +103,18 @@ for computing the p-values). Default: \code{minObsPi = 1}.
 \item \code{'lambda'} Threshold value to compute pi0.
 Default: \code{lambda = NULL}, i.e. data driven choice.
 \item \code{'gammaPos'} One-sided quantile level (of the standard Normal
-distribution) used as the critical value for counting outperformed peers.
-Default: \code{gammaPos = 0.4} (the value recommended in Ardia and Boudt, 2018).
-\item \code{'gammaNeg'} One-sided quantile level (of the standard Normal
-distribution) used as the critical value for counting peers that outperform
-the focal fund. Default: \code{gammaNeg = 0.6}.
+distribution) used as the critical value for counting outperformed peers:
+a peer counts as outperformed when the pairwise t-statistic exceeds
+\code{qnorm(gammaPos)} (a \emph{negative} threshold for
+\code{gammaPos < 0.5}; e.g., \code{qnorm(0.4)} is about \code{-0.25}), and
+the expected fraction \code{1 - gammaPos} of false positives among the
+equal-performing peers is then subtracted. Smaller values count more peers
+before the correction. Default: \code{gammaPos = 0.4} (the value
+recommended in Ardia and Boudt, 2018).
+\item \code{'gammaNeg'} Mirror image of \code{gammaPos} for the peers that
+outperform the focal fund: the count uses \code{tstat <= qnorm(gammaNeg)}
+and subtracts the expected fraction \code{gammaNeg} of false positives.
+Default: \code{gammaNeg = 0.6}.
 \item \code{'screen_beta'} Screen the factor exposures (betas) in addition to
 the alpha; see the \code{screen_beta} argument. Default:
 \code{screen_beta = FALSE}.
@@ -120,9 +127,11 @@ fund industry is given in Ardia and Boudt (2018).
 Application of the false discovery rate approach applied to the mutual fund
 industry has been presented in Barras, Scaillet and Wermers (2010).
 
-Currently, the HAC asymptotic and studentized circular block bootstrap
-presented in Ledoit and Wolf (2008) are not supported by the
-\code{alphaScreening} function.
+HAC standard errors are available via \code{control = list(hac = TRUE)}
+(computed with \pkg{sandwich}/\pkg{lmtest}). The studentized circular block
+bootstrap of Ledoit and Wolf (2008) applies to the Sharpe-ratio routines
+(\code{\link{sharpeScreening}}, \code{\link{msharpeScreening}}) and is not
+used by \code{alphaScreening}.
 }
 \examples{
 ## Load the data (randomized data of monthly hedge fund returns)

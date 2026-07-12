@@ -168,7 +168,10 @@ as.data.frame.SCREENING <- function(x, row.names = NULL, optional = FALSE, ...) 
 #' @description Produces a ranked summary of a screening: distribution of the
 #' performance measure, the peer performance ratios, optional win/loss counts
 #' from the pairwise tests, and the top/bottom funds (overall and by
-#' out-/underperformance ratio). Originally contributed by Murilo Andre Peres Pereira.
+#' out-/underperformance ratio). The win/loss counts require the square
+#' (within-group) pairwise matrices and are therefore omitted for cross-group
+#' screenings (a \code{Y} peer group or \code{\link{targetPeerPerformance}}).
+#' Originally contributed by Murilo Andre Peres Pereira.
 #' @param object A \code{SCREENING} object.
 #' @param coef For a \code{screen_beta} screening, which coefficient row to use
 #' (default 1, the alpha).

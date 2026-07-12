@@ -32,23 +32,33 @@
   # determine which pairs can be compared (in a matrix way)
   Y <- 1 * (!is.nan(X) & !is.na(X))
   YY <- crossprod(Y)  #YY = t(Y) %*% Y # row i indicates how many observations in common with column k
+  pairLens <- YY[upper.tri(YY)]  # pairwise complete-case lengths (before thresholding)
   YY[YY < ctr$minObs] <- 0
   YY[YY > 0] <- 1
   liststocks <- c(1:nrow(YY))[rowSums(YY) > ctr$minObsPi]
 
-  # determine bootstrap indices (do it before to speed up computations)
-  bsids <- bootIndices(T, ctr$nBoot, ctr$bBoot)
+  # pre-generate the bootstrap indices in the master, one matrix per distinct
+  # pair length (workers select by length; see bootIndicesByLen)
+  bsids <- bootIndicesByLen(pairLens, ctr$nBoot, ctr$bBoot)
 
   if (length(liststocks) > 1) {
-    cl <- parallel::makeCluster(ctr$nCore)
-    on.exit(parallel::stopCluster(cl), add = TRUE)
-
     liststocks <- liststocks[1:(length(liststocks) - 1)]
 
-	z <- parallel::clusterApplyLB(cl = cl, x = as.list(liststocks), fun = msharpeScreeningi,
-                                  rdata = X, level = level, T = T, N = N, na.neg = na.neg, nBoot = ctr$nBoot,
-                                  bsids = bsids, minObs = ctr$minObs, type = ctr$type, hac = ctr$hac,
-                                  b = ctr$bBoot, ttype = ctr$ttype, pBoot = ctr$pBoot)
+    if (ctr$nCore == 1) {
+      # serial path: no PSOCK cluster (avoids the per-call cluster overhead)
+      z <- lapply(as.list(liststocks), msharpeScreeningi,
+                  rdata = X, level = level, T = T, N = N, na.neg = na.neg,
+                  nBoot = ctr$nBoot, bsids = bsids, minObs = ctr$minObs,
+                  type = ctr$type, hac = ctr$hac, b = ctr$bBoot,
+                  ttype = ctr$ttype, pBoot = ctr$pBoot)
+    } else {
+      cl <- parallel::makeCluster(ctr$nCore)
+      on.exit(parallel::stopCluster(cl), add = TRUE)
+      z <- parallel::clusterApplyLB(cl = cl, x = as.list(liststocks), fun = msharpeScreeningi,
+                                    rdata = X, level = level, T = T, N = N, na.neg = na.neg, nBoot = ctr$nBoot,
+                                    bsids = bsids, minObs = ctr$minObs, type = ctr$type, hac = ctr$hac,
+                                    b = ctr$bBoot, ttype = ctr$ttype, pBoot = ctr$pBoot)
+    }
 
     for (i in 1:length(liststocks)) {
       out <- z[[i]]
@@ -119,11 +129,16 @@
 #' \item \code{'lambda'} Threshold value to compute pi0. Default: \code{lambda
 #' = NULL}, i.e. data driven choice.
 #' \item \code{'gammaPos'} One-sided quantile level (of the standard Normal
-#' distribution) used as the critical value for counting outperformed peers.
+#' distribution) used as the critical value for counting outperformed peers:
+#' a peer counts as outperformed when the pairwise t-statistic exceeds
+#' \code{qnorm(gammaPos)} (a \emph{negative} threshold for
+#' \code{gammaPos < 0.5}), and the expected fraction \code{1 - gammaPos} of
+#' false positives among the equal-performing peers is then subtracted.
 #' Default: \code{gammaPos = 0.4} (the value recommended in Ardia and Boudt, 2018).
-#' \item \code{'gammaNeg'} One-sided quantile level (of the standard Normal
-#' distribution) used as the critical value for counting peers that outperform
-#' the focal fund. Default: \code{gammaNeg = 0.6}.
+#' \item \code{'gammaNeg'} Mirror image of \code{gammaPos} for the peers that
+#' outperform the focal fund: the count uses \code{tstat <= qnorm(gammaNeg)}
+#' and subtracts the expected fraction \code{gammaNeg} of false positives.
+#' Default: \code{gammaNeg = 0.6}.
 #' }
 #' @param X Matrix \eqn{(T \times N)}{(TxN)} of \eqn{T} returns for the \eqn{N}
 #' funds. \code{NA} values are allowed.
@@ -214,8 +229,9 @@
 #' ## Modified Sharpe screening
 #' msharpeScreening(rets, control = list(nCore = 1))
 #'
-#' ## Modified Sharpe screening with bootstrap and HAC standard deviation
-#' msharpeScreening(rets, control = list(nCore = 1, type = 2, hac = TRUE))
+#' ## Modified Sharpe screening with the studentized circular bootstrap
+#' ## (the 'hac' flag is ignored when type = 2)
+#' msharpeScreening(rets, control = list(nCore = 1, type = 2))
 #' @export
 #' @importFrom compiler cmpfun
 msharpeScreening <- compiler::cmpfun(.msharpeScreening)
@@ -248,7 +264,12 @@ msharpeScreening <- compiler::cmpfun(.msharpeScreening)
     if (type == 1) {
       tmp <- msharpeTestAsymptotic(rets, level, na.neg, hac, ttype)
     } else {
-      tmp <- msharpeTestBootstrap(rets, level, na.neg, bsids, b,
+      # indices pre-generated in the master for this pair's length
+      bs <- bsids[[as.character(nObs[k])]]
+      if (is.null(bs)) {
+        next  # block length exceeds this pair's sample size
+      }
+      tmp <- msharpeTestBootstrap(rets, level, na.neg, bs, b,
                                   ttype, pBoot)
     }
     if (!is.finite(tmp$tstat)) {

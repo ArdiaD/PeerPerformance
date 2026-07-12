@@ -99,11 +99,16 @@ the ratios. Default: \code{minObs = 10}.
 \item \code{'lambda'} Threshold value to compute pi0. Default: \code{lambda
 = NULL}, i.e. data driven choice.
 \item \code{'gammaPos'} One-sided quantile level (of the standard Normal
-distribution) used as the critical value for counting outperformed peers.
+distribution) used as the critical value for counting outperformed peers:
+a peer counts as outperformed when the pairwise t-statistic exceeds
+\code{qnorm(gammaPos)} (a \emph{negative} threshold for
+\code{gammaPos < 0.5}), and the expected fraction \code{1 - gammaPos} of
+false positives among the equal-performing peers is then subtracted.
 Default: \code{gammaPos = 0.4} (the value recommended in Ardia and Boudt, 2018).
-\item \code{'gammaNeg'} One-sided quantile level (of the standard Normal
-distribution) used as the critical value for counting peers that outperform
-the focal fund. Default: \code{gammaNeg = 0.6}.
+\item \code{'gammaNeg'} Mirror image of \code{gammaPos} for the peers that
+outperform the focal fund: the count uses \code{tstat <= qnorm(gammaNeg)}
+and subtracts the expected fraction \code{gammaNeg} of false positives.
+Default: \code{gammaNeg = 0.6}.
 }
 }
 \note{
@@ -123,8 +128,9 @@ rets = hfdata[,1:4]
 ## Modified Sharpe screening
 msharpeScreening(rets, control = list(nCore = 1))
 
-## Modified Sharpe screening with bootstrap and HAC standard deviation
-msharpeScreening(rets, control = list(nCore = 1, type = 2, hac = TRUE))
+## Modified Sharpe screening with the studentized circular bootstrap
+## (the 'hac' flag is ignored when type = 2)
+msharpeScreening(rets, control = list(nCore = 1, type = 2))
 }
 \references{
 Ardia, D., Boudt, K. (2015).

@@ -51,16 +51,24 @@
   liststocks <- c(1:nrow(YY))[rowSums(YY) > ctr$minObsPi]
 
   if (length(liststocks) > 1) {
-    cl <- parallel::makeCluster(ctr$nCore)
-    on.exit(parallel::stopCluster(cl), add = TRUE)
-
     liststocks <- liststocks[1:(length(liststocks) - 1)]
 
-  	z <- parallel::clusterApplyLB(cl = cl, x = as.list(liststocks),
-  	                              fun = alphaScreeningi,
-                                  rdata = X, factors = factors, T = T, N = N,
-  	                              hac = ctr$hac, screen_beta = screen_beta,
-  	                              minObs = ctr$minObs)
+    if (ctr$nCore == 1) {
+      # serial path: no PSOCK cluster (avoids the per-call cluster overhead,
+      # e.g. inside rollScreening's window loop)
+      z <- lapply(as.list(liststocks), alphaScreeningi,
+                  rdata = X, factors = factors, T = T, N = N,
+                  hac = ctr$hac, screen_beta = screen_beta,
+                  minObs = ctr$minObs)
+    } else {
+      cl <- parallel::makeCluster(ctr$nCore)
+      on.exit(parallel::stopCluster(cl), add = TRUE)
+      z <- parallel::clusterApplyLB(cl = cl, x = as.list(liststocks),
+                                    fun = alphaScreeningi,
+                                    rdata = X, factors = factors, T = T, N = N,
+                                    hac = ctr$hac, screen_beta = screen_beta,
+                                    minObs = ctr$minObs)
+    }
 
     for (i in 1:length(liststocks)) {
       out <- z[[i]]
@@ -140,11 +148,18 @@
 #' \item \code{'lambda'} Threshold value to compute pi0.
 #' Default: \code{lambda = NULL}, i.e. data driven choice.
 #' \item \code{'gammaPos'} One-sided quantile level (of the standard Normal
-#' distribution) used as the critical value for counting outperformed peers.
-#' Default: \code{gammaPos = 0.4} (the value recommended in Ardia and Boudt, 2018).
-#' \item \code{'gammaNeg'} One-sided quantile level (of the standard Normal
-#' distribution) used as the critical value for counting peers that outperform
-#' the focal fund. Default: \code{gammaNeg = 0.6}.
+#' distribution) used as the critical value for counting outperformed peers:
+#' a peer counts as outperformed when the pairwise t-statistic exceeds
+#' \code{qnorm(gammaPos)} (a \emph{negative} threshold for
+#' \code{gammaPos < 0.5}; e.g., \code{qnorm(0.4)} is about \code{-0.25}), and
+#' the expected fraction \code{1 - gammaPos} of false positives among the
+#' equal-performing peers is then subtracted. Smaller values count more peers
+#' before the correction. Default: \code{gammaPos = 0.4} (the value
+#' recommended in Ardia and Boudt, 2018).
+#' \item \code{'gammaNeg'} Mirror image of \code{gammaPos} for the peers that
+#' outperform the focal fund: the count uses \code{tstat <= qnorm(gammaNeg)}
+#' and subtracts the expected fraction \code{gammaNeg} of false positives.
+#' Default: \code{gammaNeg = 0.6}.
 #' \item \code{'screen_beta'} Screen the factor exposures (betas) in addition to
 #' the alpha; see the \code{screen_beta} argument. Default:
 #' \code{screen_beta = FALSE}.
@@ -202,9 +217,11 @@
 #' Application of the false discovery rate approach applied to the mutual fund
 #' industry has been presented in Barras, Scaillet and Wermers (2010).
 #'
-#' Currently, the HAC asymptotic and studentized circular block bootstrap
-#' presented in Ledoit and Wolf (2008) are not supported by the
-#' \code{alphaScreening} function.
+#' HAC standard errors are available via \code{control = list(hac = TRUE)}
+#' (computed with \pkg{sandwich}/\pkg{lmtest}). The studentized circular block
+#' bootstrap of Ledoit and Wolf (2008) applies to the Sharpe-ratio routines
+#' (\code{\link{sharpeScreening}}, \code{\link{msharpeScreening}}) and is not
+#' used by \code{alphaScreening}.
 #' @author David Ardia and Kris Boudt.
 #' @seealso \code{\link{sharpeScreening}} and \code{\link{msharpeScreening}}.
 #' @references

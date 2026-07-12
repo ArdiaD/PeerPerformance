@@ -45,7 +45,9 @@ Value-at-Risk yields \code{NA}. Default: \code{TRUE}.}
 
 \item{control}{Control parameters passed to the screening function (see
 \code{\link{alphaScreening}}); set \code{control = list(screen_beta = TRUE)}
-to obtain per-factor heterogeneity series.}
+to obtain per-factor heterogeneity series. With \code{nCore > 1} each
+window spins up its own PSOCK cluster, which is wasteful for many small
+windows; the default \code{nCore = 1} runs serially without any cluster.}
 
 \item{dates}{Optional vector of length \eqn{T} (e.g. \code{Date}) used to
 label the windows by their end date. Default: \code{NULL}.}

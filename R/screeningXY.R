@@ -77,12 +77,21 @@ alphaScreeningXYi <- compiler::cmpfun(.alphaScreeningXYi)
   row_return <- 1:ncoef
   pval <- dalpha <- tstat <- array(NA, dim = c(ncoef, nX, nY))
 
-  cl <- parallel::makeCluster(ctr$nCore)
-  on.exit(parallel::stopCluster(cl), add = TRUE)
-  z <- parallel::clusterApplyLB(cl = cl, x = as.list(1:nX),
-                                fun = alphaScreeningXYi, X = X, Y = Y,
-                                factors = factors, T = T, nY = nY, hac = ctr$hac,
-                                minObs = ctr$minObs, screen_beta = screen_beta)
+  if (ctr$nCore == 1) {
+    # serial path: no PSOCK cluster (avoids the per-call cluster overhead);
+    # the anonymous wrapper avoids the clash with lapply's own 'X' argument
+    z <- lapply(1:nX, function(ii)
+      alphaScreeningXYi(ii, X = X, Y = Y, factors = factors, T = T, nY = nY,
+                        hac = ctr$hac, minObs = ctr$minObs,
+                        screen_beta = screen_beta))
+  } else {
+    cl <- parallel::makeCluster(ctr$nCore)
+    on.exit(parallel::stopCluster(cl), add = TRUE)
+    z <- parallel::clusterApplyLB(cl = cl, x = as.list(1:nX),
+                                  fun = alphaScreeningXYi, X = X, Y = Y,
+                                  factors = factors, T = T, nY = nY, hac = ctr$hac,
+                                  minObs = ctr$minObs, screen_beta = screen_beta)
+  }
 
   for (i in 1:nX) {
     out <- z[[i]]
@@ -141,7 +150,12 @@ alphaScreeningXY <- compiler::cmpfun(.alphaScreeningXY)
     if (type == 1) {
       tmp <- sharpeTestAsymptotic(rets, hac, ttype)
     } else {
-      tmp <- sharpeTestBootstrap(rets, bsids, b, ttype, pBoot)
+      # indices pre-generated in the master for this pair's length
+      bs <- bsids[[as.character(sum(ok))]]
+      if (is.null(bs)) {
+        next  # block length exceeds this pair's sample size
+      }
+      tmp <- sharpeTestBootstrap(rets, bs, b, ttype, pBoot)
     }
     if (!is.finite(tmp$tstat)) {
       next  # degenerate pair (e.g. zero-variance series)
@@ -172,17 +186,30 @@ sharpeScreeningXYi <- compiler::cmpfun(.sharpeScreeningXYi)
     stop("cross-group screening needs at least one fund in 'X' and one peer in 'Y'")
   }
 
-  bsids <- bootIndices(T, ctr$nBoot, ctr$bBoot)
+  # pre-generate the bootstrap indices in the master, one matrix per distinct
+  # cross-pair complete-case length (workers select by length)
+  pairLens <- crossprod(1 * (!is.na(X) & !is.nan(X)), 1 * (!is.na(Y) & !is.nan(Y)))
+  bsids <- bootIndicesByLen(pairLens, ctr$nBoot, ctr$bBoot)
   pval <- dsharpe <- tstat <- matrix(NA, nX, nY)
 
-  cl <- parallel::makeCluster(ctr$nCore)
-  on.exit(parallel::stopCluster(cl), add = TRUE)
-  z <- parallel::clusterApplyLB(cl = cl, x = as.list(1:nX),
-                                fun = sharpeScreeningXYi, X = X, Y = Y, T = T,
-                                nY = nY, nBoot = ctr$nBoot, bsids = bsids,
-                                minObs = ctr$minObs, type = ctr$type,
-                                hac = ctr$hac, b = ctr$bBoot, ttype = ctr$ttype,
-                                pBoot = ctr$pBoot)
+  if (ctr$nCore == 1) {
+    # serial path: no PSOCK cluster (avoids the per-call cluster overhead);
+    # the anonymous wrapper avoids the clash with lapply's own 'X' argument
+    z <- lapply(1:nX, function(ii)
+      sharpeScreeningXYi(ii, X = X, Y = Y, T = T, nY = nY, nBoot = ctr$nBoot,
+                         bsids = bsids, minObs = ctr$minObs, type = ctr$type,
+                         hac = ctr$hac, b = ctr$bBoot, ttype = ctr$ttype,
+                         pBoot = ctr$pBoot))
+  } else {
+    cl <- parallel::makeCluster(ctr$nCore)
+    on.exit(parallel::stopCluster(cl), add = TRUE)
+    z <- parallel::clusterApplyLB(cl = cl, x = as.list(1:nX),
+                                  fun = sharpeScreeningXYi, X = X, Y = Y, T = T,
+                                  nY = nY, nBoot = ctr$nBoot, bsids = bsids,
+                                  minObs = ctr$minObs, type = ctr$type,
+                                  hac = ctr$hac, b = ctr$bBoot, ttype = ctr$ttype,
+                                  pBoot = ctr$pBoot)
+  }
 
   for (i in 1:nX) {
     out <- z[[i]]
@@ -226,7 +253,12 @@ sharpeScreeningXY <- compiler::cmpfun(.sharpeScreeningXY)
     if (type == 1) {
       tmp <- msharpeTestAsymptotic(rets, level, na.neg, hac, ttype)
     } else {
-      tmp <- msharpeTestBootstrap(rets, level, na.neg, bsids, b, ttype, pBoot)
+      # indices pre-generated in the master for this pair's length
+      bs <- bsids[[as.character(sum(ok))]]
+      if (is.null(bs)) {
+        next  # block length exceeds this pair's sample size
+      }
+      tmp <- msharpeTestBootstrap(rets, level, na.neg, bs, b, ttype, pBoot)
     }
     if (!is.finite(tmp$tstat)) {
       next  # degenerate pair or NA modified VaR (na.neg)
@@ -257,17 +289,31 @@ msharpeScreeningXYi <- compiler::cmpfun(.msharpeScreeningXYi)
     stop("cross-group screening needs at least one fund in 'X' and one peer in 'Y'")
   }
 
-  bsids <- bootIndices(T, ctr$nBoot, ctr$bBoot)
+  # pre-generate the bootstrap indices in the master, one matrix per distinct
+  # cross-pair complete-case length (workers select by length)
+  pairLens <- crossprod(1 * (!is.na(X) & !is.nan(X)), 1 * (!is.na(Y) & !is.nan(Y)))
+  bsids <- bootIndicesByLen(pairLens, ctr$nBoot, ctr$bBoot)
   pval <- dmsharpe <- tstat <- matrix(NA, nX, nY)
 
-  cl <- parallel::makeCluster(ctr$nCore)
-  on.exit(parallel::stopCluster(cl), add = TRUE)
-  z <- parallel::clusterApplyLB(cl = cl, x = as.list(1:nX),
-                                fun = msharpeScreeningXYi, X = X, Y = Y,
-                                level = level, T = T, nY = nY, nBoot = ctr$nBoot,
-                                bsids = bsids, minObs = ctr$minObs,
-                                na.neg = na.neg, type = ctr$type, hac = ctr$hac,
-                                b = ctr$bBoot, ttype = ctr$ttype, pBoot = ctr$pBoot)
+  if (ctr$nCore == 1) {
+    # serial path: no PSOCK cluster (avoids the per-call cluster overhead);
+    # the anonymous wrapper avoids the clash with lapply's own 'X' argument
+    z <- lapply(1:nX, function(ii)
+      msharpeScreeningXYi(ii, X = X, Y = Y, level = level, T = T, nY = nY,
+                          nBoot = ctr$nBoot, bsids = bsids,
+                          minObs = ctr$minObs, na.neg = na.neg,
+                          type = ctr$type, hac = ctr$hac, b = ctr$bBoot,
+                          ttype = ctr$ttype, pBoot = ctr$pBoot))
+  } else {
+    cl <- parallel::makeCluster(ctr$nCore)
+    on.exit(parallel::stopCluster(cl), add = TRUE)
+    z <- parallel::clusterApplyLB(cl = cl, x = as.list(1:nX),
+                                  fun = msharpeScreeningXYi, X = X, Y = Y,
+                                  level = level, T = T, nY = nY, nBoot = ctr$nBoot,
+                                  bsids = bsids, minObs = ctr$minObs,
+                                  na.neg = na.neg, type = ctr$type, hac = ctr$hac,
+                                  b = ctr$bBoot, ttype = ctr$ttype, pBoot = ctr$pBoot)
+  }
 
   for (i in 1:nX) {
     out <- z[[i]]

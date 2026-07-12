@@ -321,3 +321,58 @@ test_that("control validation rejects non-whole and out-of-range values", {
   ## degenerate within-group input
   expect_error(alphaScreening(hfdata[, 1], control = list(nCore = 1)), "at least two funds")
 })
+
+test_that("bootstrap screening is valid and seeded-reproducible on unbalanced panels", {
+  ## unbalanced panel: distinct complete-case lengths across pairs
+  X <- hfdata[, 1:6]
+  X[1:10, 2]  <- NA
+  X[1:20, 3]  <- NA
+  X[41:60, 4] <- NA
+  ctr <- list(nCore = 1, type = 2, bBoot = 3, nBoot = 99)
+
+  set.seed(99); s1 <- sharpeScreening(X, control = ctr)
+  set.seed(99); s2 <- sharpeScreening(X, control = ctr)
+  expect_identical(s1$pval, s2$pval)                    # all RNG in the master
+  ok <- !is.na(s1$pval)
+  expect_true(any(ok))
+  expect_true(all(s1$pval[ok] >= 0 & s1$pval[ok] <= 1))
+  s <- s1$pizero + s1$pipos + s1$pineg
+  expect_true(all(abs(s[!is.na(s)] - 1) < 1e-8))
+
+  ## cross-group path with the same panel
+  set.seed(99); x1 <- sharpeScreening(X[, 1:2], Y = X[, 3:6], control = ctr)
+  set.seed(99); x2 <- sharpeScreening(X[, 1:2], Y = X[, 3:6], control = ctr)
+  expect_identical(x1$pval, x2$pval)
+  okx <- !is.na(x1$pval)
+  expect_true(any(okx))
+  expect_true(all(x1$pval[okx] >= 0 & x1$pval[okx] <= 1))
+
+  ## a block length larger than a short pair's sample leaves that pair NA
+  ## (fund 7 overlaps fund 8 on only 5 observations < bBoot = 8)
+  Z <- hfdata[, 7:9]
+  Z[1:55, 2] <- NA
+  set.seed(7)
+  expect_warning(
+    sz <- sharpeScreening(Z, control = list(nCore = 1, type = 2, bBoot = 8,
+                                            nBoot = 99, minObs = 3)),
+    "left untested")
+  expect_true(is.na(sz$pval[1, 2]))                     # untestable pair
+  expect_false(is.na(sz$pval[1, 3]))                    # full-length pair still tested
+})
+
+test_that("serial (nCore = 1) and cluster (nCore = 2) paths give identical results", {
+  skip_on_cran()   # keep CRAN runs light; 2 cores are exercised locally/CI
+  rets <- hfdata[, 1:8]
+  ## fix lambda so the comparison does not depend on the data-driven bootstrap
+  ctr1 <- list(nCore = 1, lambda = 0.5)
+  ctr2 <- list(nCore = 2, lambda = 0.5)
+  a1 <- alphaScreening(rets, control = ctr1)
+  a2 <- alphaScreening(rets, control = ctr2)
+  expect_equal(a1$pval,  a2$pval,  tolerance = 1e-12)
+  expect_equal(a1$pipos, a2$pipos, tolerance = 1e-12)
+  ## bootstrapped Sharpe screening: indices are drawn in the master, so the
+  ## result must not depend on the number of workers
+  set.seed(3); b1 <- sharpeScreening(rets, control = c(ctr1, type = 2, bBoot = 2, nBoot = 99))
+  set.seed(3); b2 <- sharpeScreening(rets, control = c(ctr2, type = 2, bBoot = 2, nBoot = 99))
+  expect_equal(b1$pval, b2$pval, tolerance = 1e-12)
+})

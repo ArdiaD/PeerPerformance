@@ -288,6 +288,35 @@ msharpe <- function(X, level = 0.9, na.rm = TRUE, na.neg = TRUE) {
 }
 infoFund <- compiler::cmpfun(.infoFund)
 
+# #' @name .bootIndicesByLen
+# Pre-generate bootstrap indices for every distinct pairwise sample length, in
+# the master process. The screening functions pass the resulting named list to
+# the PSOCK workers, which select the matrix matching their pair's
+# complete-case length. This keeps all randomness in the master (so seeded
+# results do not depend on 'nCore') and guarantees a valid circular-block
+# structure at every length: previously a single full-length index matrix was
+# remapped by modulo inside the workers, which biased the iid resampling and
+# broke the block contiguity on unbalanced panels. Lengths shorter than the
+# block length are skipped (the corresponding pairs are left untested). On a
+# balanced panel there is a single length and the draws are identical to the
+# previous behavior.
+.bootIndicesByLen <- function(lens, nBoot, bBoot) {
+  lens <- sort(unique(as.integer(lens)), decreasing = TRUE)
+  lens <- lens[lens >= 1L]
+  keep <- lens >= max(1L, bBoot)
+  if (!any(keep)) {
+    stop("the bootstrap block length 'bBoot' cannot exceed the number of concordant observations of every pair")
+  }
+  if (!all(keep)) {
+    warning("some pairs have fewer concordant observations than the block length 'bBoot' and are left untested")
+  }
+  lens <- lens[keep]
+  out <- lapply(lens, function(L) bootIndices(L, nBoot, bBoot))
+  names(out) <- as.character(lens)
+  return(out)
+}
+bootIndicesByLen <- compiler::cmpfun(.bootIndicesByLen)
+
 # #' @name .bootIndices
 # #' @import compiler
 .bootIndices <- function(T, nBoot, bBoot) {

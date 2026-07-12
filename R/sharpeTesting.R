@@ -322,10 +322,11 @@ se.sharpe.asymptotic <- compiler::cmpfun(.se.sharpe.asymptotic)
   tstat <- dsharpe/se
 
   if (pBoot == 1) {
-    # first type p-value calculation
+    # first type p-value calculation (>= for consistency with the modified
+    # Sharpe test; ties have probability zero for continuous returns)
     bststat <- abs(bsdsharpe - dsharpe)/bsse
-    pval <- (sum(bststat > abs(tstat)) + 1)/(nBoot + 1)
-    # pval = sum(bststat > abs(tstat)) / nBoot
+    pval <- (sum(bststat >= abs(tstat)) + 1)/(nBoot + 1)
+    # pval = sum(bststat >= abs(tstat)) / nBoot
   } else {
     # second type p-value calculation (as in Barras)
     bststat <- (bsdsharpe - dsharpe)/bsse
