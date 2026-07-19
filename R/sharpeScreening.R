@@ -34,8 +34,14 @@
   liststocks <- c(1:nrow(YY))[rowSums(YY) > ctr$minObsPi]
 
   # pre-generate the bootstrap indices in the master, one matrix per distinct
-  # pair length (workers select by length; see bootIndicesByLen)
-  bsids <- bootIndicesByLen(pairLens, ctr$nBoot, ctr$bBoot)
+  # pair length (workers select by length; see bootIndicesByLen). Only needed
+  # for the bootstrap test, and only for pairs that pass 'minObs', so that the
+  # asymptotic path never depends on 'bBoot'.
+  bsids <- NULL
+  if (ctr$type == 2) {
+    bsids <- bootIndicesByLen(pairLens[pairLens >= ctr$minObs],
+                              ctr$nBoot, ctr$bBoot)
+  }
 
   if (length(liststocks) > 1) {
     liststocks <- liststocks[1:(length(liststocks) - 1)]
@@ -150,10 +156,12 @@
 #' \item \code{'fastAdjust'} Use a fast vectorised inversion in the
 #' truncated-normal bias correction of \eqn{\pi^0}{pi0} instead of one
 #' \code{uniroot} call per value. This is the dominant cost when \code{lambda}
-#' is data driven and gives a large speed-up on big universes; the result agrees
-#' with the default path to about 1e-12, i.e. well inside \code{uniroot}'s own
-#' tolerance. Default: \code{fastAdjust = FALSE}, i.e. the original code path,
-#' kept as default for exact reproducibility of published results.
+#' is data driven and gives a large speed-up on big universes. The bisection
+#' locates the root to about 1e-12; since \code{uniroot} stops at its own
+#' tolerance (about 1.2e-4), the two paths typically differ by a few 1e-5, the
+#' fast path being the more accurate. Default: \code{fastAdjust = FALSE},
+#' i.e. the original code path, kept as default so that published results
+#' reproduce exactly.
 #' }
 #' @param X Matrix \eqn{(T \times N)}{(TxN)} of \eqn{T} returns for the \eqn{N}
 #' funds. \code{NA} values are allowed.

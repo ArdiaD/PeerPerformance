@@ -112,10 +112,12 @@ Default: \code{gammaNeg = 0.6}.
 \item \code{'fastAdjust'} Use a fast vectorised inversion in the
 truncated-normal bias correction of \eqn{\pi^0}{pi0} instead of one
 \code{uniroot} call per value. This is the dominant cost when \code{lambda}
-is data driven and gives a large speed-up on big universes; the result agrees
-with the default path to about 1e-12, i.e. well inside \code{uniroot}'s own
-tolerance. Default: \code{fastAdjust = FALSE}, i.e. the original code path,
-kept as default for exact reproducibility of published results.
+is data driven and gives a large speed-up on big universes. The bisection
+locates the root to about 1e-12; since \code{uniroot} stops at its own
+tolerance (about 1.2e-4), the two paths typically differ by a few 1e-5, the
+fast path being the more accurate. Default: \code{fastAdjust = FALSE},
+i.e. the original code path, kept as default so that published results
+reproduce exactly.
 }
 }
 \note{

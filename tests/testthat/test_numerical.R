@@ -316,7 +316,9 @@ test_that("control validation rejects non-whole and out-of-range values", {
   rets <- hfdata[, 1:4]
   expect_error(alphaScreening(rets, control = list(nCore = 1, nBoot = 2.5)), "whole number")
   expect_error(alphaScreening(rets, control = list(nCore = 1, minObs = -1)))
-  expect_error(sharpeScreening(rets, control = list(nCore = 1, bBoot = nrow(rets) + 1)),
+  ## the block length is only relevant to the bootstrap test (type = 2)
+  expect_error(sharpeScreening(rets, control = list(nCore = 1, type = 2,
+                                                    bBoot = nrow(rets) + 1)),
                "cannot exceed")
   ## degenerate within-group input
   expect_error(alphaScreening(hfdata[, 1], control = list(nCore = 1)), "at least two funds")
@@ -390,6 +392,18 @@ test_that("control$fastAdjust matches the default path and is faster", {
       expect_true(all(b >= 0 & b <= 1))
     }
   }
+  ## the flag must not change semantics, only speed: NA/NaN inputs and targets
+  ## outside the uniroot bracket must behave exactly as the default path
+  edge <- c(0.5, NA, NaN, 0.9, -0.5, 0, 1.4, 3.0)
+  e0 <- PeerPerformance:::adjustPi(edge, n = 99, lambda = 0.5, fast = FALSE)
+  e1 <- PeerPerformance:::adjustPi(edge, n = 99, lambda = 0.5, fast = TRUE)
+  expect_equal(is.na(e0), is.na(e1))                    # same NA pattern
+  expect_equal(e0[!is.na(e0)], e1[!is.na(e1)], tolerance = 1e-3)
+  ## NaN can reach adjustPi through an all-NA p-value row; must not error
+  pv <- matrix(c(NA, NA, NA, 0.2, 0.6, 0.9), nrow = 2, byrow = TRUE)
+  expect_silent(PeerPerformance:::computePizero(pv, lambda = 0.5,
+                                                adjust = TRUE, fast = TRUE))
+
   ## end to end: a screening with a fixed lambda is unchanged by the flag
   rets <- hfdata[, 1:12]
   s0 <- alphaScreening(rets, control = list(nCore = 1, lambda = 0.5))
@@ -400,4 +414,41 @@ test_that("control$fastAdjust matches the default path and is faster", {
   ## the flag is validated like the other logical controls
   expect_error(alphaScreening(rets, control = list(nCore = 1,
                                                    fastAdjust = c(TRUE, FALSE))))
+
+  ## round-trip: the fast path really solves the inversion (this is the strong
+  ## check; agreement with the default is capped by uniroot's own tolerance)
+  fwd <- function(pi0, n, lambda) {
+    nlambda <- pi0 * n * (1 - lambda)
+    out <- pi0
+    i <- nlambda < n
+    s <- sqrt(nlambda[i] * (n - nlambda[i])/(n^3 * (1 - lambda)^2))
+    z <- (1 - pi0[i])/s
+    out[i] <- pi0[i] + s * (-dnorm(z) + (1 - pnorm(z)) * z)
+    out
+  }
+  for (nn in c(9, 99)) {
+    for (lam in c(0.3, 0.5, 0.7)) {
+      r <- PeerPerformance:::adjustPi(ph, n = nn, lambda = lam, fast = TRUE)
+      ## only entries that were actually inverted: the target must lie inside
+      ## the bracket [fwd(1e-5), fwd(1.5)] (otherwise uniroot fails and both
+      ## paths fall back to the input), and the result must be unclamped
+      brack <- ph >= fwd(1e-05, nn, lam) & ph <= fwd(1.5, nn, lam)
+      inner <- brack & r > 0 & r < 1
+      expect_true(any(inner))
+      expect_equal(fwd(r[inner], nn, lam), ph[inner], tolerance = 1e-9)
+    }
+  }
+})
+
+test_that("asymptotic screening does not depend on the bootstrap block length", {
+  ## bBoot is irrelevant when type = 1; an unbalanced panel with short pairs
+  ## must not warn or error just because bBoot exceeds some pair length
+  X <- hfdata[, 1:6]
+  X[1:52, 2] <- NA                            # one pair with only 8 obs
+  expect_silent(s1 <- sharpeScreening(X, control = list(nCore = 1, type = 1,
+                                                        bBoot = 20, minObs = 5)))
+  expect_silent(m1 <- msharpeScreening(X, control = list(nCore = 1, type = 1,
+                                                         bBoot = 20, minObs = 5)))
+  expect_true(any(!is.na(s1$pval)))
+  expect_true(any(!is.na(m1$pval)))
 })

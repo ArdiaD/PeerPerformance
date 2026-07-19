@@ -131,9 +131,11 @@ computePizero <- compiler::cmpfun(.computePizero)
   # Fast path (control$fastAdjust): 'n' and 'lambda' are constant within a
   # call, so the same monotone map is inverted at every element. Instead of one
   # uniroot() per element, invert the whole vector at once by bisection. Forty
-  # halvings of [1e-5, 1.5] give an absolute accuracy of about 1e-12, i.e. far
-  # tighter than uniroot's default tolerance (.Machine$double.eps^0.25, about
-  # 1.2e-4), so the fast path is if anything more accurate than the default one.
+  # halvings of [1e-5, 1.5] locate the root to about 1e-12. Note that this is
+  # the accuracy of the *inversion*, not the agreement with the default path:
+  # uniroot() stops at its own tolerance (.Machine$double.eps^0.25, about
+  # 1.2e-4), so the two paths typically differ by a few 1e-5, with the fast
+  # path the more accurate of the two.
   if (isTRUE(fast)) {
     fwd <- function(pi0) {
       nlambda <- pi0 * n * (1 - lambda)
@@ -147,22 +149,28 @@ computePizero <- compiler::cmpfun(.computePizero)
       }
       out
     }
-    m  <- length(pi.hat)
-    lo <- rep(1e-05, m)
-    hi <- rep(1.5, m)
-    # outside the bracket uniroot() would fail; keep the input, as the
-    # try-error fallback of the default path does
-    inside <- pi.hat >= fwd(lo) & pi.hat <= fwd(hi)
-    for (it in seq_len(40L)) {
-      mid  <- (lo + hi)/2
-      left <- fwd(mid) < pi.hat
-      lo[left]  <- mid[left]
-      hi[!left] <- mid[!left]
+    m   <- length(pi.hat)
+    out <- pi.hat        # fallback: keep the input, as the try-error path does
+    if (m > 0L) {
+      lo <- rep(1e-05, m)
+      hi <- rep(1.5, m)
+      # uniroot() fails when the target is NA/NaN or is not bracketed, and the
+      # default path then keeps pi.hat; invert only the finite, bracketed
+      # elements (which() also drops the NAs from the subscript)
+      ok <- which(is.finite(pi.hat) & pi.hat >= fwd(lo) & pi.hat <= fwd(hi))
+      if (length(ok) > 0L) {
+        l <- lo[ok]; h <- hi[ok]; tgt <- pi.hat[ok]
+        for (it in seq_len(40L)) {
+          mid  <- (l + h)/2
+          left <- fwd(mid) < tgt
+          l[left]  <- mid[left]
+          h[!left] <- mid[!left]
+        }
+        out[ok] <- (l + h)/2
+      }
+      big <- which(out > 1); if (length(big) > 0L) out[big] <- 1
+      sml <- which(out < 0); if (length(sml) > 0L) out[sml] <- 0
     }
-    out <- (lo + hi)/2
-    out[!inside] <- pi.hat[!inside]
-    out[out > 1] <- 1
-    out[out < 0] <- 0
     return(out)
   }
 

@@ -3,10 +3,13 @@
   bias correction of `pi0` inverts its monotone map for the whole vector at
   once (vectorised bisection) instead of one `uniroot()` call per value. This
   is the dominant cost of a screening with a data-driven `lambda` -- a
-  100-fund `alphaScreening()` drops from about 19s to about 4.5s (4.2x) -- and
-  the result agrees with the default path to about 1e-12, i.e. well inside
-  `uniroot`'s own default tolerance (about 1.2e-4). The original code path
-  remains the default so that published results reproduce exactly
+  100-fund `alphaScreening()` drops from about 19s to about 4.5s (4.2x). The
+  bisection locates the root to about 1e-12; because `uniroot` stops at its own
+  tolerance (about 1.2e-4), the two paths typically differ by a few 1e-5, the
+  fast path being the more accurate. The original code path remains the default
+  so that published results reproduce exactly. Bootstrap indices are now built
+  only for the bootstrap test (`type = 2`), so the asymptotic path no longer
+  depends on `bBoot`
 - Bootstrap screening on unbalanced panels fixed: the bootstrap indices are now
   pre-generated in the master for every distinct pairwise complete-case length
   (previously a single full-length index matrix was remapped by modulo inside

@@ -189,8 +189,14 @@ sharpeScreeningXYi <- compiler::cmpfun(.sharpeScreeningXYi)
 
   # pre-generate the bootstrap indices in the master, one matrix per distinct
   # cross-pair complete-case length (workers select by length)
+  # only needed for the bootstrap test, and only for pairs passing 'minObs',
+  # so that the asymptotic path never depends on 'bBoot'
   pairLens <- crossprod(1 * (!is.na(X) & !is.nan(X)), 1 * (!is.na(Y) & !is.nan(Y)))
-  bsids <- bootIndicesByLen(pairLens, ctr$nBoot, ctr$bBoot)
+  bsids <- NULL
+  if (ctr$type == 2) {
+    bsids <- bootIndicesByLen(pairLens[pairLens >= ctr$minObs],
+                              ctr$nBoot, ctr$bBoot)
+  }
   pval <- dsharpe <- tstat <- matrix(NA, nX, nY)
 
   if (ctr$nCore == 1) {
@@ -293,8 +299,14 @@ msharpeScreeningXYi <- compiler::cmpfun(.msharpeScreeningXYi)
 
   # pre-generate the bootstrap indices in the master, one matrix per distinct
   # cross-pair complete-case length (workers select by length)
+  # only needed for the bootstrap test, and only for pairs passing 'minObs',
+  # so that the asymptotic path never depends on 'bBoot'
   pairLens <- crossprod(1 * (!is.na(X) & !is.nan(X)), 1 * (!is.na(Y) & !is.nan(Y)))
-  bsids <- bootIndicesByLen(pairLens, ctr$nBoot, ctr$bBoot)
+  bsids <- NULL
+  if (ctr$type == 2) {
+    bsids <- bootIndicesByLen(pairLens[pairLens >= ctr$minObs],
+                              ctr$nBoot, ctr$bBoot)
+  }
   pval <- dmsharpe <- tstat <- matrix(NA, nX, nY)
 
   if (ctr$nCore == 1) {
