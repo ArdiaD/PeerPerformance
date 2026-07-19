@@ -5,7 +5,7 @@
 # #' @importFrom stats qnorm
 # #' @import compiler
 .computePi <- function(pval, dalpha, tstat, lambda = 0.5, nBoot = 499,
-                       bpos = 0.4, bneg = 0.6, adjust = TRUE) {
+                       bpos = 0.4, bneg = 0.6, adjust = TRUE, fast = FALSE) {
 
   if (!is.matrix(pval) & !is.array(pval)) {
     pval <- matrix(pval, nrow = 1)
@@ -47,12 +47,14 @@
         next
       }
       if (is.null(lambda)) {
-        lambdai <- computeOptLambda(pval = pvali, nBoot = nBoot, adjust = adjust)
+        lambdai <- computeOptLambda(pval = pvali, nBoot = nBoot,
+                                    adjust = adjust, fast = fast)
       } else {
         lambdai <- lambda[i]
       }
 
-      pizeroi <- computePizero(pvali, lambda = lambdai, adjust = adjust)
+      pizeroi <- computePizero(pvali, lambda = lambdai, adjust = adjust,
+                               fast = fast)
       idxOK <- !is.na(pvali) & !is.na(dalphai) & !is.na(tstati)
       n <- sum(idxOK)  # number of peers
       if (n <= 1) {
@@ -97,7 +99,7 @@ computePi <- compiler::cmpfun(.computePi)
 
 # #' @name .computePizero
 # #' @import compiler
-.computePizero <- function(pval, lambda = 0.5, adjust = TRUE) {
+.computePizero <- function(pval, lambda = 0.5, adjust = TRUE, fast = FALSE) {
   if (!is.matrix(pval)) {
     pval <- matrix(pval, nrow = 1)
   }
@@ -113,7 +115,7 @@ computePi <- compiler::cmpfun(.computePi)
   pizero[pizero > 1] <- 1
   # adjust pi using truncated binomial
   if (adjust) {
-    pizero <- adjustPi(pizero, n = n, lambda = lambda)
+    pizero <- adjustPi(pizero, n = n, lambda = lambda, fast = fast)
   }
 
   return(pizero)
@@ -124,7 +126,45 @@ computePizero <- compiler::cmpfun(.computePizero)
 # #' @title Adjust estimated pi0 using quadratic fit
 # #' @importFrom stats dnorm pnorm uniroot
 # #' @import compiler
-.adjustPi <- function(pi.hat, n = 100, lambda = 0.5) {
+.adjustPi <- function(pi.hat, n = 100, lambda = 0.5, fast = FALSE) {
+
+  # Fast path (control$fastAdjust): 'n' and 'lambda' are constant within a
+  # call, so the same monotone map is inverted at every element. Instead of one
+  # uniroot() per element, invert the whole vector at once by bisection. Forty
+  # halvings of [1e-5, 1.5] give an absolute accuracy of about 1e-12, i.e. far
+  # tighter than uniroot's default tolerance (.Machine$double.eps^0.25, about
+  # 1.2e-4), so the fast path is if anything more accurate than the default one.
+  if (isTRUE(fast)) {
+    fwd <- function(pi0) {
+      nlambda <- pi0 * n * (1 - lambda)
+      out <- pi0
+      i <- nlambda < n                       # else branch of asym.hatpi0
+      if (any(i)) {
+        s <- sqrt(nlambda[i] * (n - nlambda[i])/(n^3 * (1 - lambda)^2))
+        zcrit <- (1 - pi0[i])/s
+        out[i] <- pi0[i] + s * (-stats::dnorm(zcrit) +
+                                  (1 - stats::pnorm(zcrit)) * zcrit)
+      }
+      out
+    }
+    m  <- length(pi.hat)
+    lo <- rep(1e-05, m)
+    hi <- rep(1.5, m)
+    # outside the bracket uniroot() would fail; keep the input, as the
+    # try-error fallback of the default path does
+    inside <- pi.hat >= fwd(lo) & pi.hat <= fwd(hi)
+    for (it in seq_len(40L)) {
+      mid  <- (lo + hi)/2
+      left <- fwd(mid) < pi.hat
+      lo[left]  <- mid[left]
+      hi[!left] <- mid[!left]
+    }
+    out <- (lo + hi)/2
+    out[!inside] <- pi.hat[!inside]
+    out[out > 1] <- 1
+    out[out < 0] <- 0
+    return(out)
+  }
 
   asym.hatpi0 <- function(pi0) {
     npi0 <- pi0 * n
@@ -171,7 +211,7 @@ adjustPi <- compiler::cmpfun(.adjustPi)
 # #' @title Compute optimal lamba values
 # #' @importFrom stats runif
 # #' @import compiler
-.computeOptLambda <- function(pval, nBoot = 499, adjust = TRUE) {
+.computeOptLambda <- function(pval, nBoot = 499, adjust = TRUE, fast = FALSE) {
   if (!is.matrix(pval)) {
     pval <- matrix(pval, nrow = 1)
   }
@@ -186,7 +226,8 @@ adjustPi <- compiler::cmpfun(.adjustPi)
 
   mpizero <- matrix(data = NA, nrow = n, ncol = nvlambda)
   for (i in 1:nvlambda) {
-    mpizero[, i] <- computePizero(pval, lambda = vlambda[i], adjust = adjust)
+    mpizero[, i] <- computePizero(pval, lambda = vlambda[i], adjust = adjust,
+                                  fast = fast)
   }
   # pi0hat
   vminpizero <- apply(mpizero, 1, "min")
@@ -208,7 +249,7 @@ adjustPi <- compiler::cmpfun(.adjustPi)
       for (j in 1:nvlambda) {
 
         mpizerob[, j] <- computePizero(pvalb, lambda = vlambda[j],
-                                       adjust = adjust)
+                                       adjust = adjust, fast = fast)
       }
       vMSE <- colSums((mpizerob - vminpizero[i])^2)
 

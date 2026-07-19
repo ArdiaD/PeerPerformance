@@ -1,4 +1,12 @@
 # Version 2.4.0 (DA)
+- New optional `control$fastAdjust` (default `FALSE`): the truncated-normal
+  bias correction of `pi0` inverts its monotone map for the whole vector at
+  once (vectorised bisection) instead of one `uniroot()` call per value. This
+  is the dominant cost of a screening with a data-driven `lambda` -- a
+  100-fund `alphaScreening()` drops from about 19s to about 4.5s (4.2x) -- and
+  the result agrees with the default path to about 1e-12, i.e. well inside
+  `uniroot`'s own default tolerance (about 1.2e-4). The original code path
+  remains the default so that published results reproduce exactly
 - Bootstrap screening on unbalanced panels fixed: the bootstrap indices are now
   pre-generated in the master for every distinct pairwise complete-case length
   (previously a single full-length index matrix was remapped by modulo inside

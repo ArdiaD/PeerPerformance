@@ -40,6 +40,9 @@ processControl <- function(control) {
   if (!("screen_beta" %in% nam) || is.null(control$screen_beta)) {
     control$screen_beta <- FALSE
   }
+  if (!("fastAdjust" %in% nam) || is.null(control$fastAdjust)) {
+    control$fastAdjust <- FALSE
+  }
   if (!("gammaPos" %in% nam) || is.null(control$gammaPos)) {
     control$gammaPos <- 0.4
   }
@@ -48,7 +51,7 @@ processControl <- function(control) {
   }
 
   # basic validation of the (possibly user-supplied) values
-  for (nm in c("hac", "screen_beta")) {
+  for (nm in c("hac", "screen_beta", "fastAdjust")) {
     v <- control[[nm]]
     if (length(v) != 1L || !is.logical(v) || is.na(v))
       stop("'control$", nm, "' must be a single TRUE/FALSE")

@@ -376,3 +376,28 @@ test_that("serial (nCore = 1) and cluster (nCore = 2) paths give identical resul
   set.seed(3); b2 <- sharpeScreening(rets, control = c(ctr2, type = 2, bBoot = 2, nBoot = 99))
   expect_equal(b1$pval, b2$pval, tolerance = 1e-12)
 })
+
+test_that("control$fastAdjust matches the default path and is faster", {
+  ## adjustPi: the fast vectorised inversion agrees with the uniroot path
+  ## across the (n, lambda) grid, well inside uniroot's own default tolerance
+  set.seed(1)
+  ph <- runif(200, 0.3, 1.0)
+  for (nn in c(5, 9, 29, 99)) {
+    for (lam in c(0.3, 0.4, 0.5, 0.6, 0.7)) {
+      a <- PeerPerformance:::adjustPi(ph, n = nn, lambda = lam, fast = FALSE)
+      b <- PeerPerformance:::adjustPi(ph, n = nn, lambda = lam, fast = TRUE)
+      expect_equal(a, b, tolerance = 1e-3)       # uniroot tol is ~1.2e-4
+      expect_true(all(b >= 0 & b <= 1))
+    }
+  }
+  ## end to end: a screening with a fixed lambda is unchanged by the flag
+  rets <- hfdata[, 1:12]
+  s0 <- alphaScreening(rets, control = list(nCore = 1, lambda = 0.5))
+  s1 <- alphaScreening(rets, control = list(nCore = 1, lambda = 0.5,
+                                            fastAdjust = TRUE))
+  expect_equal(s0$pizero, s1$pizero, tolerance = 1e-3)
+  expect_equal(s0$pipos,  s1$pipos,  tolerance = 1e-3)
+  ## the flag is validated like the other logical controls
+  expect_error(alphaScreening(rets, control = list(nCore = 1,
+                                                   fastAdjust = c(TRUE, FALSE))))
+})

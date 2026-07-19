@@ -102,7 +102,8 @@ alphaScreeningXYi <- compiler::cmpfun(.alphaScreeningXYi)
 
   pi <- computePi(pval = pval, dalpha = dalpha, tstat = tstat,
                   lambda = ctr$lambda, nBoot = ctr$nBoot,
-                  bpos = ctr$gammaPos, bneg = ctr$gammaNeg)
+                  bpos = ctr$gammaPos, bneg = ctr$gammaNeg,
+                  fast = ctr$fastAdjust)
 
   info <- infoFund(X, factors = factors, screen_beta = screen_beta)
 
@@ -220,7 +221,8 @@ sharpeScreeningXYi <- compiler::cmpfun(.sharpeScreeningXYi)
 
   pi <- computePi(pval = pval, dalpha = dsharpe, tstat = tstat,
                   lambda = ctr$lambda, nBoot = ctr$nBoot,
-                  bpos = ctr$gammaPos, bneg = ctr$gammaNeg)
+                  bpos = ctr$gammaPos, bneg = ctr$gammaNeg,
+                  fast = ctr$fastAdjust)
   info <- infoFund(X)
 
   out <- list(n = info$nObs, npeer = rowSums(!is.na(pval)), ny = nY,
@@ -324,7 +326,8 @@ msharpeScreeningXYi <- compiler::cmpfun(.msharpeScreeningXYi)
 
   pi <- computePi(pval = pval, dalpha = dmsharpe, tstat = tstat,
                   lambda = ctr$lambda, nBoot = ctr$nBoot,
-                  bpos = ctr$gammaPos, bneg = ctr$gammaNeg)
+                  bpos = ctr$gammaPos, bneg = ctr$gammaNeg,
+                  fast = ctr$fastAdjust)
   info <- infoFund(X, level = level, na.neg = na.neg)
 
   out <- list(n = info$nObs, npeer = rowSums(!is.na(pval)), ny = nY,

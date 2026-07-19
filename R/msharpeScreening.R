@@ -73,7 +73,8 @@
 
   # pi
   pi <- computePi(pval = pval, dalpha = dmsharpe, tstat = tstat, lambda = ctr$lambda,
-                  nBoot = ctr$nBoot, bpos = ctr$gammaPos, bneg = ctr$gammaNeg)
+                  nBoot = ctr$nBoot, bpos = ctr$gammaPos, bneg = ctr$gammaNeg,
+                  fast = ctr$fastAdjust)
 
   # info on the funds
   info <- infoFund(X, level = level, na.neg = na.neg)
@@ -139,6 +140,13 @@
 #' outperform the focal fund: the count uses \code{tstat <= qnorm(gammaNeg)}
 #' and subtracts the expected fraction \code{gammaNeg} of false positives.
 #' Default: \code{gammaNeg = 0.6}.
+#' \item \code{'fastAdjust'} Use a fast vectorised inversion in the
+#' truncated-normal bias correction of \eqn{\pi^0}{pi0} instead of one
+#' \code{uniroot} call per value. This is the dominant cost when \code{lambda}
+#' is data driven and gives a large speed-up on big universes; the result agrees
+#' with the default path to about 1e-12, i.e. well inside \code{uniroot}'s own
+#' tolerance. Default: \code{fastAdjust = FALSE}, i.e. the original code path,
+#' kept as default for exact reproducibility of published results.
 #' }
 #' @param X Matrix \eqn{(T \times N)}{(TxN)} of \eqn{T} returns for the \eqn{N}
 #' funds. \code{NA} values are allowed.

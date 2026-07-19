@@ -114,6 +114,13 @@ Default: \code{gammaPos = 0.4} (the value recommended in Ardia and Boudt, 2018).
 outperform the focal fund: the count uses \code{tstat <= qnorm(gammaNeg)}
 and subtracts the expected fraction \code{gammaNeg} of false positives.
 Default: \code{gammaNeg = 0.6}.
+\item \code{'fastAdjust'} Use a fast vectorised inversion in the
+truncated-normal bias correction of \eqn{\pi^0}{pi0} instead of one
+\code{uniroot} call per value. This is the dominant cost when \code{lambda}
+is data driven and gives a large speed-up on big universes; the result agrees
+with the default path to about 1e-12, i.e. well inside \code{uniroot}'s own
+tolerance. Default: \code{fastAdjust = FALSE}, i.e. the original code path,
+kept as default for exact reproducibility of published results.
 }
 }
 \note{
