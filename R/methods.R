@@ -297,8 +297,8 @@ print.summary.SCREENING <- function(x, ...) {
 }
 
 #' @name confint.SCREENING
-#' @title Bootstrap confidence intervals for the peer performance ratios
-#' @description Computes confidence intervals for one of the peer performance
+#' @title Peer-bootstrap intervals for the peer performance ratios
+#' @description Computes peer-bootstrap intervals for one of the peer performance
 #' ratios (\eqn{\hat\pi^+}, \eqn{\hat\pi^0}, or \eqn{\hat\pi^-}) of a
 #' \code{SCREENING} object, by a nonparametric peer (pairwise) bootstrap: for
 #' each focal fund its peers are resampled with replacement and the ratio is

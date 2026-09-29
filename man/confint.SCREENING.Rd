@@ -2,7 +2,7 @@
 % Please edit documentation in R/methods.R
 \name{confint.SCREENING}
 \alias{confint.SCREENING}
-\title{Bootstrap confidence intervals for the peer performance ratios}
+\title{Peer-bootstrap intervals for the peer performance ratios}
 \usage{
 \method{confint}{SCREENING}(
   object,
@@ -37,7 +37,7 @@ A matrix with one row per fund and two columns (lower and upper
 bounds); the point estimate is attached as attribute \code{"estimate"}.
 }
 \description{
-Computes confidence intervals for one of the peer performance
+Computes peer-bootstrap intervals for one of the peer performance
 ratios (\eqn{\hat\pi^+}, \eqn{\hat\pi^0}, or \eqn{\hat\pi^-}) of a
 \code{SCREENING} object, by a nonparametric peer (pairwise) bootstrap: for
 each focal fund its peers are resampled with replacement and the ratio is
