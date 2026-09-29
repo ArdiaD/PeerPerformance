@@ -109,6 +109,7 @@
   # form output
   out <- list(n = info$nObs, npeer = npeer, alpha = info$alpha,
               dalpha = dalpha, pval = pval, tstat = tstat, lambda = pi$lambda,
+              gammaPos = ctr$gammaPos, gammaNeg = ctr$gammaNeg,
               pizero = pi$pizero, pipos = pi$pipos, pineg = pi$pineg)
   class(out) <- "SCREENING"
 

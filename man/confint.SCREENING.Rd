@@ -10,8 +10,8 @@
   level = 0.95,
   ...,
   nBoot = 499L,
-  gammaPos = 0.4,
-  gammaNeg = 0.6
+  gammaPos = NULL,
+  gammaNeg = NULL
 )
 }
 \arguments{
@@ -28,7 +28,8 @@ or \code{"pineg"}.}
 \item{nBoot}{Number of bootstrap resamples. Default: \code{499}.}
 
 \item{gammaPos, gammaNeg}{One-sided thresholds used to recompute the ratios
-(should match those of the original screening). Defaults: \code{0.4},
+(should match those of the original screening). By default, the values are
+taken from \code{object}; for older objects the fallbacks are \code{0.4} and
 \code{0.6}.}
 }
 \value{

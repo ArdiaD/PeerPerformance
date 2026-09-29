@@ -126,6 +126,7 @@ alphaScreeningXYi <- compiler::cmpfun(.alphaScreeningXYi)
 
   out <- list(n = info$nObs, npeer = npeer, ny = nY, alpha = info$alpha,
               dalpha = dalpha, pval = pval, tstat = tstat, lambda = pi$lambda,
+              gammaPos = ctr$gammaPos, gammaNeg = ctr$gammaNeg,
               pizero = pi$pizero, pipos = pi$pipos, pineg = pi$pineg,
               cross = TRUE)
   class(out) <- "SCREENING"
@@ -239,6 +240,7 @@ sharpeScreeningXYi <- compiler::cmpfun(.sharpeScreeningXYi)
   out <- list(n = info$nObs, npeer = rowSums(!is.na(pval)), ny = nY,
               sharpe = info$sharpe, dsharpe = dsharpe, pval = pval,
               tstat = tstat, lambda = pi$lambda, pizero = pi$pizero,
+              gammaPos = ctr$gammaPos, gammaNeg = ctr$gammaNeg,
               pipos = pi$pipos, pineg = pi$pineg, cross = TRUE)
   class(out) <- "SCREENING"
   return(out)
@@ -352,6 +354,7 @@ msharpeScreeningXYi <- compiler::cmpfun(.msharpeScreeningXYi)
   out <- list(n = info$nObs, npeer = rowSums(!is.na(pval)), ny = nY,
               msharpe = info$msharpe, dmsharpe = dmsharpe, pval = pval,
               tstat = tstat, lambda = pi$lambda, pizero = pi$pizero,
+              gammaPos = ctr$gammaPos, gammaNeg = ctr$gammaNeg,
               pipos = pi$pipos, pineg = pi$pineg, cross = TRUE)
   class(out) <- "SCREENING"
   return(out)

@@ -89,6 +89,7 @@
   # form output
   out <- list(n = info$nObs, npeer = colSums(!is.na(pval)), msharpe = info$msharpe,
               dmsharpe = dmsharpe, pval = pval, tstat = tstat, lambda = pi$lambda,
+              gammaPos = ctr$gammaPos, gammaNeg = ctr$gammaNeg,
               pizero = pi$pizero, pipos = pi$pipos, pineg = pi$pineg)
   class(out) <- "SCREENING"
 

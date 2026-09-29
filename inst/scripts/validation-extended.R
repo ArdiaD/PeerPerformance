@@ -14,14 +14,15 @@
 ##
 ##   (E) How does it behave when the assumptions are violated in the ways fund
 ##       returns actually violate them -- fat tails, serial correlation, and
-##       cross-sectional correlation (hfdata has a mean pairwise correlation of
-##       about 0.25)?
+##       cross-sectional correlation and volatility heterogeneity (hfdata has
+##       a mean pairwise correlation of about 0.25 and a 16-fold spread in
+##       standard deviations)?
 ##
 ##   (F) Does the modified Sharpe test keep its size under non-normality and
 ##       autocorrelation, and does the studentized circular bootstrap
-##       (type = 2, bBoot = 0) repair it where the asymptotic test fails? The
-##       article recommends the bootstrap for exactly these cases, so the
-##       recommendation should rest on evidence.
+##       with prespecified blocks (type = 2; bBoot = 1 for i.i.d. returns and
+##       bBoot = 5 for AR(1)) repair it where the asymptotic test fails? This
+##       experiment validates the fixed-block bootstrap.
 ##
 ## This script is slower than validation.R (tens of minutes). Run with:
 ##   source(system.file("scripts", "validation-extended.R",
@@ -79,10 +80,15 @@ cat(sprintf("    is %.3f, i.e. a non-tie mass of %.3f.\n", emp, 1 - emp))
 ## ===========================================================================
 cat("\n(E) Exact null at N = 100, T = 60 under violated assumptions\n\n")
 N <- 100L; TT <- 60L
+data("hfdata")
+hfSd <- apply(hfdata, 2, stats::sd, na.rm = TRUE)
 
 genGauss <- function() matrix(stats::rnorm(TT * N, 0.005, 0.04), TT, N)
-genT5    <- function() matrix(0.005 + 0.04 * stats::rt(TT * N, df = 5)/sqrt(5/3),
-                              TT, N)
+genT5    <- function() {
+  ## i.i.d. Student-t(5) returns, standardized to the Gaussian reference
+  ## variance while preserving the common expected return of 0.005.
+  matrix(0.005 + 0.04 * stats::rt(TT * N, df = 5)/sqrt(5/3), TT, N)
+}
 genAR1   <- function(rho = 0.3) {
   e <- matrix(stats::rnorm(TT * N, 0, 0.04 * sqrt(1 - rho^2)), TT, N)
   X <- matrix(NA_real_, TT, N)
@@ -90,14 +96,25 @@ genAR1   <- function(rho = 0.3) {
   for (t in 2:TT) X[t, ] <- rho * X[t - 1, ] + e[t, ]
   X + 0.005
 }
-genFac   <- function(rho = 0.25) {           # common factor => cross-sectional rho
-  f <- stats::rnorm(TT, 0, 0.04 * sqrt(rho))
-  X <- matrix(stats::rnorm(TT * N, 0, 0.04 * sqrt(1 - rho)), TT, N)
-  0.005 + X + f
+genFac   <- function(rc = 0.25) {
+  ## Heterogeneous standardized loadings leave (beta_i - beta_j) f_t in
+  ## pairwise differences, while preserving a marginal volatility of 0.04.
+  beta <- stats::runif(N, 0.5, 1.5)
+  f <- stats::rnorm(TT)
+  X <- matrix(stats::rnorm(TT * N), TT, N)
+  X <- sweep(X, 2, sqrt(1 - rc * beta^2), "*") +
+       tcrossprod(sqrt(rc) * f, beta)
+  0.005 + 0.04 * X
 }
-## AR(1) idiosyncratic returns plus an AR(1) common factor. Calibrated to
-## reproduce BOTH the serial and the cross-sectional dependence of hfdata, so
-## that the resulting floor is the right benchmark for the empirical section.
+genVol   <- function() {
+  ## Preserve the empirical cross-sectional distribution of volatility while
+  ## imposing the exact null of a common expected return.
+  0.005 + sweep(matrix(stats::rnorm(TT * N), TT, N), 2, hfSd, "*")
+}
+## AR(1) idiosyncratic returns plus an AR(1) common factor with heterogeneous
+## standardized loadings and the empirical marginal volatilities. This matches
+## the serial dependence, average cross-sectional dependence, and volatility
+## distribution of hfdata under the exact null of a common expected return.
 genBoth  <- function(rho = 0.20, rc = 0.25) {
   ar1 <- function(n, s) {
     e <- stats::rnorm(n, 0, s * sqrt(1 - rho^2))
@@ -105,17 +122,22 @@ genBoth  <- function(rho = 0.20, rc = 0.25) {
     for (t in 2:n) x[t] <- rho * x[t - 1] + e[t]
     x
   }
-  f <- ar1(TT, 0.04 * sqrt(rc))
+  beta <- stats::runif(N, 0.5, 1.5)
+  f <- ar1(TT, 1)
   X <- matrix(0, TT, N)
-  for (j in seq_len(N)) X[, j] <- ar1(TT, 0.04 * sqrt(1 - rc))
-  0.005 + X + f
+  for (j in seq_len(N)) {
+    X[, j] <- hfSd[j] * (sqrt(rc) * beta[j] * f +
+                          sqrt(1 - rc * beta[j]^2) * ar1(TT, 1))
+  }
+  0.005 + X
 }
 gens <- list("i.i.d. Gaussian (reference)" = genGauss,
-             "t(5) innovations"            = genT5,
+             "i.i.d. standardized t(5)"    = genT5,
              "AR(1), rho = 0.2"            = function() genAR1(0.20),
              "AR(1), rho = 0.3"            = genAR1,
-             "common factor, rho = 0.25"   = genFac,
-             "AR(1) 0.2 + factor 0.25"     = genBoth)
+             "heterogeneous loadings"       = genFac,
+             "heterogeneous volatility"     = genVol,
+             "calibrated null"              = genBoth)
 cat(sprintf("    %-28s %14s %14s\n", "return process", "pi0 (s.e.)", "pi+ + pi- (s.e.)"))
 for (nm in names(gens)) {
   m <- matrix(NA_real_, RS, 2)
@@ -139,7 +161,7 @@ cat("\n(E1) False-discovery floor with and without HAC standard errors\n\n")
 hacGens <- list("i.i.d. Gaussian"           = genGauss,
                 "AR(1), rho = 0.2"          = function() genAR1(0.20),
                 "AR(1), rho = 0.3"          = genAR1,
-                "AR(1) 0.2 + factor 0.25"   = genBoth)
+                "calibrated null"            = genBoth)
 RS_HAC <- 40L   # the HAC panel is twice the cost per replication
 cat(sprintf("    %-26s %18s %18s\n", "null process",
             "floor hac = FALSE", "floor hac = TRUE"))
@@ -172,8 +194,8 @@ for (h in c(FALSE, TRUE)) {
 ## not against zero. Without this, the single most striking number in any
 ## applied screening has no benchmark at all.
 ## ===========================================================================
-cat("\n(E2) Largest pi+ across the cross-section, calibrated null (AR(1) 0.2 +",
-    "factor 0.25)\n\n")
+cat("\n(E2) Largest pi+ across the cross-section, calibrated null\n",
+    "     (AR(1) 0.2 + factor 0.25 + heterogeneous loadings and volatility)\n\n")
 mx <- numeric(RS)
 for (r in seq_len(RS)) {
   sc <- alphaScreening(genBoth(), control = ctr)
@@ -195,13 +217,16 @@ cc <- stats::cor(hfdata, use = "pairwise.complete.obs")
 cat(sprintf("    hfdata dependence: mean lag-1 AC %.3f (%.0f%% above 0.2),",
             mean(ac1, na.rm = TRUE), 100 * mean(ac1 > 0.2, na.rm = TRUE)))
 cat(sprintf(" mean pairwise cor %.3f\n", mean(cc[upper.tri(cc)], na.rm = TRUE)))
+cat(sprintf("    hfdata volatility: min %.3f, max %.3f (%.1f-fold spread)\n",
+            min(hfSd), max(hfSd), max(hfSd) / min(hfSd)))
 
 ## ===========================================================================
 ## (F) Size of the modified Sharpe test: asymptotic vs studentized bootstrap
 ## ===========================================================================
 cat("\n(F) Empirical size of the modified Sharpe equality test (nominal 5%)\n")
 cat("    asymptotic (type = 1, the default) vs studentized circular bootstrap\n")
-cat("    (type = 2, bBoot = 0, i.e. data-driven block length)\n\n")
+cat("    (type = 2; block 1 for i.i.d. returns, block 5 for AR(1))\n\n")
+set.seed(1234)
 binse <- function(p, R) sqrt(p * (1 - p)/R)
 TT <- 120L
 pairGauss <- function() cbind(stats::rnorm(TT, 0.006, 0.04),
@@ -214,9 +239,12 @@ pairAR1   <- function(rho = 0.3) {
   cbind(sim(), sim())
 }
 pairs <- list("i.i.d. Gaussian" = pairGauss,
-              "t(5) innovations" = pairT5,
+              "i.i.d. standardized t(5)" = pairT5,
               "AR(1), rho = 0.3" = pairAR1)
-cat(sprintf("    %-20s %18s %18s\n", "return process",
+bootBlock <- c("i.i.d. Gaussian" = 1L,
+               "i.i.d. standardized t(5)" = 1L,
+               "AR(1), rho = 0.3" = 5L)
+cat(sprintf("    %-28s %5s %18s %18s\n", "return process", "block",
             "asymptotic (s.e.)", "bootstrap (s.e.)"))
 for (nm in names(pairs)) {
   rej1 <- rej2 <- 0L
@@ -225,11 +253,13 @@ for (nm in names(pairs)) {
     p1 <- msharpeTesting(xy[, 1], xy[, 2], level = 0.90)$pval
     rej1 <- rej1 + isTRUE(p1 < 0.05)
     p2 <- msharpeTesting(xy[, 1], xy[, 2], level = 0.90,
-                         control = list(type = 2, bBoot = 0, nBoot = 199))$pval
+                         control = list(type = 2, bBoot = bootBlock[[nm]],
+                                        nBoot = 199))$pval
     rej2 <- rej2 + isTRUE(p2 < 0.05)
   }
-  cat(sprintf("    %-20s %.3f (%.3f)      %.3f (%.3f)\n", nm,
-              rej1/RT, binse(rej1/RT, RT), rej2/RT, binse(rej2/RT, RT)))
+  cat(sprintf("    %-28s %5d %.3f (%.3f)      %.3f (%.3f)\n", nm,
+              bootBlock[[nm]], rej1/RT, binse(rej1/RT, RT),
+              rej2/RT, binse(rej2/RT, RT)))
 }
 
 cat("\nsettings: replications", RS, "(screening) and", RT,
