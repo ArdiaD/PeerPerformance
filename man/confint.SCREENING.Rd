@@ -2,7 +2,7 @@
 % Please edit documentation in R/methods.R
 \name{confint.SCREENING}
 \alias{confint.SCREENING}
-\title{Bootstrap confidence intervals for the peer performance ratios}
+\title{Peer-bootstrap intervals for the peer performance ratios}
 \usage{
 \method{confint}{SCREENING}(
   object,
@@ -10,8 +10,8 @@
   level = 0.95,
   ...,
   nBoot = 499L,
-  gammaPos = 0.4,
-  gammaNeg = 0.6
+  gammaPos = NULL,
+  gammaNeg = NULL
 )
 }
 \arguments{
@@ -28,7 +28,8 @@ or \code{"pineg"}.}
 \item{nBoot}{Number of bootstrap resamples. Default: \code{499}.}
 
 \item{gammaPos, gammaNeg}{One-sided thresholds used to recompute the ratios
-(should match those of the original screening). Defaults: \code{0.4},
+(should match those of the original screening). By default, the values are
+taken from \code{object}; for older objects the fallbacks are \code{0.4} and
 \code{0.6}.}
 }
 \value{
@@ -36,7 +37,7 @@ A matrix with one row per fund and two columns (lower and upper
 bounds); the point estimate is attached as attribute \code{"estimate"}.
 }
 \description{
-Computes confidence intervals for one of the peer performance
+Computes peer-bootstrap intervals for one of the peer performance
 ratios (\eqn{\hat\pi^+}, \eqn{\hat\pi^0}, or \eqn{\hat\pi^-}) of a
 \code{SCREENING} object, by a nonparametric peer (pairwise) bootstrap: for
 each focal fund its peers are resampled with replacement and the ratio is

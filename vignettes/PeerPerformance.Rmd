@@ -57,8 +57,8 @@ funds and reports the win/loss counts:
 summary(sc, top = 3)
 ```
 
-The ratios are point estimates; `confint()` attaches confidence intervals by a
-nonparametric peer (pairwise) bootstrap that resamples each fund's peers:
+The ratios are point estimates; `confint()` attaches peer-bootstrap intervals
+that resample each fund's peers while holding the pairwise statistics fixed:
 
 ```{r}
 set.seed(1234)

@@ -36,8 +36,8 @@ remotes::install_github("ArdiaD/PeerPerformance")
   convenience wrapper for screening a chosen subset against the whole universe.
 - **Pairwise testing**: `alphaTesting()`, `sharpeTesting()`, `msharpeTesting()`.
 - **Methods** for screening results: `print()`, `summary()`, `plot()` (the
-  Ardia and Boudt 2018 screening plot), `confint()` (bootstrap confidence
-  intervals for the ratios), and `as.data.frame()` (tidy output).
+  Ardia and Boudt 2018 screening plot), `confint()` (peer-bootstrap intervals
+  for the ratios), and `as.data.frame()` (tidy output).
 - **Dynamic and factor analyses**: `rollScreening()` (rolling-window ratios)
   and `exposureHeterogeneity()` (factor exposure heterogeneity of Ardia et al.
   2023).
@@ -55,7 +55,7 @@ data("hfdata")
 sc <- alphaScreening(hfdata[, 1:30], control = list(nCore = 1))
 summary(sc)                    # ranked table with win/loss counts
 plot(sc)                       # peer performance screening plot
-confint(sc, parm = "pipos")    # bootstrap CIs for the outperformance ratios
+confint(sc, parm = "pipos")    # peer-bootstrap intervals
 ```
 
 On large universes most of the run time goes into the data-driven choice of

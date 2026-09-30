@@ -304,6 +304,31 @@ test_that("confint.SCREENING brackets the point estimate and is valid", {
   expect_error(confint(scb), "screen_beta")
 })
 
+test_that("confint.SCREENING reuses the screening gamma values", {
+  rets <- hfdata[, 1:12]
+  sc <- alphaScreening(rets, control = list(nCore = 1,
+                                            gammaPos = 0.3,
+                                            gammaNeg = 0.7))
+  expect_equal(sc$gammaPos, 0.3)
+  expect_equal(sc$gammaNeg, 0.7)
+
+  set.seed(42)
+  automatic <- confint(sc, parm = "pipos", nBoot = 50)
+  set.seed(42)
+  explicit <- confint(sc, parm = "pipos", nBoot = 50,
+                      gammaPos = 0.3, gammaNeg = 0.7)
+  expect_identical(automatic, explicit)
+
+  old <- sc
+  old$gammaPos <- old$gammaNeg <- NULL
+  set.seed(42)
+  fallback <- confint(old, parm = "pipos", nBoot = 50)
+  set.seed(42)
+  default <- confint(old, parm = "pipos", nBoot = 50,
+                     gammaPos = 0.4, gammaNeg = 0.6)
+  expect_identical(fallback, default)
+})
+
 test_that("alphaTesting screen_beta returns a (K+1) x 2 alpha matrix (HAC and not)", {
   x <- hfdata[, 1]; y <- hfdata[, 2]
   fac <- hfdata[, 50:51]                       # K = 2 factors

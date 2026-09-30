@@ -297,8 +297,8 @@ print.summary.SCREENING <- function(x, ...) {
 }
 
 #' @name confint.SCREENING
-#' @title Bootstrap confidence intervals for the peer performance ratios
-#' @description Computes confidence intervals for one of the peer performance
+#' @title Peer-bootstrap intervals for the peer performance ratios
+#' @description Computes peer-bootstrap intervals for one of the peer performance
 #' ratios (\eqn{\hat\pi^+}, \eqn{\hat\pi^0}, or \eqn{\hat\pi^-}) of a
 #' \code{SCREENING} object, by a nonparametric peer (pairwise) bootstrap: for
 #' each focal fund its peers are resampled with replacement and the ratio is
@@ -313,7 +313,8 @@ print.summary.SCREENING <- function(x, ...) {
 #' @param ... Unused.
 #' @param nBoot Number of bootstrap resamples. Default: \code{499}.
 #' @param gammaPos,gammaNeg One-sided thresholds used to recompute the ratios
-#' (should match those of the original screening). Defaults: \code{0.4},
+#' (should match those of the original screening). By default, the values are
+#' taken from \code{object}; for older objects the fallbacks are \code{0.4} and
 #' \code{0.6}.
 #' @return A matrix with one row per fund and two columns (lower and upper
 #' bounds); the point estimate is attached as attribute \code{"estimate"}.
@@ -331,9 +332,11 @@ print.summary.SCREENING <- function(x, ...) {
 #' @importFrom stats quantile
 confint.SCREENING <- function(object, parm = c("pipos", "pizero", "pineg"),
                               level = 0.95, ..., nBoot = 499L,
-                              gammaPos = 0.4, gammaNeg = 0.6) {
+                              gammaPos = NULL, gammaNeg = NULL) {
   parm <- match.arg(parm)
   est <- object[[parm]]
+  if (is.null(gammaPos)) gammaPos <- if (!is.null(object$gammaPos)) object$gammaPos else 0.4
+  if (is.null(gammaNeg)) gammaNeg <- if (!is.null(object$gammaNeg)) object$gammaNeg else 0.6
   if (is.matrix(est) || (!is.null(dim(est)) && length(dim(est)) > 1L)) {
     stop("confint is not supported for 'screen_beta' screenings")
   }
