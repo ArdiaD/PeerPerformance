@@ -34,9 +34,9 @@
   Y <- 1 * is.finite(X)   # Inf counts as missing, not as an observation
   YY <- crossprod(Y)  #YY = t(Y) %*% Y # row i indicates how many observations in common with column k
   pairLens <- YY[upper.tri(YY)]  # pairwise complete-case lengths (before thresholding)
-  YY[YY < ctr$minObs] <- 0
-  YY[YY > 0] <- 1
-  liststocks <- c(1:nrow(YY))[rowSums(YY) > ctr$minObsPi]
+  # Compute every upper-triangular pair once. minObsPi is enforced afterwards
+  # on each fund's final number of valid peers.
+  liststocks <- seq_len(N - 1L)
 
   # pre-generate the bootstrap indices in the master, one matrix per distinct
   # pair length (workers select by length; see bootIndicesByLen). Only needed
@@ -48,8 +48,7 @@
                               ctr$nBoot, ctr$bBoot)
   }
 
-  if (length(liststocks) > 1) {
-    liststocks <- liststocks[1:(length(liststocks) - 1)]
+  if (length(liststocks) > 0L) {
 
     if (ctr$nCore == 1) {
       # serial path: no PSOCK cluster (avoids the per-call cluster overhead)
@@ -81,7 +80,8 @@
   # pi
   pi <- computePi(pval = pval, dalpha = dmsharpe, tstat = tstat, lambda = ctr$lambda,
                   nBoot = ctr$nBoot, bpos = ctr$gammaPos, bneg = ctr$gammaNeg,
-                  fast = ctr$fastAdjust)
+                  fast = ctr$fastAdjust, self = TRUE,
+                  minObsPi = ctr$minObsPi)
 
   # info on the funds
   info <- infoFund(X, level = level, na.neg = na.neg)
@@ -103,11 +103,10 @@
 #' @details The modified Sharpe ratio (Favre and Galeano 2002, Gregoriou and Gueyie
 #' 2003) is one industry standard for measuring the absolute risk adjusted
 #' performance of hedge funds. We propose to complement the modified Sharpe
-#' ratio with the fund's outperformance ratio, defined as the percentage number
-#' of funds that have a significantly lower modified Sharpe ratio. In a
-#' pairwise testing framework, a fund can have a significantly higher modified
-#' Sharpe ratio because of luck. We correct for this by applying the false
-#' discovery rate approach by Storey (2002).
+#' ratio with the fund's outperformance ratio, which estimates the proportion
+#' of funds with a lower underlying modified Sharpe ratio. Pairwise estimates
+#' are subject to sampling variation, so the aggregate proportions use the
+#' Storey (2002) adjustment for expected false positives.
 #'
 #' For the testing, only the intersection of non-\code{NA} observations for the
 #' two funds are used.
@@ -125,8 +124,10 @@
 #' \item \code{'nBoot'} Number of
 #' bootstrap replications for computing the p-value. Default: \code{nBoot =
 #' 499}.
-#' \item \code{'bBoot'} Block length in the circular bootstrap. Default:
-#' \code{bBoot = 1}, i.e. iid bootstrap. (The data-driven choice
+#' \item \code{'bBoot'} Block length in the circular bootstrap, counted in
+#' retained concordant observations after missing rows are removed rather than
+#' in calendar periods. Default: \code{bBoot = 1}, i.e. iid bootstrap.
+#' (The data-driven choice
 #' \code{bBoot = 0} is only available in \code{\link{msharpeTesting}}, not in
 #' screening.)
 #' \item \code{'pBoot'} Symmetric p-value (\code{pBoot = 1}) or
@@ -134,7 +135,9 @@
 #' \item \code{'nCore'} Number of cores to be used. Default: \code{nCore = 1}.
 #' \item \code{'minObs'} Minimum number of concordant observations to compute
 #' the ratios. Default: \code{minObs = 10}.
-#' \item \code{'minObsPi'} Minimum number of observations to compute pi0. Default: \code{minObsPi = 1}.
+#' \item \code{'minObsPi'} Requested minimum number of valid peers for computing
+#' the peer proportions; at least two are required internally. Default:
+#' \code{minObsPi = 1}.
 #' \item \code{'lambda'} Threshold value to compute pi0. Default: \code{lambda
 #' = NULL}, i.e. data driven choice.
 #' \item \code{'gammaPos'} One-sided quantile level (of the standard Normal
@@ -294,7 +297,8 @@ msharpeScreening <- compiler::cmpfun(.msharpeScreening)
       next  # degenerate pair or NA modified VaR (na.neg)
     }
 
-    dmsharpei[j] <- tmp$dmsharpe
+    dmsharpei[j] <- msharpe.ratio.diff(rets, Y = NULL, level, na.neg,
+                                       ttype = 1)
     pvali[j] <- tmp$pval
     tstati[j] <- tmp$tstat
   }

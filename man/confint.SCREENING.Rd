@@ -2,7 +2,7 @@
 % Please edit documentation in R/methods.R
 \name{confint.SCREENING}
 \alias{confint.SCREENING}
-\title{Peer-bootstrap intervals for the peer performance ratios}
+\title{Peer-bootstrap sensitivity intervals for the peer performance ratios}
 \usage{
 \method{confint}{SCREENING}(
   object,
@@ -21,7 +21,7 @@
 \item{parm}{Which ratio to bound: \code{"pipos"} (default), \code{"pizero"},
 or \code{"pineg"}.}
 
-\item{level}{Confidence level. Default: \code{0.95}.}
+\item{level}{Central peer-bootstrap interval level. Default: \code{0.95}.}
 
 \item{...}{Unused.}
 
@@ -37,13 +37,16 @@ A matrix with one row per fund and two columns (lower and upper
 bounds); the point estimate is attached as attribute \code{"estimate"}.
 }
 \description{
-Computes peer-bootstrap intervals for one of the peer performance
+Computes peer-bootstrap sensitivity intervals for one of the peer performance
 ratios (\eqn{\hat\pi^+}, \eqn{\hat\pi^0}, or \eqn{\hat\pi^-}) of a
 \code{SCREENING} object, by a nonparametric peer (pairwise) bootstrap: for
 each focal fund its peers are resampled with replacement and the ratio is
 recomputed from the stored pairwise p-values and test statistics. The
 interval therefore reflects the peer-composition and aggregation uncertainty,
-holding the individual pairwise test statistics fixed.
+holding the individual pairwise test statistics and the selected
+\eqn{\lambda} fixed. It does not include return-sampling or
+\eqn{\lambda}-selection uncertainty and should not be interpreted as a
+confidence interval with nominal coverage for the underlying population ratio.
 }
 \examples{
 \donttest{

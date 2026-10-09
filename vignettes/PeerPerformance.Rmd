@@ -17,19 +17,19 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.width = 7,
 ## Overview
 
 `PeerPerformance` evaluates the performance of investment funds *relative to
-their peers*, with a correction for luck that is robust to false discoveries.
+their peers*, using a Storey-type adjustment for expected false positives.
 For each fund $i$ it estimates three **peer performance ratios** that sum to
 one:
 
-- $\hat\pi^+_i$ -- the proportion of peers fund $i$ significantly **outperforms**,
-- $\hat\pi^0_i$ -- the proportion of peers with **equal** performance,
-- $\hat\pi^-_i$ -- the proportion of peers that **outperform** fund $i$.
+- $\hat\pi^+_i$ -- the estimated proportion of peers that fund $i$ **outperforms**,
+- $\hat\pi^0_i$ -- the estimated proportion of peers with **equal** performance,
+- $\hat\pi^-_i$ -- the estimated proportion of peers that **outperform** fund $i$.
 
 The estimators implement the methodology of Ardia and Boudt (2018,
 *Journal of Banking & Finance*); the modified Sharpe ratio test follows
 Ardia and Boudt (2015, *Finance Research Letters*). A naive percentile rank
-ignores that many funds may be statistically indistinguishable; the
-false-discovery-rate (FDR) correction of Storey (2002) corrects for this.
+ignores that many funds may have equal underlying performance; the
+Storey-type correction estimates and adjusts for that mass.
 
 ```{r}
 library(PeerPerformance)
@@ -57,8 +57,11 @@ funds and reports the win/loss counts:
 summary(sc, top = 3)
 ```
 
-The ratios are point estimates; `confint()` attaches peer-bootstrap intervals
-that resample each fund's peers while holding the pairwise statistics fixed:
+The ratios are point estimates; `confint()` attaches peer-bootstrap
+intervals that resample each fund's peers while holding the pairwise statistics
+and selected $\lambda$ fixed. They do not include return-sampling or
+$\lambda$-selection uncertainty or provide nominal coverage for the underlying
+population ratios:
 
 ```{r}
 set.seed(1234)
@@ -111,7 +114,9 @@ All screening/testing functions share a `control` list. Common fields include
 `nCore` (parallel cores), `lambda` (the $\lambda$ threshold for $\hat\pi^0$,
 `NULL` = data-driven), `gammaPos`/`gammaNeg` (the one-sided thresholds, default
 `0.4`/`0.6`), `hac` (HAC standard errors), and for the Sharpe/mSR routines
-`type` (asymptotic/bootstrap), `nBoot`, and `bBoot`. See `?alphaScreening`.
+`type` (asymptotic/bootstrap), `nBoot`, and `bBoot`. Bootstrap blocks are formed
+after missing rows are removed, so `bBoot` counts retained concordant
+observations rather than calendar periods. See `?alphaScreening`.
 
 Note that with the data-driven `lambda` (the default) the bias correction of
 $\hat\pi^0$ dominates the run time on large universes. Setting

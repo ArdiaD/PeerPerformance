@@ -63,8 +63,9 @@ errors. Default: \code{hac = FALSE}.
 10}.
 \item \code{'nBoot'} Number of bootstrap replications for computing the
 p-value. Default: \code{nBoot = 499}.
-\item \code{'bBoot'} Block length in
-the circular bootstrap. Default: \code{bBoot = 1}, i.e. iid bootstrap.
+\item \code{'bBoot'} Block length in the circular bootstrap, counted in
+retained concordant observations after missing rows are removed rather than
+in calendar periods. Default: \code{bBoot = 1}, i.e. iid bootstrap.
 \code{bBoot = 0} uses optimal block-length.
 \item \code{'pBoot'} Symmetric
 p-value (\code{pBoot = 1}) or asymmetric p-value (\code{pBoot = 2}).

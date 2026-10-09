@@ -304,12 +304,15 @@ print.summary.SCREENING <- function(x, ...) {
 #' each focal fund its peers are resampled with replacement and the ratio is
 #' recomputed from the stored pairwise p-values and test statistics. The
 #' interval therefore reflects the peer-composition and aggregation uncertainty,
-#' holding the individual pairwise test statistics fixed.
+#' holding the individual pairwise test statistics and the selected
+#' \eqn{\lambda} fixed. It does not include return-sampling or
+#' \eqn{\lambda}-selection uncertainty and should not be interpreted as a
+#' confidence interval with nominal coverage for the underlying population ratio.
 #' @param object A \code{SCREENING} object (within-group or cross-group; not
 #' \code{screen_beta}).
 #' @param parm Which ratio to bound: \code{"pipos"} (default), \code{"pizero"},
 #' or \code{"pineg"}.
-#' @param level Confidence level. Default: \code{0.95}.
+#' @param level Central peer-bootstrap interval level. Default: \code{0.95}.
 #' @param ... Unused.
 #' @param nBoot Number of bootstrap resamples. Default: \code{499}.
 #' @param gammaPos,gammaNeg One-sided thresholds used to recompute the ratios
@@ -363,7 +366,8 @@ confint.SCREENING <- function(object, parm = c("pipos", "pizero", "pineg"),
     for (b in seq_len(nBoot)) {
       idx <- sample.int(n, n, replace = TRUE)
       pp <- computePi(pv[idx], dd[idx], ts[idx], lambda = lam,
-                      bpos = gammaPos, bneg = gammaNeg)
+                      bpos = gammaPos, bneg = gammaNeg,
+                      self = !isTRUE(object$cross))
       bs[b] <- pp[[parm]]
     }
     qs <- stats::quantile(bs, c(a, 1 - a), na.rm = TRUE, names = FALSE)
@@ -385,8 +389,8 @@ confint.SCREENING <- function(object, parm = c("pipos", "pizero", "pineg"),
 #' factor-by-factor heterogeneity measure of Ardia et al. (2023). For each
 #' coefficient \eqn{k} (the alpha and each factor beta) it reports the average
 #' equal-exposure ratio \eqn{\pi^0_k = \frac1N\sum_i \pi^0_{i,k}} and the
-#' heterogeneity \eqn{1-\pi^0_k}: the share of peers that are significantly
-#' differentiated on coefficient \eqn{k}. A value close to one indicates large
+#' heterogeneity \eqn{1-\pi^0_k}: the estimated share of peers with different
+#' coefficient \eqn{k}. A value close to one indicates large
 #' heterogeneity (much room to differentiate); close to zero, homogeneity.
 #' @param object A \code{SCREENING} object produced with
 #' \code{screen_beta = TRUE}.

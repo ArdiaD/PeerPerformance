@@ -67,9 +67,10 @@
 #' errors. Default: \code{hac = FALSE}.
 #' \item \code{'nBoot'} Number of bootstrap replications for computing the p-value. Default: \code{nBoot =
 #' 499}.
-#' \item \code{'bBoot'} Block length in the circular bootstrap. Default:
-#' \code{bBoot = 1}, i.e. iid bootstrap. \code{bBoot = 0} uses optimal
-#' block-length.
+#' \item \code{'bBoot'} Block length in the circular bootstrap, counted in
+#' retained concordant observations after missing rows are removed rather than
+#' in calendar periods. Default: \code{bBoot = 1}, i.e. iid bootstrap.
+#' \code{bBoot = 0} uses optimal block-length.
 #' \item \code{'pBoot'} Symmetric p-value (\code{pBoot = 1}) or
 #' asymmetric p-value (\code{pBoot = 2}). Default: \code{pBoot = 1}.
 #' }
@@ -309,7 +310,8 @@ se.sharpe.asymptotic <- compiler::cmpfun(.se.sharpe.asymptotic)
   T <- nrow(rets)
   x <- rets[, 1, drop = FALSE]
   y <- rets[, 2, drop = FALSE]
-  dsharpe <- as.numeric(sharpe.ratio.diff(x, y, ttype) - d)
+  dsharpe.hat <- as.numeric(sharpe.ratio.diff(x, y, ttype))
+  dsharpe <- dsharpe.hat - d
   se <- se.sharpe.bootstrap(x, y, b, ttype)
   # se = se.sharpe.asymptotic(X = cbind(x, y), hac = TRUE, ttype = ttype)
 
@@ -328,12 +330,12 @@ se.sharpe.asymptotic <- compiler::cmpfun(.se.sharpe.asymptotic)
     # is the conservative convention: the bootstrap statistics live on a finite
     # resample space, so exact ties with |tstat| are possible and are counted
     # against the null rather than ignored.
-    bststat <- abs(bsdsharpe - dsharpe)/bsse
+    bststat <- abs(bsdsharpe - dsharpe.hat)/bsse
     pval <- (sum(bststat >= abs(tstat)) + 1)/(nBoot + 1)
     # pval = sum(bststat >= abs(tstat)) / nBoot
   } else {
     # second type p-value calculation (as in Barras)
-    bststat <- (bsdsharpe - dsharpe)/bsse
+    bststat <- (bsdsharpe - dsharpe.hat)/bsse
     pval <- 2 * min(sum(bststat > tstat) + 1, sum(bststat < tstat) +
                       1)/(nBoot + 1)
     # pval = 2 * min(sum(bststat > tstat), sum(bststat < tstat)) / nBoot

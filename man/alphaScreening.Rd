@@ -75,10 +75,10 @@ computes the alpha outperformance ratio.
 The alpha measure (Treynor and Black 1973, Carhart 1997, Fung and Hsieh
 2004) is one industry standard for measuring the absolute risk adjusted
 performance of hedge funds. We propose to complement the alpha measure with
-the fund's alpha outperformance ratio, defined as the percentage number of
-funds that have a significantly lower alpha. In a pairwise testing
-framework, a fund can have a significantly higher alpha because of luck. We
-correct for this by applying the false discovery rate approach by Storey (2002).
+the fund's alpha outperformance ratio, which estimates the proportion of
+funds with a lower underlying alpha. Pairwise estimates are subject to
+sampling variation, so the aggregate proportions use the Storey (2002)
+adjustment for expected false positives.
 
 The methodology proceeds as follows:
 \itemize{
@@ -96,8 +96,9 @@ components:
 standard errors. Default: \code{hac = FALSE}.
 \item \code{'minObs'} Minimum number of concordant observations to compute the ratios. Default:
 \code{minObs = 10}.
-\item \code{'minObsPi'} Minimum number of observations
-for computing the p-values). Default: \code{minObsPi = 1}.
+\item \code{'minObsPi'} Requested minimum number of valid peers for computing
+the peer proportions; at least two are required internally. Default:
+\code{minObsPi = 1}.
 \item \code{'nCore'} Number of cores used to perform the screening. Default:
 \code{nCore = 1}.
 \item \code{'lambda'} Threshold value to compute pi0.

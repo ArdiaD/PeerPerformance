@@ -5,7 +5,8 @@
 # #' @importFrom stats qnorm
 # #' @import compiler
 .computePi <- function(pval, dalpha, tstat, lambda = 0.5, nBoot = 499,
-                       bpos = 0.4, bneg = 0.6, adjust = TRUE, fast = FALSE) {
+                       bpos = 0.4, bneg = 0.6, adjust = TRUE, fast = FALSE,
+                       self = FALSE, minObsPi = 1L) {
 
   if (!is.matrix(pval) & !is.array(pval)) {
     pval <- matrix(pval, nrow = 1)
@@ -43,8 +44,16 @@
       pvali <- pval[factor_dim, i, ]
       dalphai <- dalpha[factor_dim, i, ]
       tstati <- tstat[factor_dim, i, ]
-      if (all(is.na(pvali))) {
+      idxOK <- !is.na(pvali) & !is.na(dalphai) & !is.na(tstati)
+      n <- sum(idxOK)  # number of available peers
+      if (n <= 1 || n < minObsPi) {
         next
+      }
+      pvali <- pvali[idxOK]
+      if (self) {
+        # Preserve the published within-universe N convention in the bias
+        # correction without counting unavailable peers.
+        pvali <- c(pvali, NA_real_)
       }
       if (is.null(lambda)) {
         lambdai <- computeOptLambda(pval = pvali, nBoot = nBoot,
@@ -55,11 +64,6 @@
 
       pizeroi <- computePizero(pvali, lambda = lambdai, adjust = adjust,
                                fast = fast)
-      idxOK <- !is.na(pvali) & !is.na(dalphai) & !is.na(tstati)
-      n <- sum(idxOK)  # number of peers
-      if (n <= 1) {
-        next
-      }
 
       ni0 <- pizeroi * n
       hn <- round(0.5 * n)
@@ -104,10 +108,9 @@ computePi <- compiler::cmpfun(.computePi)
     pval <- matrix(pval, nrow = 1)
   }
 
-  # Note: 'n' (number of trials in the truncated-binomial adjustment of adjustPi)
-  # is the number of columns of 'pval'. This matches the original Ardia & Boudt
-  # (2018) implementation; when some peers are NA it slightly over-counts the
-  # effective number of peers. Kept as-is for consistency with published results.
+  # computePi() supplies only valid comparisons and, for a within-universe
+  # screening, one NA placeholder that preserves the published N convention in
+  # the truncated-binomial adjustment while remaining outside the tail mean.
   n <- ncol(pval)
   pizero <- apply(pval>=lambda, 1, mean, na.rm=TRUE)
   # pizero <- mean(pval >= lambda, na.rm = TRUE)

@@ -21,8 +21,8 @@ Aggregates the per-fund equal-performance ratios of a
 factor-by-factor heterogeneity measure of Ardia et al. (2023). For each
 coefficient \eqn{k} (the alpha and each factor beta) it reports the average
 equal-exposure ratio \eqn{\pi^0_k = \frac1N\sum_i \pi^0_{i,k}} and the
-heterogeneity \eqn{1-\pi^0_k}: the share of peers that are significantly
-differentiated on coefficient \eqn{k}. A value close to one indicates large
+heterogeneity \eqn{1-\pi^0_k}: the estimated share of peers with different
+coefficient \eqn{k}. A value close to one indicates large
 heterogeneity (much room to differentiate); close to zero, homogeneity.
 }
 \examples{
