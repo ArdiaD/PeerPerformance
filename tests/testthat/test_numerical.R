@@ -43,6 +43,20 @@ test_that("alphaTesting returns a coherent htest-like list", {
   expect_equal(unname(out$dalpha), unname(out$alpha[1] - out$alpha[2]), tolerance = 1e-8)
 })
 
+test_that("alphaTesting reports alphas from the common sample", {
+  x <- hfdata[, 1]
+  y <- hfdata[, 2]
+  x[1:5] <- NA_real_
+  y[56:60] <- NA_real_
+  factors <- matrix(seq_along(x), ncol = 1)
+
+  for (fac in list(NULL, factors)) {
+    out <- alphaTesting(x, y, factors = fac)
+    expect_equal(unname(out$dalpha),
+                 unname(out$alpha[1] - out$alpha[2]), tolerance = 1e-8)
+  }
+})
+
 test_that("alphaScreening with screen_beta returns one row per coefficient", {
   set.seed(1)
   rets <- hfdata[, 1:5]

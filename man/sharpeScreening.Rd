@@ -56,11 +56,10 @@ computes the Sharpe outperformance ratio.
 \details{
 The Sharpe ratio (Sharpe 1994) is one industry standard for measuring the
 absolute risk adjusted performance of hedge funds. We propose to complement
-the Sharpe ratio with the fund's outperformance ratio, defined as the
-percentage number of funds that have a significantly lower Sharpe ratio. In
-a pairwise testing framework, a fund can have a significantly higher Sharpe
-ratio because of luck. We correct for this by applying the false discovery
-rate approach by Storey (2002).
+the Sharpe ratio with the fund's outperformance ratio, which estimates the
+proportion of funds with a lower underlying Sharpe ratio. Pairwise estimates
+are subject to sampling variation, so the aggregate proportions use the
+Storey (2002) adjustment for expected false positives.
 
 For the testing, only the intersection of non-\code{NA} observations for the
 two funds are used.
@@ -90,8 +89,10 @@ or product (\code{type = 2}). Default: \code{type = 2}.
 errors. Default: \code{hac = FALSE}.
 \item \code{'nBoot'} Number of bootstrap replications for computing the p-value. Default: \code{nBoot =
 499}.
-\item \code{'bBoot'} Block length in the circular bootstrap. Default:
-\code{bBoot = 1}, i.e. iid bootstrap. (The data-driven choice
+\item \code{'bBoot'} Block length in the circular bootstrap, counted in
+retained concordant observations after missing rows are removed rather than
+in calendar periods. Default: \code{bBoot = 1}, i.e. iid bootstrap.
+(The data-driven choice
 \code{bBoot = 0} is only available in \code{\link{sharpeTesting}}, not in
 screening.)
 \item \code{'pBoot'} Symmetric p-value (\code{pBoot = 1}) or
@@ -99,8 +100,9 @@ asymmetric p-value (\code{pBoot = 2}). Default: \code{pBoot = 1}.
 \item \code{'nCore'} Number of cores to be used. Default: \code{nCore = 1}.
 \item \code{'minObs'} Minimum number of concordant observations to compute
 the ratios. Default: \code{minObs = 10}.
-\item \code{'minObsPi'} Minimum
-number of observations to compute pi0. Default: \code{minObsPi = 1}.
+\item \code{'minObsPi'} Requested minimum number of valid peers for computing
+the peer proportions; at least two are required internally. Default:
+\code{minObsPi = 1}.
 \item \code{'lambda'} Threshold value to compute pi0. Default: \code{lambda
 = NULL}, i.e. data driven choice.
 \item \code{'gammaPos'} One-sided quantile level (of the standard Normal

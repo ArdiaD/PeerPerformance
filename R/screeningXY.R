@@ -106,7 +106,7 @@ alphaScreeningXYi <- compiler::cmpfun(.alphaScreeningXYi)
   pi <- computePi(pval = pval, dalpha = dalpha, tstat = tstat,
                   lambda = ctr$lambda, nBoot = ctr$nBoot,
                   bpos = ctr$gammaPos, bneg = ctr$gammaNeg,
-                  fast = ctr$fastAdjust)
+                  fast = ctr$fastAdjust, minObsPi = ctr$minObsPi)
 
   info <- infoFund(X, factors = factors, screen_beta = screen_beta)
 
@@ -165,7 +165,7 @@ alphaScreeningXY <- compiler::cmpfun(.alphaScreeningXY)
     if (!is.finite(tmp$tstat)) {
       next  # degenerate pair (e.g. zero-variance series)
     }
-    dsharpei[j] <- tmp$dsharpe
+    dsharpei[j] <- sharpe.ratio.diff(rets, Y = NULL, ttype = 1)
     pvali[j]    <- tmp$pval
     tstati[j]   <- tmp$tstat
   }
@@ -234,7 +234,7 @@ sharpeScreeningXYi <- compiler::cmpfun(.sharpeScreeningXYi)
   pi <- computePi(pval = pval, dalpha = dsharpe, tstat = tstat,
                   lambda = ctr$lambda, nBoot = ctr$nBoot,
                   bpos = ctr$gammaPos, bneg = ctr$gammaNeg,
-                  fast = ctr$fastAdjust)
+                  fast = ctr$fastAdjust, minObsPi = ctr$minObsPi)
   info <- infoFund(X)
 
   out <- list(n = info$nObs, npeer = rowSums(!is.na(pval)), ny = nY,
@@ -278,7 +278,8 @@ sharpeScreeningXY <- compiler::cmpfun(.sharpeScreeningXY)
     if (!is.finite(tmp$tstat)) {
       next  # degenerate pair or NA modified VaR (na.neg)
     }
-    dmsharpei[j] <- tmp$dmsharpe
+    dmsharpei[j] <- msharpe.ratio.diff(rets, Y = NULL, level, na.neg,
+                                       ttype = 1)
     pvali[j]     <- tmp$pval
     tstati[j]    <- tmp$tstat
   }
@@ -348,7 +349,7 @@ msharpeScreeningXYi <- compiler::cmpfun(.msharpeScreeningXYi)
   pi <- computePi(pval = pval, dalpha = dmsharpe, tstat = tstat,
                   lambda = ctr$lambda, nBoot = ctr$nBoot,
                   bpos = ctr$gammaPos, bneg = ctr$gammaNeg,
-                  fast = ctr$fastAdjust)
+                  fast = ctr$fastAdjust, minObsPi = ctr$minObsPi)
   info <- infoFund(X, level = level, na.neg = na.neg)
 
   out <- list(n = info$nObs, npeer = rowSums(!is.na(pval)), ny = nY,

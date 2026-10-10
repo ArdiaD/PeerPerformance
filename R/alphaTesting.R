@@ -50,13 +50,13 @@
 
 	if (is.null(factors)) {
 		fit <- stats::lm(dXY ~ 1, na.action = stats::na.omit)
-		fitX <- stats::lm(X ~ 1, na.action = stats::na.omit)
-		fitY <- stats::lm(Y ~ 1, na.action = stats::na.omit)
+		fitX <- stats::lm(X ~ 1, subset = ok, na.action = stats::na.omit)
+		fitY <- stats::lm(Y ~ 1, subset = ok, na.action = stats::na.omit)
 	} else {
 		beta <- factors
 		fit <- stats::lm(dXY ~ 1 + beta, na.action = stats::na.omit)
-		fitX <- stats::lm(X ~ 1 + beta, na.action = stats::na.omit)
-		fitY <- stats::lm(Y ~ 1 + beta, na.action = stats::na.omit)
+		fitX <- stats::lm(X ~ 1 + beta, subset = ok, na.action = stats::na.omit)
+		fitY <- stats::lm(Y ~ 1 + beta, subset = ok, na.action = stats::na.omit)
 	} # end of factors/no factors
 
 	# HAC within loop. Coefficient tables are padded by name so that a factor

@@ -228,6 +228,13 @@ cat("    asymptotic (type = 1, the default) vs studentized circular bootstrap\n"
 cat("    (type = 2; block 1 for i.i.d. returns, block 5 for AR(1))\n\n")
 set.seed(1234)
 binse <- function(p, R) sqrt(p * (1 - p)/R)
+sizeSummary <- function(p) {
+  ok <- is.finite(p)
+  n <- sum(ok)
+  rate <- if (n > 0L) mean(p[ok] < 0.05) else NA_real_
+  c(rate = rate,
+    se = if (n > 0L) binse(rate, n) else NA_real_)
+}
 TT <- 120L
 pairGauss <- function() cbind(stats::rnorm(TT, 0.006, 0.04),
                               stats::rnorm(TT, 0.006, 0.04))
@@ -238,28 +245,34 @@ pairAR1   <- function(rho = 0.3) {
                                                 sd = 0.04 * sqrt(1 - rho^2))) + 0.006
   cbind(sim(), sim())
 }
+# The t(5) design is a heavy-tail stress test outside the finite-eighth-moment
+# condition of the moment-based asymptotics. The t(10) design satisfies it.
+pairT10   <- function() cbind(0.006 + 0.04 * stats::rt(TT, 10)/sqrt(10/8),
+                              0.006 + 0.04 * stats::rt(TT, 10)/sqrt(10/8))
 pairs <- list("i.i.d. Gaussian" = pairGauss,
               "i.i.d. standardized t(5)" = pairT5,
-              "AR(1), rho = 0.3" = pairAR1)
+              "AR(1), rho = 0.3" = pairAR1,
+              "i.i.d. standardized t(10)" = pairT10)
 bootBlock <- c("i.i.d. Gaussian" = 1L,
                "i.i.d. standardized t(5)" = 1L,
-               "AR(1), rho = 0.3" = 5L)
+               "AR(1), rho = 0.3" = 5L,
+               "i.i.d. standardized t(10)" = 1L)
 cat(sprintf("    %-28s %5s %18s %18s\n", "return process", "block",
             "asymptotic (s.e.)", "bootstrap (s.e.)"))
 for (nm in names(pairs)) {
-  rej1 <- rej2 <- 0L
+  p1 <- p2 <- rep(NA_real_, RT)
   for (r in seq_len(RT)) {
     xy <- pairs[[nm]]()
-    p1 <- msharpeTesting(xy[, 1], xy[, 2], level = 0.90)$pval
-    rej1 <- rej1 + isTRUE(p1 < 0.05)
-    p2 <- msharpeTesting(xy[, 1], xy[, 2], level = 0.90,
-                         control = list(type = 2, bBoot = bootBlock[[nm]],
-                                        nBoot = 199))$pval
-    rej2 <- rej2 + isTRUE(p2 < 0.05)
+    p1[r] <- msharpeTesting(xy[, 1], xy[, 2], level = 0.90)$pval
+    p2[r] <- msharpeTesting(xy[, 1], xy[, 2], level = 0.90,
+                            control = list(type = 2, bBoot = bootBlock[[nm]],
+                                           nBoot = 199))$pval
   }
+  s1 <- sizeSummary(p1)
+  s2 <- sizeSummary(p2)
   cat(sprintf("    %-28s %5d %.3f (%.3f)      %.3f (%.3f)\n", nm,
-              bootBlock[[nm]], rej1/RT, binse(rej1/RT, RT),
-              rej2/RT, binse(rej2/RT, RT)))
+              bootBlock[[nm]], s1["rate"], s1["se"],
+              s2["rate"], s2["se"]))
 }
 
 cat("\nsettings: replications", RS, "(screening) and", RT,

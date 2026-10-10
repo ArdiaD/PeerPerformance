@@ -24,8 +24,8 @@ Description: Provides functions to perform the peer performance analysis of
     alphas, Sharpe ratios, or modified Sharpe ratios, the latter using the
     equality test of Ardia and Boudt (2015) <doi:10.1016/j.frl.2015.02.008>.
     Funds can be screened within a universe or against a separate peer group,
-    over rolling windows, and results come with bootstrap confidence intervals,
-    summary, plot, and tidy data frame methods.
+    over rolling windows, and results come with peer-bootstrap
+    intervals, summary, plot, and tidy data frame methods.
 BugReports: https://github.com/ArdiaD/PeerPerformance/issues
 URL: https://github.com/ArdiaD/PeerPerformance
 License: GPL (>= 2)

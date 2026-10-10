@@ -11,11 +11,9 @@
 ##       equal-performance ratio pi0. This is the correction the package
 ##       delivers.
 ##
-##   (B) Under a planted skill structure, the estimator is deliberately
-##       conservative: only statistically detectable differences are flagged,
-##       so undetected true differences are pooled into pi0 and the estimated
-##       pi+/pi- are lower bounds on their population values. It errs toward
-##       "equal performance" rather than toward false discoveries.
+##   (B) Under the planted skill structure used below, the finite-sample
+##       estimates assign more mass to pi0 and less to pi+/pi- than the
+##       corresponding population proportions.
 ##
 ##   (C) The modified Sharpe ratio equality test has approximately correct
 ##       size under the null, and power against a genuine difference.
@@ -76,8 +74,8 @@ for (r in seq_len(RB)) {
   negB[r] <- mean(sc$pineg, na.rm = TRUE)
 }
 
-cat("\n(B) Planted skill structure (universe-average ratios; estimates are\n",
-    "    conservative lower bounds -- undetected differences fall into pi0)\n", sep = "")
+cat("\n(B) Planted skill structure (universe-average ratios; in this simulation\n",
+    "    the estimates assign more mass to pi0 than the population values)\n", sep = "")
 cat(sprintf("    out-performance pi+ : estimated %.3f  vs true %.3f\n",
             mean(posB), truePos))
 cat(sprintf("    under-performance pi-: estimated %.3f  vs true %.3f\n",
