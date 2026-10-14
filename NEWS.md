@@ -1,4 +1,33 @@
 # Version 2.4.1 (DA)
+- Corrected the centring of the studentized bootstrap in `sharpeTesting()` and
+  `msharpeTesting()`. Both replaced the observed difference by
+  `Δ̂ - d` and then centred the bootstrap draws on that quantity, so the
+  reference distribution was shifted by the hypothesised value `d` instead of
+  being centred on the estimate. The test statistic itself was correct, so the
+  default `d = 0` was never affected; but the automatic block-length selectors
+  pass the observed difference as `d`, so every rejection rate in their
+  calibration loop was computed from a mis-centred distribution and
+  `bBoot = 0` returned an essentially arbitrary block length. The draws are now
+  centred on the estimate
+- The bias correction of the true-null proportion is scaled by the number of
+  valid comparisons rather than by the number of columns. Appending peer columns
+  that were entirely missing changed the estimate even though the valid
+  comparisons were identical. A within-universe screening now appends a single
+  placeholder so that the published convention of Ardia and Boudt (2018) is
+  preserved in the correction without counting unavailable peers
+- `minObsPi` is enforced on each focal fund's final count of valid peers, in the
+  cross-group path as well as the within-group one; cross-group screening
+  previously ignored it, and unbalanced panels could give results that depended
+  on the order of the columns
+- `alphaTesting()` estimates both reported alphas on the same concordant sample
+  as the difference it tests. They were previously fitted on each fund's own
+  available observations, so the two reported alphas need not have differed by
+  the reported `dalpha`
+- `dsharpe` and `dmsharpe` hold raw ratio differences in all screening paths.
+  With the default `ttype = 2` the screenings stored the cross-multiplied
+  statistic under a field named as a difference, while the pairwise tests
+  returned the raw difference -- the same name meant two different things. The
+  tests continue to use the product statistic internally
 - Fixed the circular block bootstrap when the block length does not divide the
   number of concordant observations. `bootIndices()` drew `floor(T / bBoot)`
   blocks, so the last `T %% bBoot` indices of every bootstrap sample kept their
